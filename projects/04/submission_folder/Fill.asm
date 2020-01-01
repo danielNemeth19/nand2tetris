@@ -25,7 +25,7 @@
     @SCREEN
     D = A
     @address
-    M = D       // HACK base address - initialized here so resetted every time after black or white loop runs
+    M = D       // address = 16384 (base address of the HACK screen)
 
     @0
     D = A
