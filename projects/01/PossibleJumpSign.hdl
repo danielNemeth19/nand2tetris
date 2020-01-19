@@ -1,0 +1,22 @@
+/**
+ * Creates flag for possible jump. Logic follows as:
+ * if      (a == 0) out is 0
+ * else if (j1==0 and j2==0 and j3==0)  out is 0
+ * else                    out is 1
+ */
+
+ CHIP PossibleJumpSign {
+    IN a, j1, j2, j3;
+    OUT out;
+
+    PARTS:
+    Not(in=j1, out=notj1);
+    Not(in=j2, out=notj2);
+    Not(in=j3, out=notj3);
+
+    And(a=notj1, b=notj2, out=notj1andj2);
+    And(a=notj1andj2, b=notj3, out=AndOfNotJumpBits);
+    Not(in=AndOfNotJumpBits, out=inputsfromjumpbits);
+
+    And(a=inputsfromjumpbits, b=a, out=out);
+}
