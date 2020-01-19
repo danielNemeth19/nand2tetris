@@ -51,9 +51,7 @@ CHIP CPU {
 
     ALU(x=ALUFeed1, y=ALUFeed2, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7],
      no=instruction[6], out=outM, out=ALUOutput, zr=zout, ng=nout);
-
     And(a=instruction[3], b=instruction[15], out=writeM);
-
     Pos(a=zout, b=nout, out=pos);
     And(a=pos, b=instruction[0], out=jgt);
     And(a=zout, b=instruction[1], out=jeq);
