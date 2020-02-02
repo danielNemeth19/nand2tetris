@@ -1,0 +1,44 @@
+0  <comp> 0 1 0 1 0 1 0
+1  <comp> 0 1 1 1 1 1 1
+-1 <comp> 0 1 1 1 0 1 0
+D  <comp> 0 0 0 1 1 0 0
+A  <comp> 0 1 1 0 0 0 0
+M  <comp> 1 1 1 0 0 0 0
+!D <comp> 0 0 0 1 1 0 1
+!A <comp> 0 1 1 0 0 0 1
+!M <comp> 1 1 1 0 0 0 1
+-D <comp> 0 0 0 1 1 1 1
+-A <comp> 0 1 1 0 0 1 1
+-M <comp> 1 1 1 0 0 1 1
+D+1 <comp> 0 0 1 1 1 1 1
+A+1 <comp> 0 1 1 0 1 1 1
+M+1 <comp> 1 1 1 0 1 1 1
+D-1 <comp> 0 0 0 1 1 1 0
+A-1 <comp> 0 1 1 0 0 1 0
+M-1 <comp> 1 1 1 0 0 1 0
+D+A <comp> 0 0 0 0 0 1 0
+D+M <comp> 1 0 0 0 0 1 0
+D-A <comp> 0 0 1 0 0 1 1
+D-M <comp> 1 0 1 0 0 1 1
+A-D <comp> 0 0 0 0 1 1 1
+M-D <comp> 1 0 0 0 1 1 1
+D&A <comp> 0 0 0 0 0 0 0
+D&M <comp> 1 0 0 0 0 0 0
+D|A <comp> 0 0 1 0 1 0 1
+D|M <comp> 1 0 1 0 1 0 1
+null <dest> 0 0 0
+M <dest>    0 0 1
+D <dest>    0 1 0
+MD <dest>   0 1 1
+A <dest>    1 0 0
+AM <dest>   1 0 1
+AD <dest>   1 1 0
+AMD <dest>  1 1 1
+null <jmp> 0 0 0
+JGT <jmp> 0 0 1
+JEQ <jmp> 0 1 0
+JGE <jmp> 0 1 1
+JLT <jmp> 1 0 0
+JNE <jmp> 1 0 1
+JLE <jmp> 1 1 0
+JMP <jmp> 1 1 1
