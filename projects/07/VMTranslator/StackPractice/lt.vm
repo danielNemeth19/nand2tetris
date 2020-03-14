@@ -1,0 +1,9 @@
+push constant 892
+push constant 891
+lt // 0 as *SP-2 is not less then *SP - 1
+push constant 891
+push constant 892
+lt // -1 as *SP-2 is not less then *SP - 1
+push constant 891
+push constant 891
+lt // 0 as *SP-2 is not less then *SP - 1

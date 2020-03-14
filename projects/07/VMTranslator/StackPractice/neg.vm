@@ -1,0 +1,4 @@
+push constant 84
+push constant 112
+sub
+neg
