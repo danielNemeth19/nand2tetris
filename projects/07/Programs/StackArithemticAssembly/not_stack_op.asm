@@ -19,9 +19,7 @@
     AM = M - 1
     D = M
 
-    M = M - D
-    M = M - D
-    M = M - 1
+    M = !M
 
     @SP
     M = M + 1
