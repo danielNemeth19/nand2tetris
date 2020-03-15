@@ -98,6 +98,7 @@ class CodeWriter:
         __logger__.debug(f"pop: {arg1}, {arg2}")
         self.assembly_codes.append(comment)
         segment, mem_seg_offset = self._parse_segment_and_value(arg1, arg2, func="pop")
+        print(segment, mem_seg_offset)
         if arg1 in ("temp", "static"):
             self._pop_static_temp_segment(segment, mem_seg_offset)
         elif arg1 == "pointer":
