@@ -1,0 +1,23 @@
+// testing naming of: function, labels related to functions,
+// goto and if-goto commands
+
+// without function declaration
+label LOOP
+if-goto LOOP
+label END
+goto END
+
+// for function main
+function main.main 0
+label LOOP
+if-goto LOOP
+label END
+goto END
+
+// for function run
+function main.run 0
+label LOOP
+if-goto LOOP
+label END
+goto END
+return

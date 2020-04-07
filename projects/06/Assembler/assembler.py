@@ -139,7 +139,7 @@ class Translator:
         if address is False:
             __logger__.info(f"Address cannot be handled: value is is greater than {self.A_SIZE} and "
                             f"not used as a symbol")
-            sys.exit()
+            sys.exit(3)
 
     def _setup_c_map(self):
         c_map = dict(
