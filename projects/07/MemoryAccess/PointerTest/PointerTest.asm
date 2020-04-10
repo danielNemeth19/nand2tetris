@@ -1,3 +1,4 @@
+// Translating file: PointerTest
 // push constant 3030
 @3030
 D = A

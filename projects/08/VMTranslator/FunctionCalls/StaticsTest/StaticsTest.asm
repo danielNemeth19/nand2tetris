@@ -65,10 +65,8 @@ M = D
 // function Class1.set 0
 (Class1.set)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -82,10 +80,8 @@ D = M
 @Class1.0
 M = D
 // push argument 1
-@1
-D = A
 @ARG
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
@@ -99,11 +95,9 @@ D = M
 @Class1.1
 M = D
 // push constant 0
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // return
@@ -253,10 +247,8 @@ A = M
 // function Class2.set 0
 (Class2.set)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -270,10 +262,8 @@ D = M
 @Class2.0
 M = D
 // push argument 1
-@1
-D = A
 @ARG
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
@@ -287,11 +277,9 @@ D = M
 @Class2.1
 M = D
 // push constant 0
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // return

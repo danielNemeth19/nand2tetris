@@ -2,11 +2,9 @@
 // function SimpleFunction.test 2
 (SimpleFunction.test)
 // func setup: push constant 0 for local var 0
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 0
@@ -17,10 +15,8 @@ D = M
 A = M
 M = D
 // func setup: push local 0 to stack
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -28,11 +24,9 @@ M = D
 @SP
 M = M + 1
 // func setup: push constant 0 for local var 1
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 1
@@ -43,10 +37,8 @@ D = M
 A = M + 1
 M = D
 // func setup: push local 1 to stack
-@1
-D = A
 @LCL
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
@@ -54,10 +46,8 @@ M = D
 @SP
 M = M + 1
 // push local 0
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -65,10 +55,8 @@ M = D
 @SP
 M = M + 1
 // push local 1
-@1
-D = A
 @LCL
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
@@ -92,10 +80,8 @@ M = !M
 @SP
 M = M + 1
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -112,10 +98,8 @@ M = M + D
 @SP
 M = M + 1
 // push argument 1
-@1
-D = A
 @ARG
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M

@@ -1,10 +1,8 @@
 // Translating file: BasicLoop
 // push constant 0
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // pop local 0
@@ -17,10 +15,8 @@ M = D
 // label LOOP_START
 (null$LOOP_START)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -28,10 +24,8 @@ M = D
 @SP
 M = M + 1
 // push local 0
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -55,10 +49,8 @@ D = M
 A = M
 M = D
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -66,11 +58,9 @@ M = D
 @SP
 M = M + 1
 // push constant 1
-@1
-D = A
 @SP
 A = M
-M = D
+M = 1
 @SP
 M = M + 1
 // sub
@@ -90,10 +80,8 @@ D = M
 A = M
 M = D
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -107,10 +95,8 @@ D = M
 @null$LOOP_START
 D; JNE
 // push local 0
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M

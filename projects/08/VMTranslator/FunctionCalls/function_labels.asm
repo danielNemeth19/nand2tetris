@@ -6,7 +6,7 @@
 AM = M - 1
 D = M
 @null$LOOP
-D; JGT
+D; JNE
 // label END
 (null$END)
 // goto END
@@ -21,7 +21,7 @@ D; JGT
 AM = M - 1
 D = M
 @main.main$LOOP
-D; JGT
+D; JNE
 // label END
 (main.main$END)
 // goto END
@@ -36,7 +36,7 @@ D; JGT
 AM = M - 1
 D = M
 @main.run$LOOP
-D; JGT
+D; JNE
 // label END
 (main.run$END)
 // goto END

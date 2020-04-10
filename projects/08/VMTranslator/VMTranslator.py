@@ -80,37 +80,31 @@ class CodeWriter:
         self.assembly_codes.append(comment)
         segment, value = self._parse_segment_and_value(arg1, arg2, func="push")
         if not segment:
-            self.save_constant_to_d_register(value)
-            self.copy_d_to_sp_loc()
-            self.increase_stack_pointer()
-        if arg1 in ("local", "argument", "this", "that"):
-            self.save_constant_to_d_register(value)
-            self.save_segment_addr_value_to_d(segment)
-            self.copy_d_to_sp_loc()
-            self.increase_stack_pointer()
+            self.push_constant_to_stack(value)
         elif arg1 in ("temp", "static"):
-            self.save_temp_static_to_d_register(segment, value)
-            self.copy_d_to_sp_loc()
-            self.increase_stack_pointer()
+            self.push_static_temp_segment(segment, value)
         elif arg1 == "pointer":
             pointer_of = segment[value]
-            self.save_pointer_to_d(pointer_of=pointer_of)
-            self.copy_d_to_sp_loc()
-            self.increase_stack_pointer()
+            self.push_pointer_to_stack(pointer_of)
+        elif value in (0, 1):
+            self.push_segment_with_0_1(segment, value)
+        else:
+            self.push_segment_with_offset(segment, offset=value)
+        self.increase_stack_pointer()
 
     def pop_to_segment(self, arg1, arg2, comment):
         __logger__.debug(f"pop: {arg1}, {arg2}")
         self.assembly_codes.append(comment)
         segment, mem_seg_offset = self._parse_segment_and_value(arg1, arg2, func="pop")
         if arg1 in ("temp", "static"):
-            self._pop_static_temp_segment(segment, mem_seg_offset)
+            self.pop_static_temp_segment(segment, mem_seg_offset)
         elif arg1 == "pointer":
             pointer_for = segment[mem_seg_offset]
-            self._set_base_address_of_segment(pointer_for=pointer_for)
+            self.set_base_address_of_segment(pointer_for=pointer_for)
         elif mem_seg_offset in (0, 1):
-            self._pop_to_segment_with_0_1(segment, mem_seg_offset)
+            self.pop_to_segment_with_0_1(segment, mem_seg_offset)
         else:
-            self._pop_to_segment_with_offset(segment, mem_seg_offset)
+            self.pop_to_segment_with_offset(segment, mem_seg_offset)
 
     def _parse_segment_and_value(self, arg1, arg2, func):
         try:
@@ -124,7 +118,40 @@ class CodeWriter:
             sys.exit(3)
         return segment, value
 
-    def _pop_static_temp_segment(self, segment, value):
+    def push_constant_to_stack(self, value):
+        if value in (0, 1):
+            self.copy_value_to_sp_loc(value=value)
+        else:
+            self.save_constant_to_d_register(value)
+            self.copy_value_to_sp_loc()
+
+    def push_segment_with_0_1(self, segment, value):
+        offset = "M + 1" if value else "M"
+        self.save_segment_addr_value_to_d(segment, offset)
+        self.copy_value_to_sp_loc()
+
+    def push_segment_with_offset(self, segment, offset):
+        register_d = self.save_constant_to_d_register(value=offset)
+        offset = f"{register_d} + M"
+        self.save_segment_addr_value_to_d(segment, offset)
+        self.copy_value_to_sp_loc()
+
+    def push_static_temp_segment(self, segment, value):
+        self.save_temp_static_to_d_register(segment, value)
+        self.copy_value_to_sp_loc()
+
+    def push_pointer_to_stack(self, pointer_of):
+        self.save_pointer_to_d(pointer_of=pointer_of)
+        self.copy_value_to_sp_loc()
+
+    def save_temp_static_to_d_register(self, segment, value):
+        if segment == self.file_name:
+            register_var = f"{segment}.{value}"
+        else:
+            register_var = f"{segment}{self.TEMP_OFFSET + value}"
+        self.assembly_codes.extend([f"@{register_var}", "D = M"])
+
+    def pop_static_temp_segment(self, segment, value):
         self.decrease_stack_pointer(get_sp_loc_value=True)
         if segment == self.file_name:
             register_var = f"{segment}.{value}"
@@ -132,11 +159,11 @@ class CodeWriter:
             register_var = f"{segment}{self.TEMP_OFFSET + value}"
         self.assembly_codes.extend([f"@{register_var}", "M = D"])
 
-    def _pop_to_segment_with_0_1(self, segment, offset):
+    def pop_to_segment_with_0_1(self, segment, offset):
         self.decrease_stack_pointer(get_sp_loc_value=True)
         self.copy_d_to_segment_loc(segment, loc_modifier=offset)
 
-    def _pop_to_segment_with_offset(self, segment, offset):
+    def pop_to_segment_with_offset(self, segment, offset):
         self.save_constant_to_d_register(offset)
         self.increase_segment_base_addr_with_d(segment)
         segment_addr_var = "pop_to"
@@ -144,7 +171,7 @@ class CodeWriter:
         self.decrease_stack_pointer(get_sp_loc_value=True)
         self.copy_d_to_segment_loc(segment_addr_var)
 
-    def _set_base_address_of_segment(self, pointer_for):
+    def set_base_address_of_segment(self, pointer_for):
         self.decrease_stack_pointer(get_sp_loc_value=True)
         self.store_addr_to_variable(pointer_for)
 
@@ -205,7 +232,7 @@ class CodeWriter:
             self.write_conditional_jump(cond, done=True)
         return
 
-    def write_true_branch(self, cond):
+    def write_true_branch(self, cond): #TODO add filenames to label!!
         if cond in ("eq", "lt", "gt"):
             count = self.labels[cond]
             label = f"({cond}_{count})"
@@ -252,13 +279,6 @@ class CodeWriter:
             self.assembly_codes.append(f"D;{jmp_map[cond]}")
         return
 
-    def save_temp_static_to_d_register(self, segment, value):
-        if segment == self.file_name:
-            register_var = f"{segment}.{value}"
-        else:
-            register_var = f"{segment}{self.TEMP_OFFSET + value}"
-        self.assembly_codes.extend([f"@{register_var}", "D = M"])
-
     def save_pointer_to_d(self, pointer_of):
         self.assembly_codes.extend([f"@{pointer_of}", "D = M"])
 
@@ -266,8 +286,10 @@ class CodeWriter:
         self.assembly_codes.extend([f"@{value}", "D = A"])
         return "D"
 
-    def save_segment_addr_value_to_d(self, segment):
-        self.assembly_codes.extend([f"@{segment}", "A = D + M", "D = M"])
+    def save_segment_addr_value_to_d(self, segment, offset_from_pointer):
+        self.assembly_codes.append(f"@{segment}")
+        self.assembly_codes.append(f"A = {offset_from_pointer}")
+        self.assembly_codes.append("D = M")
 
     def increase_segment_base_addr_with_d(self, segment):
         self.assembly_codes.extend([f"@{segment}", "D = D + M"])
@@ -275,10 +297,10 @@ class CodeWriter:
     def store_addr_to_variable(self, segment_address):
         self.assembly_codes.extend([f"@{segment_address}", "M = D"])
 
-    def copy_d_to_sp_loc(self):
+    def copy_value_to_sp_loc(self, value="D"):
         self.assembly_codes.append("@SP")
         self.assembly_codes.append("A = M")
-        self.assembly_codes.append("M = D")
+        self.assembly_codes.append(f"M = {value}")
         return
 
     def copy_d_to_segment_loc(self, segment, loc_modifier=False):
@@ -373,7 +395,7 @@ class CodeWriter:
         retr_var = f"{func_name}.{self.file_name}$ret.{call_count}"
         self.assembly_codes.append(f"@{retr_var}")
         self.assembly_codes.append("D = A")
-        self.copy_d_to_sp_loc()
+        self.copy_value_to_sp_loc()
         self.increase_stack_pointer()
         return retr_var
 
@@ -382,7 +404,7 @@ class CodeWriter:
             self.assembly_codes.append(f"// -->Push {segment} of the caller")
             self.assembly_codes.append(f"@{segment}")
             self.assembly_codes.append("D = M")
-            self.copy_d_to_sp_loc()
+            self.copy_value_to_sp_loc()
             self.increase_stack_pointer()
 
     def reposition_arg(self, number_of_args):
