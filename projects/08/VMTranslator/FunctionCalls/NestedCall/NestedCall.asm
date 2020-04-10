@@ -5,7 +5,7 @@ D = A
 M = D
 // Boostrap: calling Sys.init
 // -->Saving return address and pushing to stack
-@Sys.init$ret.1
+@Sys.init.Sys$ret.1
 D = A
 @SP
 A = M
@@ -60,7 +60,7 @@ M = D
 @Sys.init
 0; JMP
 // -->return label
-(Sys.init$ret.1)
+(Sys.init.Sys$ret.1)
 // Translating file: Sys
 // function Sys.init 0
 (Sys.init)
@@ -94,7 +94,7 @@ D = M
 M = D
 // call Sys.main 0
 // -->Saving return address and pushing to stack
-@Sys.main$ret.1
+@Sys.main.Sys$ret.1
 D = A
 @SP
 A = M
@@ -149,7 +149,7 @@ M = D
 @Sys.main
 0; JMP
 // -->return label
-(Sys.main$ret.1)
+(Sys.main.Sys$ret.1)
 // pop temp 1
 @SP
 AM = M - 1
@@ -164,11 +164,9 @@ M = D
 // function Sys.main 5
 (Sys.main)
 // func setup: push constant 0 for local var 0
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 0
@@ -179,10 +177,8 @@ D = M
 A = M
 M = D
 // func setup: push local 0 to stack
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -190,11 +186,9 @@ M = D
 @SP
 M = M + 1
 // func setup: push constant 0 for local var 1
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 1
@@ -205,10 +199,8 @@ D = M
 A = M + 1
 M = D
 // func setup: push local 1 to stack
-@1
-D = A
 @LCL
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
@@ -216,11 +208,9 @@ M = D
 @SP
 M = M + 1
 // func setup: push constant 0 for local var 2
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 2
@@ -248,11 +238,9 @@ M = D
 @SP
 M = M + 1
 // func setup: push constant 0 for local var 3
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 3
@@ -280,11 +268,9 @@ M = D
 @SP
 M = M + 1
 // func setup: push constant 0 for local var 4
-@0
-D = A
 @SP
 A = M
-M = D
+M = 0
 @SP
 M = M + 1
 // func setup: pop local 4
@@ -406,7 +392,7 @@ M = D
 M = M + 1
 // call Sys.add12 1
 // -->Saving return address and pushing to stack
-@Sys.add12$ret.1
+@Sys.add12.Sys$ret.1
 D = A
 @SP
 A = M
@@ -461,7 +447,7 @@ M = D
 @Sys.add12
 0; JMP
 // -->return label
-(Sys.add12$ret.1)
+(Sys.add12.Sys$ret.1)
 // pop temp 0
 @SP
 AM = M - 1
@@ -469,10 +455,8 @@ D = M
 @R5
 M = D
 // push local 0
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -480,10 +464,8 @@ M = D
 @SP
 M = M + 1
 // push local 1
-@1
-D = A
 @LCL
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
@@ -648,10 +630,8 @@ D = M
 @THAT
 M = D
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M

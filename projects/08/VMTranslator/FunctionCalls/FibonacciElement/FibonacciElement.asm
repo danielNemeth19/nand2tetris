@@ -65,10 +65,8 @@ M = D
 // function Main.fibonacci 0
 (Main.fibonacci)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -116,10 +114,8 @@ D; JNE
 // label IF_TRUE
 (Main.fibonacci$IF_TRUE)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -187,10 +183,8 @@ A = M
 // label IF_FALSE
 (Main.fibonacci$IF_FALSE)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -273,10 +267,8 @@ M = D
 // -->return label
 (Main.fibonacci.Main$ret.1)
 // push argument 0
-@0
-D = A
 @ARG
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -284,11 +276,9 @@ M = D
 @SP
 M = M + 1
 // push constant 1
-@1
-D = A
 @SP
 A = M
-M = D
+M = 1
 @SP
 M = M + 1
 // sub

@@ -1,3 +1,4 @@
+// Translating file: StackTest
 // push constant 17
 @17
 D = A

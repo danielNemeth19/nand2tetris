@@ -1,3 +1,4 @@
+// Translating file: BasicTest
 // push constant 10
 @10
 D = A
@@ -127,10 +128,8 @@ D = M
 @R11
 M = D
 // push local 0
-@0
-D = A
 @LCL
-A = D + M
+A = M
 D = M
 @SP
 A = M
@@ -158,10 +157,8 @@ M = M + D
 @SP
 M = M + 1
 // push argument 1
-@1
-D = A
 @ARG
-A = D + M
+A = M + 1
 D = M
 @SP
 A = M
