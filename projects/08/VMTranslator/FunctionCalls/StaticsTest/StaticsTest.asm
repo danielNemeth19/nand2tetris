@@ -181,10 +181,8 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M - D
-@SP
-M = M + 1
 // return
 // -->Saving endframe
 @LCL
@@ -363,10 +361,8 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M - D
-@SP
-M = M + 1
 // return
 // -->Saving endframe
 @LCL

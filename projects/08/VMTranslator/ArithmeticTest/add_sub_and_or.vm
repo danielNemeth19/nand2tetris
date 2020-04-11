@@ -1,0 +1,18 @@
+push constant 57
+push constant 31
+push constant 53
+add
+push constant 112
+sub
+push constant 88
+add
+and
+push constant 50
+or
+neg
+not
+push constant 57
+eq
+push constant 500
+eq
+push constant 1000

@@ -86,22 +86,20 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 D = M - D
-@lt_1
+@lt_Main_1
 D;JLT
 @SP
-A = M
+A = M - 1
 M = 0
-@done.lt_1
-0; JMP
-(lt_1)
+@done.lt_Main_1
+D;JMP
+(lt_Main_1)
 @SP
-A = M
+A = M - 1
 M = -1
-(done.lt_1)
-@SP
-M = M + 1
+(done.lt_Main_1)
 // if-goto IF_TRUE
 @SP
 AM = M - 1
@@ -204,10 +202,8 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M - D
-@SP
-M = M + 1
 // call Main.fibonacci 1
 // -->Saving return address and pushing to stack
 @Main.fibonacci.Main$ret.1
@@ -286,10 +282,8 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M - D
-@SP
-M = M + 1
 // call Main.fibonacci 1
 // -->Saving return address and pushing to stack
 @Main.fibonacci.Main$ret.2
@@ -353,10 +347,8 @@ M = D
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M + D
-@SP
-M = M + 1
 // return
 // -->Saving endframe
 @LCL
