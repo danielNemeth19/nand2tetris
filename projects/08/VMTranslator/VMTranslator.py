@@ -194,23 +194,12 @@ class CodeWriter:
     def arithmetic(self, arg1, _, comment):
         __logger__.debug(f"add: {arg1}, {_}")
         self.assembly_codes.append(comment)
-        self.decrease_stack_pointer(get_sp_loc_value=True)
         if arg1 in ("neg", "not"):
-            self.write_arithmetic_function(arg1)
-        if arg1 in ("add", "sub", "and", "or"):
-            # SP should not be decreased actually: we could do the calc 'inline' then
-            # avoid increasing back the stack pointer. Need to check how does this sit with
-            # other arithmetic functions
-            self.decrease_stack_pointer()
-            self.write_arithmetic_function(arg1)
-        if arg1 in ("eq", "lt", "gt"):
-            self.decrease_stack_pointer()
-            self.write_arithmetic_function(arg1)
-            self.write_conditional_jump(arg1)
-            self.write_not_true_branch(arg1)
-            self.write_true_branch(arg1)
-            self.generate_label_for_done(arg1)
-        self.increase_stack_pointer()
+            self.write_neg_not(arg1)
+        elif arg1 in ("add", "sub", "and", "or"):
+            self.write_add_sub_and_or(arg1)
+        else:
+            self.write_eq_lt_gt(arg1)
         return
 
     def increase_stack_pointer(self, increase_from_d=False):
@@ -226,24 +215,73 @@ class CodeWriter:
             self.assembly_codes.append("D = M")
         return
 
-    def write_not_true_branch(self, cond):
-        if cond in ("eq", "lt", "gt"):
-            self.assembly_codes.extend(["@SP", "A = M", "M = 0"])
-            self.write_conditional_jump(cond, done=True)
+    def activate_register_behind_stack_pointer(self):
+        self.assembly_codes.append("@SP")
+        self.assembly_codes.append("A = M - 1")
+
+    def write_neg_not(self, arg1):
+        self.activate_register_behind_stack_pointer()
+        self.write_arithmetic_function(arg1)
+
+    def write_add_sub_and_or(self, arg1):
+        self.decrease_stack_pointer(get_sp_loc_value=True)
+        self.activate_register_behind_stack_pointer()
+        self.write_arithmetic_function(arg1)
+
+    def write_eq_lt_gt(self, arg1):
+        cond_var, done_var = self._get_vars(func=arg1)
+        self.decrease_stack_pointer(get_sp_loc_value=True)
+        self.activate_register_behind_stack_pointer()
+        self.write_arithmetic_function(arg1)
+        self.write_jump(
+            func=arg1, symbol=self._as_symbol(cond_var)
+        )
+        self.write_not_true_branch()
+        self.write_jump(
+            func="unc", symbol=self._as_symbol(done_var)
+        )
+        self.write_true_branch_with_labels(
+            label=self._as_label(cond_var),
+            done_label=self._as_label(done_var)
+        )
+
+    def _get_vars(self, func):
+        count = self.labels.get(func, 0) + 1
+        self.labels[func] = count
+        cond_var = f"{func}_{self.file_name}_{count}"
+        done_var = f"done.{cond_var}"
+        return cond_var, done_var
+
+    @staticmethod
+    def _as_label(var):
+        return f"({var})"
+
+    @staticmethod
+    def _as_symbol(var):
+        return f"@{var}"
+
+    def write_not_true_branch(self):
+        self.activate_register_behind_stack_pointer()
+        self.assembly_codes.append("M = 0")
         return
 
-    def write_true_branch(self, cond): #TODO add filenames to label!!
-        if cond in ("eq", "lt", "gt"):
-            count = self.labels[cond]
-            label = f"({cond}_{count})"
-            self.assembly_codes.append(label)
-            self.assembly_codes.extend(["@SP", "A = M", "M = -1"])
+    def write_true_branch_with_labels(self, label, done_label):
+        self.assembly_codes.append(label)
+        self.activate_register_behind_stack_pointer()
+        self.assembly_codes.append("M = -1")
+        self.assembly_codes.append(done_label)
         return
 
-    def generate_label_for_done(self, cond):
-        count = self.labels.get(cond)
-        close_label = f"(done.{cond}_{count})"
-        self.assembly_codes.append(close_label)
+    def write_jump(self, func, symbol):
+        jmp_map = {
+            "eq": "JEQ",
+            "lt": "JLT",
+            "gt": "JGT",
+            "unc": "JMP"
+        }
+        self.assembly_codes.append(symbol)
+        self.assembly_codes.append(f"D;{jmp_map[func]}")
+        return
 
     def write_arithmetic_function(self, arg1):
         func_map = {
@@ -259,25 +297,6 @@ class CodeWriter:
         }
         func = func_map[arg1]
         return self.assembly_codes.append(func)
-
-    def write_conditional_jump(self, cond, done=False):
-        jmp_map = {
-            "eq": "JEQ",
-            "lt": "JLT",
-            "gt": "JGT",
-            "unc": "JMP"
-        }
-        if done:
-            count = self.labels.get(cond)
-            symbol = f"@done.{cond}_{count}"
-            self.assembly_codes.extend([symbol, f"0; {jmp_map['unc']}"])
-        else:
-            count = self.labels.get(cond, 0) + 1
-            self.labels[cond] = count
-            symbol = f"@{cond}_{count}"
-            self.assembly_codes.append(symbol)
-            self.assembly_codes.append(f"D;{jmp_map[cond]}")
-        return
 
     def save_pointer_to_d(self, pointer_of):
         self.assembly_codes.extend([f"@{pointer_of}", "D = M"])

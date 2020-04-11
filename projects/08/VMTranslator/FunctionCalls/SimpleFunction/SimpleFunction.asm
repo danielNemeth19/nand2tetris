@@ -68,17 +68,12 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M + D
-@SP
-M = M + 1
 // not
 @SP
-AM = M - 1
-D = M
+A = M - 1
 M = !M
-@SP
-M = M + 1
 // push argument 0
 @ARG
 A = M
@@ -93,10 +88,8 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M + D
-@SP
-M = M + 1
 // push argument 1
 @ARG
 A = M + 1
@@ -111,10 +104,8 @@ M = M + 1
 AM = M - 1
 D = M
 @SP
-AM = M - 1
+A = M - 1
 M = M - D
-@SP
-M = M + 1
 // return
 // -->Saving endframe
 @LCL
