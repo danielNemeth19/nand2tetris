@@ -1,0 +1,12 @@
+/** initialize a new SnakeGame and start it */
+class Main {
+   function void main() {
+     // Create a new game of snake
+     var SnakeGame game;
+     let game = SnakeGame.new();
+     // Start the game
+     do game.run();
+     do game.dispose();
+     return;
+   }
+}

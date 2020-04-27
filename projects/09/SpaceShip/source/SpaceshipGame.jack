@@ -1,0 +1,111 @@
+
+
+/**
+ * Implements the Defender game.
+ * This simple game allows the user to move a spaceship around the screen
+ * and use the spacebar to fire off a laser. Unfortunately did not have time
+ * to create bad guys and explosions
+ */
+
+class SpaceshipGame {
+   field Spaceship spaceship; // the spaceship of this game
+   field int direction; // the spaceship's current direction: 
+                        // 0=none, 1=up, 2=down, 3=left, 4=right
+    field Array missiles;
+    field int missile_count;
+
+   /** Constructs a new Spaceship Game. */
+   constructor SpaceshipGame new() {
+      var int i;
+
+      let spaceship = Spaceship.new();
+      let missiles = Array.new(10); // can't fire more than 10
+      let i = 0;
+      while (i < 10) {    // initialize missile array
+        let missiles[i] = Missile.new();
+        let i = i+1;
+      }
+      let missile_count = 0;
+
+      let direction = 0;  // initial state is no movement
+      return this;
+   }
+
+   /** Disposes this game. */
+   method void dispose() {
+      do spaceship.dispose();
+      do missiles.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Moves the spaceship in the current direction. */
+   method void moveSpaceship() {
+      if (direction = 1) { do spaceship.moveUp(); }
+      if (direction = 2) { do spaceship.moveDown(); }
+      if (direction = 3) { do spaceship.moveLeft(); }
+      if (direction = 4) { do spaceship.moveRight(); }
+      do Sys.wait(5);  // delays the next movement
+      return;
+   }
+
+    method void moveItems() {
+      var int i;
+      var Missile m;
+
+      do moveSpaceship();
+
+      let i = 0;
+      while (i < 10) {
+        let m = missiles[i];
+        if (m.getMissileStatus()) {
+          do m.moveMissile();
+        }
+        let i = i+1;
+      }
+
+      return;
+   }
+
+
+   /** Runs the game: handles the user's inputs and moves the spaceship accordingly */
+
+   method void run() {
+      var char key;  // the key currently pressed by the user
+      var boolean exit;
+      var int i;
+      var Missile m;
+
+      let exit = false;
+      
+      while (~exit) {
+
+         let key = Keyboard.keyPressed();
+
+         if (key = 81)  { let exit = true; }     // q key
+         if (key = 131) { let direction = 1; }   // up arrow
+         if (key = 133) { let direction = 2; }   // down arrow
+         if (key = 130) { let direction = 3; }   // left arrow
+         if (key = 132) { let direction = 4; }   // right arrow
+         if (key = 0) { let direction = 0; }   // key-up
+         if (key = 32) {  // space-bar
+           let i = 0;
+           while (i < 10) {
+             let m = missiles[i];
+             if (~(m.getMissileStatus())) {
+                do m.launchMissile(spaceship.getX(), spaceship.getY());
+                let i = 10; // to break loop
+              }
+              let i = i+1;
+          }
+
+         }
+
+         do moveItems();
+
+
+        
+     } // while
+     return;
+   }
+}

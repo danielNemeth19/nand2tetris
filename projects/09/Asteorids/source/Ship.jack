@@ -1,0 +1,281 @@
+// Developed by: Luciano Soares
+// Date: 27 May 2017
+// File: Ship.jack
+
+/**
+ * The Space Ship.
+ * It is basicaly a triangle that we can control direction and aceleration. 
+ * It can shot bullets and destroy asteroids.
+ */
+class Ship {
+
+    static int leftWall;
+    static int rightWall;
+    static int topWall;
+    static int bottomWall;
+
+    field int x;        // Ship x position
+    field int y;        // Ship y position
+    field int angle;    // Ship angle (divide in 8 posibilities)
+
+    field int dx;       // moving direction in x
+    field int dy;       // moving direction in y
+
+    /** Constructor for the ship */
+    constructor Ship new(int arg_x, int arg_y) {
+        let x = arg_x;
+        let y = arg_y;
+
+        let dx = 0;
+        let dy = 0;
+
+        let angle = 0;
+        
+        let leftWall = 1;
+        let rightWall = 510;
+        let topWall = 1;
+        let bottomWall = 254;
+
+        do show();
+        return this;
+
+    }
+
+    /** Deallocates memory of the ship object. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** shows the ship object. */
+    method void show() {
+        do Screen.setColor(true);
+        do draw();
+        return;
+    }
+
+    /** hides the ship object. */
+    method void hide() {
+        do Screen.setColor(false);
+        do draw();
+        return;
+    }
+
+    /** Draws the ship. */
+    method void draw() {
+        do drawShip(angle);
+        return;
+    }
+
+    /** Rotates the ship clockwise. */
+    method void rotClock() {
+        do Screen.setColor(false);
+        do drawShip(angle);
+        let angle = angle + 1;
+        if (angle > 7) {
+            let angle = 0;
+        }
+        return;
+    }
+
+    /** Rotates the ship counterclockwise. */
+    method void rotCounterClock() {
+        do Screen.setColor(false);
+        do drawShip(angle);
+        let angle = angle - 1;
+        if (angle < 0) {
+            let angle = 7;
+        }
+        return; 
+    }
+
+    /** Sets ship angle. */
+    method void setAngle(int arg_angle) {
+        do Screen.setColor(false);
+        do drawShip(angle);
+        let angle = arg_angle;
+        return;
+    }
+
+
+    /** Returns the ship X position. */
+    method int getX() {
+        return x;
+    }
+
+    /** Returns the ship Y position. */
+    method int getY() {
+        return y;
+    }
+
+    /** Returns the direction for shoothin in X. */
+    method int getShotX() {
+        var int tmp;
+        let tmp = 0;
+        if( (angle>0) & (angle<4) ) {
+            let tmp = 1;
+        }
+        if( (angle>4) & (angle<8) ) {
+            let tmp = -1;
+        }
+        return tmp;
+    }
+
+    /** Returns the direction for shoothin in Y. */
+    method int getShotY() {
+        var int tmp;
+        let tmp = 0;
+        if( (angle<2) | (angle>6) ) {
+            let tmp = -1;
+        }
+        if( (angle>2) & (angle<6) ) {
+            let tmp = 1;
+        }
+        return tmp;
+    }
+
+    // Accelerates object in his direction.
+    method void accelerate(int accel) {
+
+        if(angle=0) {
+            let dy = dy - accel;
+        }
+        if(angle=1) {
+            let dx = dx + accel;
+            let dy = dy - accel;
+        }
+        if(angle=2) {
+            let dx = dx + accel;
+        }
+        if(angle=3) {
+            let dx = dx + accel;
+            let dy = dy + accel;
+        }
+        if(angle=4) {
+            let dy = dy + accel;
+        }
+        if(angle=5) {
+            let dx = dx - accel;
+            let dy = dy + accel;
+        }
+        if(angle=6) {
+            let dx = dx - accel;
+        }
+        if(angle=7) {
+            let dx = dx - accel;
+            let dy = dy - accel;
+        }
+
+        return;
+
+    }
+
+    /** Moves the shipt ahead. */
+    method void move() {
+        do Screen.setColor(false);
+        do drawShip(angle);
+
+        let x = x + dx;
+        let y = y + dy;
+        
+        if ( (x - 9) < leftWall ) {
+            let x = rightWall - 9;
+        }
+        if ( (x + 9) > rightWall ) {
+            let x = leftWall + 9;
+        }
+        if ( (y - 9) < topWall ) {
+            let y = bottomWall - 9;
+        }
+        if ( (y + 9) > bottomWall ) {
+            let y = topWall + 9;
+        }
+
+        do Screen.setColor(true);
+        do drawShip(angle);
+        return;
+    }
+
+    /** Check if the ship was hitten. */
+    method boolean hit(int arg_x, int arg_y, int arg_s) {
+
+        var boolean resp;
+
+        let resp = false;
+
+        if ( ( (arg_x+arg_s) >(x-8)) & ( (arg_x-arg_s) <(x+8)) &
+         ( (arg_y+arg_s) >(y-8)) & ( (arg_y-arg_s)<(y+8)) ) {
+            let resp = true;
+        }
+
+        return resp;
+
+    }
+
+    /** Actually draws the ship. */
+    method void drawShip(int angle) {
+        var int c;
+        var int d;
+        var int i;
+
+        var int x2;
+        var int y2;
+
+        if ( (~(angle=2)) & (~(angle=6)) ) {
+
+            if( (angle=0) | (angle=3) | (angle=5) ) {
+                let i = 1;
+            } else {
+                let i = -1;
+            }
+
+            let c = 16 * i;
+
+            let y2 = y - ( c / 2 );
+            while ( ~(c = 0) ) {
+                let d = c / 2;
+                while ( ~(d = 0) ) {
+                    do Screen.drawPixel(x-d,y2+c);
+                    let d = d - i;
+                }
+                do Screen.drawPixel(x  ,y2+c);
+                let d = c / 2;
+                while ( ~(d = 0) ) {
+                    do Screen.drawPixel(x+d,y2+c);
+                    let d = d - i;
+                }
+                let c = c - i;
+            }
+
+        } else {
+
+            if( angle=2 ) {
+                let i = -1;
+            } else {
+                let i = 1;
+            }
+
+            let c = 16 * i;
+
+            let x2 = x - ( c / 2 );
+            while ( ~(c = 0) ) {
+                let d = c / 2;
+                while ( ~(d = 0) ) {
+                    do Screen.drawPixel(x2+c,y+d);
+                    let d = d - i;
+                }
+                do Screen.drawPixel(x2+c  ,y);
+                let d = c / 2;
+                while ( ~(d = 0) ) {
+                    do Screen.drawPixel(x2+c,y-d);
+                    let d = d - i;
+                }
+                let c = c - i;
+            }
+
+        }
+
+        return;
+    }
+
+}

@@ -1,0 +1,3 @@
+function Constants.MAX_NUM 0
+push constant 100
+return

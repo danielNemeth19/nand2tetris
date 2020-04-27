@@ -1,0 +1,235 @@
+function Game.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push constant 123
+call LCGRandom.setSeed 1
+pop temp 0
+push constant 3
+pop this 3
+push this 3
+pop this 4
+push this 4
+call Balls.new 1
+pop this 0
+call Fly.new 0
+pop this 1
+push constant 1
+pop this 2
+push constant 0
+pop this 5
+push pointer 0
+call Game.reportFlies 1
+pop temp 0
+push pointer 0
+return
+function Game.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Balls.dispose 1
+pop temp 0
+push this 1
+call Fly.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Game.reportFlies 0
+push argument 0
+pop pointer 0
+push constant 22
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 7
+call String.new 1
+push constant 70
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push this 2
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+function Game.run 1
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push this 5
+not
+not
+if-goto WHILE_END0
+push this 1
+call Fly.getExited 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call Screen.clearScreen 0
+pop temp 0
+push this 0
+call Balls.dispose 1
+pop temp 0
+push this 4
+push constant 1
+push constant 2
+call LCGRandom.randRange 2
+add
+pop this 4
+push this 4
+call Balls.new 1
+pop this 0
+push this 1
+call Fly.enter 1
+pop temp 0
+push pointer 0
+call Game.reportFlies 1
+pop temp 0
+label IF_FALSE0
+push this 1
+call Fly.getStopped 1
+push this 0
+call Balls.getStopped 1
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call Screen.clearScreen 0
+pop temp 0
+push this 0
+call Balls.dispose 1
+pop temp 0
+push this 1
+call Fly.dispose 1
+pop temp 0
+push this 3
+push this 4
+push constant 1
+sub
+call Math.max 2
+pop this 4
+push this 4
+call Balls.new 1
+pop this 0
+call Fly.new 0
+pop this 1
+push this 2
+push constant 1
+add
+pop this 2
+push pointer 0
+call Game.reportFlies 1
+pop temp 0
+label IF_FALSE1
+push this 0
+push this 1
+call Balls.affect 2
+pop temp 0
+push this 0
+call Balls.draw 1
+pop temp 0
+push this 1
+call Fly.move 1
+pop temp 0
+push this 1
+call Fly.draw 1
+pop temp 0
+push constant 50
+call Sys.wait 1
+pop temp 0
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 130
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 1
+call Fly.turnLeft 1
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push local 0
+push constant 132
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 1
+call Fly.turnRight 1
+pop temp 0
+goto IF_END3
+label IF_FALSE3
+push local 0
+push constant 131
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 1
+call Fly.accelerate 1
+pop temp 0
+goto IF_END4
+label IF_FALSE4
+push local 0
+push constant 140
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+not
+pop this 5
+label IF_FALSE5
+label IF_END4
+label IF_END3
+label IF_END2
+goto WHILE_EXP0
+label WHILE_END0
+push this 5
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 12
+push constant 12
+call Output.moveCursor 2
+pop temp 0
+push constant 8
+call String.new 1
+push constant 70
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_FALSE6
+push constant 0
+return

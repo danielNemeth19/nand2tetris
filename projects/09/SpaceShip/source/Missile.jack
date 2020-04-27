@@ -1,0 +1,67 @@
+
+/** Implements a graphical missle. */
+class Missile {
+
+   field int x, y; // screen location of the missile's top-left corner
+   field boolean active;
+
+   /** Constructs a new missile. */
+   constructor Missile new() {
+      let active = false;
+      return this;
+   }
+
+   method boolean getMissileStatus() {
+      return active;
+   }
+
+   method void launchMissile(int Ax, int Ay) {
+      let x = Ax;
+      let y = Ay;
+      let active = true;
+      return;
+   }
+
+   /** Disposes this missle. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method void moveMissile() {
+
+      if ((y -2) < 1) {   // out of screen so it should disappear
+         let active = false;
+         do eraseMissile();
+      }
+      else { // move the missile up 2 rows
+         do eraseMissile();
+         let y = y-2;
+         do drawMissile();
+      }
+      return;
+      
+   }
+ 
+    method void drawMissile() {
+
+      do Screen.setColor(true);
+      do Screen.drawLine(x, y, x, y + 2);
+      return;
+    }
+
+
+   /** Erases the missle from the screen. */
+   method void eraseMissile() {
+      
+      do Screen.setColor(false);
+      do Screen.drawLine(x, y, x, y + 2);
+      return;
+   }
+
+
+
+
+
+
+}

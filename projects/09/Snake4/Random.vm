@@ -1,0 +1,109 @@
+function Random.randLoc 1
+push argument 0
+pop local 0
+push constant 0
+push local 0
+add
+push argument 1
+push constant 0
+push local 0
+add
+pop pointer 1
+push that 0
+call Math.multiply 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 1
+push local 0
+add
+pop pointer 1
+push that 0
+push argument 1
+call Math.multiply 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 496
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+push local 0
+add
+push constant 48
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_FALSE0
+push constant 0
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+push local 0
+add
+push constant 32
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_FALSE1
+push constant 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 240
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 1
+push local 0
+add
+push constant 96
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_FALSE2
+push constant 1
+push local 0
+add
+pop pointer 1
+push that 0
+push constant 0
+lt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 1
+push local 0
+add
+push constant 226
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_FALSE3
+push local 0
+return

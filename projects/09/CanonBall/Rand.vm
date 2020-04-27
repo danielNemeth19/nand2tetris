@@ -1,0 +1,58 @@
+function Rand.init 0
+push constant 829
+pop static 0
+push constant 769
+pop static 1
+push constant 867
+pop static 2
+push constant 0
+return
+function Rand.rand 0
+push constant 146
+push static 0
+call Math.multiply 2
+push constant 31727
+call Rand.mod 2
+pop static 0
+push constant 142
+push static 1
+call Math.multiply 2
+push constant 31657
+call Rand.mod 2
+pop static 1
+push constant 157
+push static 2
+call Math.multiply 2
+push constant 32363
+call Rand.mod 2
+pop static 2
+push static 2
+push static 0
+sub
+push static 1
+add
+push constant 32362
+call Rand.mod 2
+return
+function Rand.mod 1
+push argument 0
+push argument 0
+push argument 1
+call Math.divide 2
+push argument 1
+call Math.multiply 2
+sub
+pop local 0
+push local 0
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push argument 1
+add
+pop local 0
+label IF_FALSE0
+push local 0
+return

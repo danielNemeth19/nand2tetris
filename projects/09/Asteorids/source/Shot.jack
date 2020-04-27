@@ -1,0 +1,114 @@
+// Developed by: Luciano Soares
+// Date: 27 May 2017
+// File: Shot.jack
+
+/**
+ * A bullet (shot). that destroy the asteroids. 
+ */
+class Shot {
+
+    static int leftWall;
+    static int rightWall;
+    static int topWall;
+    static int bottomWall;
+
+    field int x, y;               // shot position 
+
+    field int moveX;
+    field int moveY;
+
+    /** Constructs a new ball with the given initial location and wall locations. */
+    constructor Shot new(int arg_x, int arg_y) {
+                         
+	    let x = arg_x;		
+	    let y = arg_y;
+
+        let leftWall = 1;
+        let rightWall = 510;
+        let topWall = 1;
+        let bottomWall = 254;
+
+        do show();
+        return this;
+    }
+
+    /** Deallocates the Shot's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Shows the shot. */
+    method void show() {
+        do Screen.setColor(true);
+        do draw();
+        return;
+    }
+
+    /** Hides the shot. */
+    method void hide() {
+        do Screen.setColor(false);
+	    do draw();
+        return;
+    }
+
+    /** Draws the shot. */
+    method void draw() {
+	    do Screen.drawRectangle(x-1, y-1, x+1, y+1);
+	    return;
+    }
+
+    /** Returns the shots's x position. */
+    method int getX() {
+        return x;
+    }
+
+    /** Returns the shots's y position. */
+    method int getY() {
+        return y;
+    }
+
+    /** Transfer the new position for the shot. */
+    method void setDirection(int destx, int desty) {
+        let moveX = destx;
+        let moveY = desty;
+	    return;
+    }
+
+    /**
+     * Moves the shot to the next position and returns if hit a screen limit.
+     */
+    method boolean move() {
+
+        var boolean hitwall;        // in case hit a wall tell the caller
+
+        let hitwall = false;
+
+	    do hide();
+
+        let x = x + (moveX * 3);
+        let y = y + (moveY * 3);
+
+	    if (x < leftWall) {
+            let hitwall = true;
+	        let x = leftWall;      // avoid wrong colision
+	    }
+        if (x > rightWall) {
+            let hitwall = true;
+	        let x = rightWall;      // avoid wrong colision
+	    }
+        if (y < topWall) {
+            let hitwall = true;
+	        let y = topWall;      // avoid wrong colision
+        }
+        if (y > bottomWall) {
+            let hitwall = true;
+	        let y = bottomWall;   // avoid wrong colision
+        }
+
+	    do show();
+
+	    return hitwall;
+    }
+
+}

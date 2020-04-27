@@ -1,0 +1,12 @@
+// File name: projects/09/Frogger/Main.jack
+
+/** Initializes a new Frogger game and starts running it. */
+class Main {
+    function void main() {
+        var FroggerGame game;
+        let game = FroggerGame.new();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

@@ -1,0 +1,16 @@
+class Random {
+    field long next;
+
+    constructor Random new(int seed) {
+        let next = seed;
+        return this;
+    }
+    method int nextInt(int max) {
+        let next = next * 123 + 123;
+        return MathUtil.mod(next, max);
+    }
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

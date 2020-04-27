@@ -38,7 +38,7 @@ class CodeWriter:
     ENDFRAME_OFFSET = 5
     CALL_POINTERS = 5
     ENDFRAME_REGISTER = "R13"
-    RETURN_ADDR_REGISTER= "R14"
+    RETURN_ADDR_REGISTER = "R14"
 
     def __init__(self, vm_code, file_name, bootstrap_needed):
         self.vm_code = vm_code
@@ -341,7 +341,7 @@ class CodeWriter:
         self.assembly_codes.append(comment)
         self.decrease_stack_pointer(get_sp_loc_value=True)
         label_prefix = self.current_function if self.current_function else "null"
-        self.assembly_codes.extend([f"@{label_prefix}${arg1}", "D; JNE"]) #might need to be JNE!
+        self.assembly_codes.extend([f"@{label_prefix}${arg1}", "D; JNE"])
         return
 
     def write_goto(self, arg1, arg2, comment):

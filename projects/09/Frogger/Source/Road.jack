@@ -1,0 +1,36 @@
+/** Implements the road. */
+class Road {
+
+   field int x, y; // screen location of the frog's top-left corner
+   field int length, breadth; // dimensions of this road, in pixels
+   field boolean color; // color of the road
+
+   /** Constructs a new road. */
+   constructor Road new() {
+      let length = 511;
+      let breadth = 32;
+      do draw();
+      return this;
+   }
+
+   /** Disposes this road. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Draws the road on the screen. */
+   method void draw() {
+      let color = true;
+      let x = 0;
+      let y = 0;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + length, y + breadth);
+      let y = y + 223;
+      do Screen.drawRectangle(x, y, x + length, y + breadth);
+      return;
+   }
+}
+
+
+

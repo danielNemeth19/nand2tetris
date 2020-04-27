@@ -1,0 +1,12 @@
+class Main {
+    function void main() {
+        var string message;
+        var Hockey hockey;
+
+        let hockey = Hockey.new(512);
+
+        let message = "Hockey Game!:)";
+        do MyGame.speak(message);
+        return;
+    }
+}

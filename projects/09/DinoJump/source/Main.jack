@@ -1,0 +1,37 @@
+class Main {
+    function void main() {
+        var DinosaurGame game;
+        var char key; // the key currently pressed by the user
+        var boolean exit, restart;
+        let exit = false;
+        let restart = restart;
+        let key = 0;
+
+        while(~exit){
+            let game = DinosaurGame.new();
+            do game.run();
+            do game.dispose();
+
+            let restart = false;
+
+            do Sys.wait(200);
+
+            // allow the user to play again or quit the game
+            while (~restart) {
+                let key = Keyboard.keyPressed();
+                if (key = 80)  { // 'p'
+                    let restart = true;
+                }     
+                if (key = 81)  { // 'q'
+                    let exit = true; 
+                } else {
+                    let key = 0; // block other keyboard key
+                }    
+            }
+
+            do Sys.wait(15);
+        }
+
+        return;
+    }
+}

@@ -1,0 +1,80 @@
+// File name: projects/09/Frogger/Car.jack
+
+/** Implements a graphical car. */
+class Car {
+
+   field int x, y; // screen location of the car's top-left corner
+   field int size; // length of this car, in pixels
+   field boolean direction; // direction of movement of this car. true: right, false: left
+   field int speed; // speed of this car
+
+   /** Constructs a new car with a given location and size. */
+   constructor Car new(int Ax, int Ay, int Asize, boolean Adirection, int Aspeed) {
+      let x = Ax;
+      let y = Ay;
+      let size = Asize;
+      let direction = Adirection;
+      let speed = Aspeed;
+      do draw();
+      return this;
+   }
+
+   /** Disposes this car. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Updates the location of the car. */
+   method void Update() {
+      // move right
+      if (direction) {
+          if (((x + size) + speed) < 512) {
+             do Screen.setColor(false);
+             do Screen.drawRectangle(x, y, x + 1, y + size);
+             let x = x + speed;
+             do Screen.setColor(true);
+             do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+          } else {
+             if (x < 512) {
+                 do Screen.setColor(false);
+                 do Screen.drawRectangle(x, y, x + 1, y + size);
+                 let x = x + speed;
+             } else {
+                 let x = 0;
+                 do Screen.setColor(true);
+                 do Screen.drawRectangle(x, y, size, y + size);
+             }
+          }
+      // move left
+      } else {
+          if ((x - speed) > -1) {
+             do Screen.setColor(false);
+             do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+             let x = x - speed;
+             do Screen.setColor(true);
+             do Screen.drawRectangle(x, y, x + 1, y + size);
+          } else {
+             if ((x + size) > 0) {
+                 do Screen.setColor(false);
+                 do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+                 let x = x - speed;
+             } else {
+                 let x = (511 - size);
+                 do Screen.setColor(true);
+                 do Screen.drawRectangle(x, y, 511, y + size);
+             }
+          }
+      }
+      do Sys.wait(5);  // delays the next movement
+      return;
+   }
+
+   /** Draws the car on the screen. */
+   method void draw() {
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + size, y + size);
+      return;
+   }
+}
+

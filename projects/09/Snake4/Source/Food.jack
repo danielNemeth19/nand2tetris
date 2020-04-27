@@ -1,0 +1,35 @@
+/** Class that places food for the snake on the game grid
+*
+*/
+class Food {
+  field Array coord;
+  field Array center;
+
+  /** Constructs a new food object */
+  constructor Food new(int x, int y) {
+     // Create new array with location left corner grid place
+     let coord = Array.new(2);
+     let coord[0] = x; let coord[1] = y;  
+
+     // Get center of circle
+     let center = Array.new(2);
+     let center[0] = x + 4; let center[1] = y + 4;   
+     do draw();
+     return this;
+  }
+
+  /** Method for drawing the food */
+  method void draw() {
+     // Draw circle at location
+     do Screen.setColor(true);
+     do Screen.drawCircle(center[0], center[1], 4);     
+     return;
+  }
+
+  /** Dispose of the food */
+  method void dispose() {
+     do Memory.deAlloc(this);
+     return; 
+  }
+
+}

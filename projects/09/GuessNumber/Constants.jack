@@ -1,0 +1,5 @@
+class Constants {
+    function int MAX_NUM() {
+        return 100;
+    }
+}

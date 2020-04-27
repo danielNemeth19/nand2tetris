@@ -1,0 +1,33 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/09/Square/Main.jack
+
+/** Initializes a new Square Dance game and starts running it. */
+class Main {
+    function void main() {
+        var SnakeGame game;
+        var int seed;
+        var int start;
+        let seed = 0;
+        let start = 0;
+        do Output.moveCursor(11,5);
+        do Output.printString("if you want start, Press Any Key");
+        while(start=0){
+           if(seed = 32767){
+	  let seed = 0;
+           }
+           let seed = seed + 1;                   //seed 1 ~ 32767
+           let start = Keyboard.keyPressed();
+        }        
+        while(~(start=0)){
+           let start = Keyboard.keyPressed();
+        }
+        do Screen.clearScreen();    
+        
+        let game = SnakeGame.new(seed);
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

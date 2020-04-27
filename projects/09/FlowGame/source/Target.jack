@@ -1,0 +1,54 @@
+// This file is part of Project9
+
+// (derived from projects/09/Square/Main.jack)
+
+/** Implements a moving Target. */
+class Target {
+
+   field int x;
+   field int y; 
+   field int r; 
+
+   /** Constructs a new target with a given location and radius. */
+   constructor Target new(int Ax, int Ay, int Ar) {
+      let x = Ax;
+      let y = Ay;
+      let r = Ar;
+      do draw(true);
+      return this;
+   }
+
+   /** Disposes this target. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Draws the target on the screen. */
+   method void draw(boolean color) {
+      do Screen.setColor(color) ;
+      do Screen.drawRectangle(x-r, y-r, x+r, y+r);
+      return;
+   }
+
+   /** Decrements the target r by 2 pixels. */
+   method void decSize() {
+      if (r > 2) {
+         do draw(false);
+         let r = r - 2;
+         do draw(true);
+      }
+      return;
+   }
+
+   /** redraws the target at Ax, Ay. */
+   method void moveTo(int Ax, int Ay) {
+         do draw(false) ;
+         let x = Ax ; 
+         let y = Ay;
+         do draw(true) ; 
+
+      return;
+   }
+
+}

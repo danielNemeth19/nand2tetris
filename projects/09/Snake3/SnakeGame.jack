@@ -1,0 +1,70 @@
+class SnakeGame {
+	field Snake snake;
+	field int direction;
+
+	/** Constructs a new Snake Game */
+	constructor SnakeGame new() {
+		var Array x;
+    	var Array y;
+    	let x = Array.new(6);
+    	let y = Array.new(6);
+    	let x[0] = 80;
+    	let x[1] = 64;
+    	let x[2] = 48;
+    	let x[3] = 32;
+    	let x[4] = 16;
+    	let x[5] = -1;
+    	let y[0] = 32;
+    	let y[1] = 32;
+    	let y[2] = 32;
+    	let y[3] = 32;
+    	let y[4] = 32;
+    	let y[5] = -1;
+		let snake = Snake.new(x,y,5);
+		let direction = 0; //still
+		return this;
+	}
+
+/** Disposes this game. */
+   method void dispose() {
+      do snake.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Moves the snake in the current direction. */
+   method void moveSnake() {
+      do snake.move(direction);
+      do Sys.wait(5);  // delays the next movement
+      return;
+   }
+
+   /** Runs the game: handles the user's inputs and moves the snake accordingly */
+   method void run() {
+      var char key;  // the key currently pressed by the user
+      var boolean exit;
+      let exit = false;
+      
+      while (~exit) {
+         // waits for a key to be pressed
+         while (key = 0) {
+            let key = Keyboard.keyPressed();
+ //           do moveSnake();
+ //           let direction = 0;
+         }
+         if (key = 81)  { let exit = true; }     // q key
+         if (key = 131) { let direction = 1; }   // up arrow
+         if (key = 133) { let direction = 2; }   // down arrow
+         if (key = 130) { let direction = 3; }   // left arrow
+         if (key = 132) { let direction = 4; }   // right arrow
+
+         // waits for the key to be released
+         while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+            do moveSnake();
+            let direction = 0;
+         }
+     } // while
+     return;
+   }
+}

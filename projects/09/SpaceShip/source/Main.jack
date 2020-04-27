@@ -1,0 +1,12 @@
+
+
+/** Initializes a new game and starts running it. */
+class Main {
+    function void main() {
+        var SpaceshipGame game;
+        let game = SpaceshipGame.new();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

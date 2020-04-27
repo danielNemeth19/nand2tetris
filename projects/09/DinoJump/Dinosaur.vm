@@ -1,0 +1,335 @@
+function Dinosaur.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push constant 0
+pop this 2
+push constant 0
+pop this 4
+push pointer 0
+return
+function Dinosaur.setX 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 0
+push constant 0
+return
+function Dinosaur.setY 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 1
+push constant 0
+return
+function Dinosaur.setJumping 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 3
+push constant 0
+return
+function Dinosaur.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Dinosaur.getY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Dinosaur.getJumping 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Dinosaur.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Dinosaur.draw 1
+push argument 0
+pop pointer 0
+push constant 16384
+push constant 32
+push this 1
+call Math.multiply 2
+add
+push this 0
+push constant 16
+call Math.divide 2
+add
+pop local 0
+push local 0
+push constant 0
+add
+push constant 768
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 32
+add
+push constant 16128
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 64
+add
+push constant 31488
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 96
+add
+push constant 32512
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 128
+add
+push constant 32512
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 160
+add
+push constant 16256
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 192
+add
+push constant 4033
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 224
+add
+push constant 4067
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 256
+add
+push constant 16383
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 288
+add
+push constant 12287
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 320
+add
+push constant 4094
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 352
+add
+push constant 2044
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 384
+add
+push constant 1912
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 416
+add
+push constant 1584
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 448
+add
+push constant 3184
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 480
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Dinosaur.erase 1
+push argument 0
+pop pointer 0
+push constant 16384
+push constant 32
+push this 1
+call Math.multiply 2
+add
+push this 0
+push constant 16
+call Math.divide 2
+add
+pop local 0
+push local 0
+push constant 0
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 32
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 64
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 96
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 128
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 160
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 192
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 224
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 256
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 288
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 320
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 352
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 384
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 416
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 448
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 480
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Dinosaur.move 0
+push argument 0
+pop pointer 0
+push this 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 4
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 2
+push constant 1
+add
+pop this 2
+push this 1
+push constant 6
+sub
+pop this 1
+goto IF_END1
+label IF_FALSE1
+push this 2
+push constant 1
+sub
+pop this 2
+push this 1
+push constant 6
+add
+pop this 1
+label IF_END1
+push this 2
+push constant 12
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+pop this 4
+label IF_FALSE2
+push this 2
+push constant 0
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+pop this 4
+push constant 0
+pop this 3
+label IF_FALSE3
+label IF_FALSE0
+push constant 0
+return

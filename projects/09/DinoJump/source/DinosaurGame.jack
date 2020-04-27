@@ -1,0 +1,212 @@
+class DinosaurGame {
+    field Landscape landscape;
+    field Dinosaur dinosaur;
+    field int control;
+    field int speed;
+
+    // TODO use threads for moving cactus
+
+    // TODO find a way to make the dinosaur jump even the sleep
+
+
+    /** Constructs a new Dinosaur Game. */
+    constructor DinosaurGame new() {
+        // Create the landscape
+        // It will be located just under the dinosaur
+        let landscape = Landscape.new(50, 156);
+        // Create a dinosaur at position 50x, 140y      
+        let dinosaur = Dinosaur.new(50, 140);
+        let control = 0;  // initial state is no movement
+        let speed = 2;  // initial speed
+        return this;
+    }
+
+    /** Inits the game in case of a restart */
+    method void init() {
+        // Create the landscape
+        // It will be located just under the dinosaur
+        let landscape = Landscape.new(50, 156);
+        // Create a dinosaur at position 50x, 140y      
+        let dinosaur = Dinosaur.new(50, 140);
+        let control = 0;  // initial state is no movement
+        let speed = 2;  // initial speed
+        return;
+    }
+
+    /** Disposes this game. */
+    method void dispose() {
+        do landscape.dispose();
+        do dinosaur.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Method for checking colision between the dinosaur and the objects (cactus) */
+    method boolean checkColision() {
+        var int dinoX, dinoY, dinoWidth, dinoHeight;
+        var int cactusX, cactusY, cactusWidth, cactusHeight;
+        var boolean res;
+        var Array objects;
+        var Cactus cactus;
+        var int index;
+
+        let res = false; // result var 
+        let index = 0; // index for the array
+
+        // get dinosaur properties: x, y heigth, width
+        let dinoX = dinosaur.getX();
+        let dinoY = dinosaur.getY();
+        let dinoHeight = 8;
+        let dinoWidth = 8;
+        let cactusWidth = 10;
+
+        // get the array containing all the landscape objects (cactus)
+        let objects = landscape.getObjectsArray();
+
+        // check for all the objects in the array
+        while (index < 4) {
+            // get the cactus object
+            let cactus = objects[index];
+            // get the cactus properties: x, y heigth, width
+            let cactusX = cactus.getX();
+            let cactusY = cactus.getY();
+            let cactusHeight = cactus.getHeight();
+            
+            if (dinoX < (cactusX + cactusWidth)){
+                if ((dinoX + dinoWidth) > cactusX ){
+                    if(dinoY < (cactusY + cactusHeight)){
+                        if((dinoHeight + dinoY) > cactusY){
+                            let res = true;
+                        }
+                    }
+                }
+            }
+            let index = index + 1;
+        }
+
+        return res;
+    }
+
+    /** Runs the game: handles the user's inputs and moves the dinosaur accordingly */
+    method void run () {
+        var char key; // the key currently pressed by the user
+        var boolean exit;
+        var boolean jumping;
+        var int timer, counter, levelCounter;
+        let exit = false;
+        let key = 0;
+        let timer = 0;
+        let counter = 0;
+
+        /** Draw the preview + help message*/
+        do Screen.clearScreen();
+        do Sys.wait(50);
+
+        // draw the landscape
+        do landscape.draw();
+        // Draw the dinosaur
+        do dinosaur.draw();
+
+        do Sys.wait(100);
+
+        // output help string
+        do Output.moveCursor(0,0);
+        do Output.printString("For making the dinosaur jump, press the space button.");
+        do Output.println();
+        do Output.println();
+        do Output.printString("Press a button to start!");
+
+        // wait for a pressed button
+        while(key=0) {
+            let key = Keyboard.keyPressed();
+        }
+
+        /** Clean the screen + re-draw the game */
+
+        // erase the help string
+        do Screen.clearScreen();
+        
+        // draw the landscape
+        do landscape.draw();
+        // Draw the dinosaur
+        do dinosaur.draw();
+
+        // print time and speed text
+        do Output.moveCursor(0,51);
+        // print the timer
+        do Output.printString("Timer: ");
+        do Output.moveCursor(1,51);
+        do Output.printString("Speed: ");
+        
+        while(~exit) {
+
+            // increment the counter
+            let counter = counter + 1;
+            
+            // counter == 5 means 1 second
+            if (counter = 30){
+                // increment the timer
+                let timer = timer + 1;
+                // increment a counter for the level of the game
+                let levelCounter = levelCounter + 1;
+                let counter = 0;
+            }
+
+            // set the cursor at the right top of the screen
+            do Output.moveCursor(0,58);
+            // print the timer
+            do Output.printInt(timer);
+            do Output.moveCursor(1,58);
+            do Output.printInt(speed);
+
+            // increase the speed at each 15 seconds
+            // it means levelCounter == 15
+            if (levelCounter = 10){ 
+                let speed = speed + 1;
+                let levelCounter = 0;
+            }
+
+            // move the objects (cactus) with a certain speed
+            do landscape.moveObjects(speed);
+            // erase the dinosaur
+            do dinosaur.erase();
+            // move the dinosaur
+            do dinosaur.move();
+            // draw the dinosaur
+            do dinosaur.draw();
+
+            // check the colision with some cactus
+            if (checkColision()){
+
+                // print fail message
+                do Output.moveCursor(4,25);
+                do Output.printString("FAIL");
+                do Output.moveCursor(6,15);
+                do Output.printString("Press 'p' for playing again,");
+                do Output.moveCursor(7,15);
+                do Output.printString("Otherwise press 'q' for quit the game");
+
+                do dinosaur.setJumping(false);
+
+                return;
+            } 
+
+            let key = Keyboard.keyPressed(); 
+
+            if (key = 32)  {  // space key
+                // check if the dinosaur is already jumping
+                let jumping = dinosaur.getJumping();
+                if(~(jumping)){  // if not jumping
+                    // set jumping property to true
+                    do dinosaur.setJumping(true);
+                }
+            } 
+
+            // wait
+            do Sys.wait(15); 
+            
+        }
+
+        return ;
+    }    
+}

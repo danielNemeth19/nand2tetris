@@ -1,0 +1,145 @@
+// File name: projects/09/Frogger/Frogger.jack
+
+/** Implements a graphical frog. */
+class Frogger {
+
+   field int x, y; // screen location of the frog's top-left corner
+   field int size;
+
+   /** Constructs a new frog at a given location. */
+   constructor Frogger new(int Ax, int Ay) {
+      let x = Ax;
+      let y = Ay;
+      let size = 16;
+      do drawFrog();
+      return this;
+   }
+
+   /** Disposes this frog. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Draws the frog on the screen. */
+   method void drawFrog() {
+        var int memAddress, location;
+        let location = (y * 32) + x;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, 2016);
+        do Memory.poke(memAddress+32, 1056);
+        do Memory.poke(memAddress+64, 2064);
+        do Memory.poke(memAddress+96, 4680);
+        do Memory.poke(memAddress+128, 18450);
+        do Memory.poke(memAddress+160, 18402);
+        do Memory.poke(memAddress+192, 10260);
+        do Memory.poke(memAddress+224, 4104);
+        do Memory.poke(memAddress+256, 8196);
+        do Memory.poke(memAddress+288, 8196);
+        do Memory.poke(memAddress+320, 4104);
+        do Memory.poke(memAddress+352, 20466);
+        do Memory.poke(memAddress+384, 10260);
+        do Memory.poke(memAddress+416, 4104);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+   }
+
+   /** Tests for collision by checking if new frog location has any black pixels. */
+   method bool collide() {
+        var int memAddress, location;
+        let location = (y * 32) + x;
+        let memAddress = 16384+location;
+
+        if (~(Memory.peek(memAddress+0) = 0) & ~(Memory.peek(memAddress+0) = 2016)) {return true;}
+        if (~(Memory.peek(memAddress+32) = 0) & ~(Memory.peek(memAddress+32) = 1056)) {return true;}
+        if (~(Memory.peek(memAddress+64) = 0) & ~(Memory.peek(memAddress+64) = 2064)) {return true;}
+        if (~(Memory.peek(memAddress+96) = 0) & ~(Memory.peek(memAddress+96) = 4680)) {return true;}
+        if (~(Memory.peek(memAddress+128) = 0) & ~(Memory.peek(memAddress+128) = 18450)) {return true;}
+        if (~(Memory.peek(memAddress+160) = 0) & ~(Memory.peek(memAddress+160) = 18402)) {return true;}
+        if (~(Memory.peek(memAddress+192) = 0) & ~(Memory.peek(memAddress+192) = 10260)) {return true;}
+        if (~(Memory.peek(memAddress+224) = 0) & ~(Memory.peek(memAddress+224) = 4104)) {return true;}
+        if (~(Memory.peek(memAddress+256) = 0) & ~(Memory.peek(memAddress+256) = 8196)) {return true;}
+        if (~(Memory.peek(memAddress+288) = 0) & ~(Memory.peek(memAddress+288) = 8196)) {return true;}
+        if (~(Memory.peek(memAddress+320) = 0) & ~(Memory.peek(memAddress+320) = 4104)) {return true;}
+        if (~(Memory.peek(memAddress+352) = 0) & ~(Memory.peek(memAddress+352) = 20466)) {return true;}
+        if (~(Memory.peek(memAddress+384) = 0) & ~(Memory.peek(memAddress+384) = 10260)) {return true;}
+        if (~(Memory.peek(memAddress+416) = 0) & ~(Memory.peek(memAddress+416) = 4104)) {return true;}
+        if (~(Memory.peek(memAddress+448) = 0)) {return true;}
+        if (~(Memory.peek(memAddress+480) = 0)) {return true;}
+
+        return false;
+   }
+
+   /** Erases the frog from the screen. */
+   method void erase() {
+        var int memAddress, location;
+        let location = (y * 32) + x;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+   }   
+
+   /** Moves the frog up by 10 pixels. Returns true if the frog reached its destination safely.*/
+   method bool moveUp() {
+      if (y > 9) {
+         do erase();
+         let y = y - 10;
+         if (y < 32) {
+             let y = 32;
+             return true;
+         }
+         do drawFrog();
+      }
+      return false;
+   }
+
+   /** Moves the frog down by 10 pixels. */
+   method void moveDown() {
+      if (y < 206) {
+         do erase();
+         let y = y + 10;
+         if ((y + size) > 224) {
+             let y = 224 - size;
+         }
+         do drawFrog();
+      }
+      return;
+   }
+
+   /** Moves the frog left by 2 pixels. */
+   method void moveLeft() {
+      if (x > 0) {
+         do erase();
+         let x = x - 1;
+         do drawFrog();
+      }
+      return;
+   }
+
+   /** Moves the frog right by 2 pixels. */
+   method void moveRight() {
+      if (x < 31) {
+         do erase();
+         let x = x + 1;
+         do drawFrog();
+      }
+      return;
+   }
+}
+

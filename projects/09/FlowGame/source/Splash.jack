@@ -1,0 +1,116 @@
+// This file is part of Projet9
+
+
+/**
+ * Implements the Flow game Splash Screen.
+ */
+
+class Splash {
+  static int courseN ;           // User selected course number
+  static int radioButtonOffset ; // row number scree row offset
+                                 //  used to associate radio button with courseN 
+
+  /** Getter */
+  function int getCourseN() { return courseN ; }
+
+  /** move the GUI radio button up one selection */
+  function void radioButtonUp() {
+    if ( courseN > 1) {
+      // clear existing
+      do Output.moveCursor(radioButtonOffset+courseN, 5) ;
+      do Output.printString(" ") ;
+
+      // draw new
+      let courseN = courseN - 1 ;
+      do Output.moveCursor(radioButtonOffset+courseN, 5) ;
+      do Output.printString("*") ;
+    }
+    return ;
+  }
+
+  /** move the GUI radio button down one selection */
+  function void radioButtonDown() {
+    if ( courseN < 3) {
+      // clear existing
+      do Output.moveCursor(radioButtonOffset+courseN, 5) ;
+      do Output.printString(" ") ;
+
+      // draw new
+      let courseN = courseN + 1 ;
+      do Output.moveCursor(radioButtonOffset+courseN, 5) ;
+      do Output.printString("*") ;
+    }
+    return ;
+  }
+
+  /** Display instruction, allows player to select one of three courses */
+  function void aquireSettings() {
+    var int key ;
+    var boolean exit ;
+
+    let courseN = 1 ; 
+    let radioButtonOffset = 16 ;
+    let exit = false ;
+
+    // dispplay Title
+    do Output.moveCursor( 2, 5 );
+    do Output.printString("FlowGame is a 'relaxation' experience");
+    do Output.moveCursor( 3, 5 );
+    do Output.printString("(very) loosly based on the iPhone App: Pause");
+
+    // explain purpose of game
+    do Output.moveCursor( 5, 5 );
+    do Output.printString("MetaGoal: use simple repetative action to");
+    do Output.moveCursor( 6, 5 );
+    do Output.printString("focus the mind and calm the body.");
+
+    // explain how of game
+    do Output.moveCursor( 8, 5 );
+    do Output.printString("Goal: Keep small white square inside black square");
+    do Output.moveCursor( 9, 5 );
+    do Output.printString("SPACE bar to begin, 'q' to quit");
+    do Output.moveCursor(10, 5 );
+    do Output.printString("arrow keys to move small white squre");
+
+    // radio button instructions
+    do Output.moveCursor( radioButtonOffset - 3, 5 );
+    do Output.printString("| use up arrown and down arrow to select") ;
+    do Output.moveCursor( radioButtonOffset - 2, 5 );
+    do Output.printString("|") ;
+    do Output.moveCursor( radioButtonOffset - 1, 5 );
+    do Output.printString("v") ;
+
+    // radio button group for courseN selection
+    do Output.moveCursor( radioButtonOffset + 1, 4 );
+    do Output.printString("(*) -- Line") ;
+    do Output.moveCursor( radioButtonOffset + 2, 4 );
+    do Output.printString("( ) [] Box") ;
+    do Output.moveCursor( radioButtonOffset + 3, 4 );
+    do Output.printString("( ) oo Figure 8") ;
+
+    // submit setting and start game
+    do Output.moveCursor( radioButtonOffset + 6, 4 );
+    do Output.printString("Hit ENTER to continue") ;
+
+
+    // loop allowing user selction of course, ENTER to terminate
+    while (~exit) {
+       // waits for a key to be pressed
+       while (key = 0) {
+         let key = Keyboard.keyPressed();
+       }
+
+       if (key = 128) { let exit = true; }              // enter key
+       if (key = 131) { do Splash.radioButtonUp() ; }   // up arrow
+       if (key = 133) { do Splash.radioButtonDown() ; } // down arrow
+    
+       while (~(key = 0)) {
+         let key = Keyboard.keyPressed();
+       }
+
+     }
+
+     do Screen.clearScreen() ;
+     return;
+  }
+}

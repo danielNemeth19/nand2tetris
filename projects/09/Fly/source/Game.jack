@@ -1,0 +1,121 @@
+/**
+Game allows user to fly a small ship (Fly class) in a procedurally generated space. 
+Space is populated by holes (Ball class in Balls class).
+Flying into or near a hole will cause the hole to expand and consume the ship.
+Exiting the screen generates new landscape with more holes.
+Falling into a hole will generate a new landscape with less holes.
+There is no real objective.
+*/
+class Game {
+	field Balls balls;
+	field Fly fly;
+	field int flies;
+	field int minBalls;
+	field int curBalls;
+	field boolean gameOver;	
+
+/**
+Constructor, start with 3 balls and first fly.
+*/	
+	constructor Game new() {
+		do LCGRandom.setSeed(123);
+		let minBalls = 3;
+		let curBalls = minBalls;
+		let balls = Balls.new(curBalls);
+		let fly = Fly.new();
+		let flies = 1;
+		let gameOver = false;
+		do reportFlies();
+		return this;
+	}
+	
+/**
+Destructor.
+*/
+    method void dispose() {
+		do balls.dispose();
+		do fly.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+	
+/**
+Prints the number of flues used in game.
+*/
+	method void reportFlies() {
+		do Output.moveCursor(22, 0);
+		do Output.printString("Flies: ");
+		do Output.printInt(flies);
+		return;
+	}
+
+/**
+Main loop, standard Jack game loop.
+*/	
+	method void run() {
+        var char key;
+		while (~gameOver) {
+		
+			/**
+			Fly exited the landscape. 
+			Generate new landscape with + random 1/2 more balls.
+			*/
+			if (fly.getExited()) {
+				do Screen.clearScreen();
+				do balls.dispose();
+				let curBalls = curBalls + LCGRandom.randRange(1, 2);
+				let balls = Balls.new(curBalls);
+				do fly.enter();
+				do reportFlies();
+			}
+			
+			/**
+			Fly got stopped by a ball.
+			Generate new landscape with less balls.
+			Add new fly.
+			*/
+			if (fly.getStopped() & balls.getStopped()) {
+				do Screen.clearScreen();
+				do balls.dispose();
+				do fly.dispose();
+				let curBalls = Math.max(minBalls, curBalls - 1);
+				let balls = Balls.new(curBalls);
+				let fly = Fly.new();
+				let flies = flies + 1;
+				do reportFlies();
+			}
+		
+			do balls.affect(fly);
+			do balls.draw();
+			do fly.move();
+			do fly.draw();
+			do Sys.wait(50);
+			
+			let key = Keyboard.keyPressed();
+
+			if (key = 130) { // LEFT ARROW
+				do fly.turnLeft();
+			}
+			else {
+				if (key = 132) { // RIGHT ARROW
+					do fly.turnRight();
+				}
+				else {
+					if (key = 131) { // UP ARROW
+						do fly.accelerate();
+					}
+					else {
+						if (key = 140) { // ESC
+							let gameOver = true;
+						} 
+					}
+				}
+			}
+		}
+		if (gameOver) {
+			do Output.moveCursor(12, 12);
+			do Output.printString("Finished");
+		}
+		return;
+	}
+}

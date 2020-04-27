@@ -1,0 +1,27 @@
+class Random {
+   /** return a pseudo random food location on grid based on last direction and food location */
+   function Array randLoc(Array afoodLoc, int direction) {
+       // Initialize variables
+       var Array foodLoc;
+       let foodLoc = afoodLoc;
+       let foodLoc[0] = (direction * foodLoc[0]); 
+       let foodLoc[1] = (foodLoc[1] * direction);
+
+       // Check it the number is on the grid
+       if (foodLoc[0] > 496) {
+          let foodLoc[0] = 48;
+       }
+       if (foodLoc[0] < 0) {
+          let foodLoc[0] = 32;
+       }
+
+       if (foodLoc[1] > 240) {
+          let foodLoc[1] = 96;
+       }
+       if (foodLoc[1] < 0) {
+          let foodLoc[1] = 226;
+       } 
+       // return new food location
+       return foodLoc;
+    }
+}

@@ -1,0 +1,31 @@
+class Hockey{
+    field int location; // screen location of the hockey sprite's top-left corner
+    field int memAddress;
+
+    constructor Hockey new(int addr){
+        let location = addr;
+        do myDraw();
+        return this;
+    }
+
+    method void myDraw(){
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, 14);
+        do Memory.poke(memAddress+32, 6);
+        do Memory.poke(memAddress+64, 6);
+        do Memory.poke(memAddress+96, 6);
+        do Memory.poke(memAddress+128, 6);
+        do Memory.poke(memAddress+160, 6);
+        do Memory.poke(memAddress+192, 14);
+        do Memory.poke(memAddress+224, 22);
+        do Memory.poke(memAddress+256, 46);
+        do Memory.poke(memAddress+288, 73);
+        do Memory.poke(memAddress+320, 137);
+        do Memory.poke(memAddress+352, 265);
+        do Memory.poke(memAddress+384, 521);
+        do Memory.poke(memAddress+416, 1033);
+        do Memory.poke(memAddress+448, 2057);
+        do Memory.poke(memAddress+480, -4069);
+        return;
+    }
+}

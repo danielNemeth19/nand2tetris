@@ -1,0 +1,78 @@
+class Main {
+   function void main() {
+        var Game game;
+
+        do Trig.init();
+        do Rand.init();
+
+        do Main.splashScreen();
+
+        let game = Game.new();
+        do game.run();
+        do game.dispose();
+
+        do Output.moveCursor(11,20);
+        do Output.printString("G A M E    O V E R");
+        do Output.moveCursor(12,20);
+        do Output.printString("===================");
+
+        do Trig.deinit();
+
+        return;
+   }
+
+    /** Show game instructions and key bindings.
+
+        Use the time elapsed  for any key press from the user to seed the
+        pseudo random numb er generator.
+     */
+    function void splashScreen() {
+        var int i;
+        var int key;
+
+        do Output.moveCursor(4,20);
+        do Output.printString("C A N N O N B A L L");
+        do Output.moveCursor(5,20);
+        do Output.printString("===================");
+        do Output.moveCursor(7,0);
+        do Output.printString("  Shoot your cannon to knock down the nine obstacles!");
+        do Output.moveCursor(8,0);
+        do Output.printString("  You've got nine shots to score up to 45 points.");
+        do Output.moveCursor(10,0);
+        do Output.printString("  Here are the game keys:");
+        do Output.moveCursor(14,0);
+        do Output.printString("  UP    arrow  Increase shooting elevation angle");
+        do Output.moveCursor(15,0);
+        do Output.printString("  DOWN  arrow  Decrease shooting elevation angle");
+        do Output.moveCursor(16,0);
+        do Output.printString("  LEFT  arrow  Decrease initial ball speed");
+        do Output.moveCursor(17,0);
+        do Output.printString("  RIGHT arrow  Increase initial ball speed");
+        do Output.moveCursor(18,0);
+        do Output.printString("  SPACE        Fire cannon!");
+        do Output.moveCursor(19,0);
+        do Output.printString("  Q            Quit game");
+
+        // wait for a key to be pressed, keep rolling random number generator
+        while (key = 0) {
+            do Rand.rand();
+            do Sys.wait(2);
+            let key = Keyboard.keyPressed();
+        }
+
+        // wait for the key to be released
+        while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+        }
+
+        // clean screen
+        do Output.moveCursor(0,0);
+        let i = 23*64;
+        while (i > 0) {
+            do Output.printChar(32);
+            let i = i - 1;
+        }
+
+        return;
+    }
+}

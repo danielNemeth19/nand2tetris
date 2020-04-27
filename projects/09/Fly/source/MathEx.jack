@@ -1,0 +1,52 @@
+/**
+Math helper functions not present in Jack OS
+*/
+class MathEx {
+	
+	// Logical left shift
+	function int lsh(int x, int by) {
+		while (by > 0) {
+			let x = x * 2;
+			let by = by - 1;
+		}
+		return x;
+	}
+	
+	// Logical right shift
+	function int rsh(int x, int by) {
+		while (by > 0) {
+			let x = x / 2;
+			let by = by - 1;
+		}
+		return x;
+	}
+	
+	// Absolute value
+	function int abs(int x) {
+		if (x < 0) {
+			let x = -1 * x;
+		}
+		return x;
+	}
+	
+	// Exponent
+	function int exp(int x, int e) {
+        var int i;
+		var int result;
+		let result = 1;
+		let i = 0;
+		while (i < e) {
+			let result = result * x;
+			let i = i + 1;
+		}
+		return result;
+	}
+	
+	// Modulo
+	function int mod(int x, int d) {
+		while ((x > d) | (x = d)) {
+			let x = x - d;
+		}
+		return x;
+	}
+}
