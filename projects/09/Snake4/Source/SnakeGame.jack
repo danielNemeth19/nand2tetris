@@ -1,0 +1,102 @@
+/**
+ * Implements the SnakeGame.
+ * This class controls the snake game by calling the food and snake class.
+ * 
+*/
+
+// TODO third step add scoring
+class SnakeGame {
+  field Snake snake; // Initializes a new snake field
+  field int direction; // Field that registers the direction
+  field Food food; // Field that draws the food at the specified location
+  field Array snakeLocHead;
+  field Array foodLoc;
+  
+  /** Constructs  a new SnakeGame */
+  constructor SnakeGame new() {
+    // Creates a new snake
+    let snake = Snake.new(0, 0);
+    // initialize at location (48, 48)
+    let foodLoc = Array.new(2);
+    let foodLoc[0] = 48; let foodLoc[1] = 48;
+    let food = Food.new(foodLoc[0], foodLoc[1]);
+    // Initial movement has no direction
+    let direction = 0; 
+    return this;
+  }
+
+  method void dispose() {
+    // Disposes the snake game
+    // First dispose the snake
+    do snake.dispose();
+    // Dispose the food
+    do food.dispose();
+    // Then dealloc SnakeGame
+    do Memory.deAlloc(this);
+    return;
+  }
+ 
+  /** Moves the snake in the current direction */
+  method void moveSnake() {
+    
+
+    // Initialize random array for new location food
+    if (direction = 1) {do snake.incLoc(0, -1);} //moveup
+    if (direction = 2) {do snake.incLoc(0, 1); } //movedown
+    if (direction = 3) {do snake.incLoc(-1, 0); } //moveleft
+    if (direction = 4) {do snake.incLoc(1, 0); } //move right
+
+    // do Output.printInt(snakeHitSomething);
+
+    //TODO make speed adjustable
+    //TODO check whether snake hit own tail
+    do Sys.wait(80);  // delays the next movement
+
+    // Get location head snake
+    let snakeLocHead = snake.getLocHead();
+   
+    // Check if the head is at same location as food
+    if ((snakeLocHead[0] = foodLoc[0]) & (snakeLocHead[1] = foodLoc[1]) ) {
+        do snake.incSize();
+        let foodLoc = Random.randLoc(foodLoc, direction);
+	// First dealloc the food from memory
+        do food.dispose();      
+        // Draw new circle on random location           
+        let food = Food.new(foodLoc[0], foodLoc[1]);
+    } 
+    
+    // Keep drawing the food in case the food has started under the snake
+    do food.draw();
+    return;
+ }
+
+  /** Method for running the snakeGame */
+  method void run() {
+    var char key;
+    var boolean exit;
+    let exit = false; // initialize exit to false
+    
+    while (~exit) { // While not exit
+      while (key = 0) { // while no key pressed
+        // Wait for key to be pressed
+        let key = Keyboard.keyPressed();
+        // Each st
+        do moveSnake();
+       } // end while
+       if (key = 81) { let exit = true; } // q key
+       if (key = 131) { let direction =1; } // up key
+       if (key = 133) { let direction = 2; } // down key
+       if (key = 130) { let direction = 3; } // left arrow
+       if (key = 132) { let direction = 4; } // right arrow
+    
+       // Wait for key to be released
+       while (~(key = 0)) {
+        let key = Keyboard.keyPressed();
+        do moveSnake();
+       } // end while
+ 
+     } // end while
+   return;
+   }
+
+}

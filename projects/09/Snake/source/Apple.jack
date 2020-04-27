@@ -1,0 +1,128 @@
+class Apple {
+
+   // coords of apple
+   field int x, y;
+   // positions for growing
+   field Array positionX;
+   field Array positionY;
+   field int current;
+   // constants for rendering
+   field int size;
+   field int rows;
+   field int cells;
+   // address for rendering
+   field int memAddress;
+
+   constructor Apple new(int Ax, int Ay) {
+      // init positions for rendering
+      let positionX = Array.new(10);
+      let positionY = Array.new(10);
+      let positionX[0] = 10;
+      let positionY[0] = 6;
+      let positionX[1] = 7;
+      let positionY[1] = 3;
+      let positionX[2] = 20;
+      let positionY[2] = 6;
+      let positionX[3] = 25;
+      let positionY[3] = 10;
+      let positionX[4] = 24;
+      let positionY[4] = 7;
+      let current = 0;
+
+      // init started coords
+      let x = Ax;
+      let y = Ay;
+
+      // init constants
+      let size = 16;
+      let rows = 32;
+      let cells = 16;
+
+      return this;
+   }
+
+   method void dispose() {
+      do Memory.deAlloc(this);
+      do Memory.deAlloc(positionX);
+      do Memory.deAlloc(positionY);
+      return;
+   }
+
+   method int getX() {
+      return x;
+   }
+
+   method int getY() {
+      return y;
+   }
+
+   // render apple
+   method void grow() {
+      do clean();
+      do draw();
+      return;
+   }
+
+   // generate new apple
+   method void generate() {
+      // reset if 5 because we have only 5 predefined positions
+      if (current = 5) { 
+         let current = 0;
+      }
+      let x = positionX[current];
+      let y = positionY[current];
+      let current = current + 1;
+      return;
+   }
+
+   // clean apple
+   method void clean() {
+      do cleanCell((y * size * rows) + (x * size / cells));
+      return;
+   }
+
+   // render apple
+   method void draw() {
+      do drawCell((y * size * rows) + (x * size / cells));
+      return;
+   }
+
+   method void cleanCell(int location) {
+      let memAddress = 16384+location;
+      do Memory.poke(memAddress+0, 0);
+      do Memory.poke(memAddress+32, 256);
+      do Memory.poke(memAddress+64, 768);
+      do Memory.poke(memAddress+96, 128);
+      do Memory.poke(memAddress+128, 128);
+      do Memory.poke(memAddress+160, 864);
+      do Memory.poke(memAddress+192, 1040);
+      do Memory.poke(memAddress+224, 2120);
+      do Memory.poke(memAddress+256, 2088);
+      do Memory.poke(memAddress+288, 2056);
+      do Memory.poke(memAddress+320, 2056);
+      do Memory.poke(memAddress+352, 2056);
+      do Memory.poke(memAddress+384, 2032);
+      return;
+   }
+
+   method void drawCell(int location) {
+      let memAddress = 16384+location;
+      do Memory.poke(memAddress+0, 0);
+      do Memory.poke(memAddress+32, 256);
+      do Memory.poke(memAddress+64, 768);
+      do Memory.poke(memAddress+96, 128);
+      do Memory.poke(memAddress+128, 128);
+      do Memory.poke(memAddress+160, 864);
+      do Memory.poke(memAddress+192, 1040);
+      do Memory.poke(memAddress+224, 2120);
+      do Memory.poke(memAddress+256, 2088);
+      do Memory.poke(memAddress+288, 2056);
+      do Memory.poke(memAddress+320, 2056);
+      do Memory.poke(memAddress+352, 2056);
+      do Memory.poke(memAddress+384, 2032);
+      do Memory.poke(memAddress+416, 0);
+      do Memory.poke(memAddress+448, 0);
+      do Memory.poke(memAddress+480, 0);
+      return;
+   }
+}

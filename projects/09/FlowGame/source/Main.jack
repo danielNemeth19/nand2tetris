@@ -1,0 +1,19 @@
+// This file is part of Project 9 of Nand2Tetris Course
+
+// (derived from projects/09/Square/Main.jack)
+
+// Flow is inspired by "Pause: daily mindfulness" iPhone App
+//     https://apps.apple.com/us/app/pause-daily-mindfulness/id991764216
+
+/** Initializes a new Flow game and starts running it. */
+
+class Main {
+    function void main() {
+      var FlowGame pause ;
+      let pause = FlowGame.new() ;
+      do pause.run() ;
+      do pause.dispose() ;
+
+      return ;
+    }
+}

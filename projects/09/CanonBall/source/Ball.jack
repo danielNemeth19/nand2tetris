@@ -1,0 +1,257 @@
+// Lifted from class Square in the Square example
+
+/** Implements the parabolic trajectory described by a ball shot from a cannon.
+ */
+class Ball {
+
+    field int x0, y0;   // initial screen location of the ball's top-left corner
+    field int vi;       // initial speed
+    field int angle;    // initial shooting inclination in degrees
+    field int x, y;     // screen location of the ball's top-left corner at time t
+    field int xp,yp;    // screen location of the ball at time t-1
+    field int size;     // length of this ball, in pixels
+    field int t;        // time counter
+    // crashed = true if the ball collided against some screen border
+    field boolean crashed;
+
+    /** Constructs a new ball with a given location. */
+    constructor Ball new(int Ax, int Ay, int Aangle, int initial_speed) {
+        let x0 = Ax;
+        let y0 = Ay;
+        let vi = initial_speed;
+        let angle = Aangle;
+        let x = x0;
+        let y = y0;
+        let size = 2;
+        let t = 0;
+        let crashed = false;
+
+        do draw(true);
+        return this;
+    }
+
+    /** Disposes this ball. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** returns true if the ball collided against some screen border */
+    method boolean crashed() {
+        return crashed;
+    }
+
+    /** helper function used for debugging */
+    function void printCoords(int x, int y, int row, int col) {
+        do Output.moveCursor(row,col);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.moveCursor(row,col);
+        do Output.printInt(x);
+        do Output.printChar(32);
+        do Output.printInt(y);
+
+        return;
+    }
+
+    /** Draws the ball on the screen. */
+    method void draw(bool color) {
+        if (x < 0) { // integer arith overflow
+            let crashed = true;
+            return;
+        }
+
+        // do not draw outside of the screen
+        if (((x + size) > 509) | ((y + size) > 253)) {
+            let crashed = true;
+            return;
+        }
+
+//        do Ball.printCoords(x+size,y+size);
+
+        do Screen.setColor(color);
+        do Screen.drawPixel(x, y);
+        return;
+    }
+
+    /** Delete whole ball trace.
+
+        Call this after the ball crashes against a screen border or against an
+        obstacle to clean up its trace on the screen.
+     */
+    method void deleteTrace() {
+//        do Ball.printCoords(x,y);
+        var int xend,yend;
+
+        let xend = x;
+        let yend = y;
+        let x = x0;
+        let y = y0;
+        let t = 0;
+        let crashed = false;
+
+        // replay trace with white pencil
+        while (~crashed & ~(x = xend) & ~(y = yend)) {
+            do move(false);
+        }
+
+        return;
+    }
+
+    /** draw ball trace till next time tick or till it crashes agaist a
+        screen wall or the screen floor.
+     */
+    method void move(bool color) {
+        var int x1, y1;     // end point coordinates of the current line segment
+        var int dx,dy;
+        var int a,b;
+        var int d;
+
+        // calculate the location of the ball the next time tick
+        // with its movement equations (parabolic shoot).
+        let x1 = x0 + ((vi*Trig.cos(angle)*t)/10);
+        let y1 = y0 - ((vi*Trig.sin(angle)*t)/10) + ((t*t)/2);
+
+        let t = t + 1;
+
+        let xp = x;
+        let yp = y;
+
+        let dx = x1 - xp;
+        let dy = y1 - yp;
+
+        let a = 0;
+        let b = 0;
+
+        let d = 0; // make d equal to a*dy-b*dx
+
+        // draw (slowly) a line between the ball location at t and the
+        // location at t+1
+        while (~(a = dx) & ~(b = dy) & ~crashed) {
+            let x = xp+a;
+            let y = yp+b;
+//            do Ball.printCoords(x,y);
+            // allow the ball to fly above the screen
+            // (it will eventually fall again)
+            if (y > 10) { // (leave room for game messages)
+                do draw(color);
+            }
+            if (color) {
+                do Sys.wait(3); // delays the next movement
+            }
+            if (d < 0) {
+                if (dy > 0) {
+                    let a = a + 1;
+                    let d = d + dy;
+                } else {
+                    let b = b - 1;
+                    let d = d + dx;
+                }
+            } else {
+                if (dy > 0) {
+                    let b = b + 1;
+                    let d = d - dx;
+                } else {
+                    let a = a + 1;
+                    let d = d + dy;
+                }
+            }
+        }
+
+        return;
+    }
+
+    /** does the trace line segment (xp,yp) to (x,y) cross any walls of the
+        obstacle rectangle with corners top-left (x1,y1) and bottom-right
+        (x2,y2)?
+     */
+    method bool is_collision(int x1, int y1, int x2, int y2) {
+        var int dx,dy;
+        var int A,B,C;      // line equation 0 = A*x +B*y + C
+        var int Axi,Byi;    // intersection point x or y coord times A or B resp.
+
+        let dx = x-xp;
+        let dy = y-yp;
+
+        let A = dy;
+        let B = -dx;
+        let C = -(dy*xp)+(dx*yp);
+
+        // x coordinate of left obstacle wall between x coords of line segment?
+        //
+        //          (x1,y1)
+        //             +  (x,y)
+        //             | /
+        //             |/
+        //             /(xi,yi)
+        //            /|
+        //           / |
+        //    (xp,yp)  +
+        //          (x1,y2)
+        //
+        // xp <= x1 <= x
+
+        if (~(xp > x1) & ~(x1 > x)) {
+            let Byi = -(A*x1)-C; // B times the y coordinate of intersection
+            // y coordinate of intersection point between upper & lower y
+            // coordinate of left wall? (note that B=-dx is always negative)
+            // y1 <= yi <= y2 or B*y1 >= B*yi >= B*y2
+            if (~((B*y1) < Byi) & ~(Byi < (B*y2))) {
+                return true;
+            }
+        }
+
+        // y coordinate of bottom obstacle wall between y coords of line segment?
+        //
+        //              (x,y)
+        //                /
+        //        (xi,yi)/
+        //      +-------/-------+
+        //    (x1,y2)  /       (x2,y2)
+        //            /
+        //          (xp,yp)
+        //
+        // yp >= y2 >= y
+
+        if (~(yp < y2) & ~(y2 < y)) {
+            let Axi = -(B*y2)-C; // A times the x coordinate of intersection
+            // x coordinate of intersection point between left & right x
+            // coordinate of bottom wall?
+            // x1 <= xi <= x2 or A*x1 >= A*xi >= A*x2
+            // (note that A=dy < 0 for a collision with the bottom wall)
+            if (~((A*x1) < Axi) & ~(Axi < (A*x2))) {
+                return true;
+            }
+        }
+
+        // y coordinate of top obstacle wall between y coords of line segment?
+        //
+        //         (xp,yp)
+        //            \
+        //             \(xi,yi)
+        //      +-------\-------+
+        //    (x1,y1)    \     (x2,y1)
+        //                \
+        //               (x,y)
+        //
+        // yp <= y1 <= y
+
+        if (~(yp > y1) & ~(y1 > y)) {
+            let Axi = -(B*y1)-C; // A times the x coordinate of intersection
+            // x coordinate of intersection point between left & right x
+            // coordinate of top wall?
+            // x1 <= xi <= x2 or A*x1 <= A*xi <= A*x2
+            // (note that A=dy > 0 for a collision with the top wall)
+            if (~((A*x1) > Axi) & ~(Axi > (A*x2))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

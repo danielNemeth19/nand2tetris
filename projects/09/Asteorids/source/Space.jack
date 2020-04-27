@@ -1,0 +1,339 @@
+// Developed by: Luciano Soares
+// Date: 27 May 2017
+// File: Space.jack
+
+/**
+ * Space class that holds the entire universe of the Game.
+ */
+class Space {
+
+	static int leftWall;			// screen dimensions 
+	static int rightWall;			// screen dimensions
+	static int topWall;				// screen dimensions
+	static int bottomWall;			// screen dimensions
+
+	static Space instance;			// Asteroids game instance     
+	field Ship ship;				// Spaceship that you can control
+
+	field boolean exit;     		// true when the game is over
+	field int score;        		// stores the score
+
+	field Array shots;				// Array with list of shots
+	field int countShot;			// Shots counter
+	static int arrayShotsSize;		// Size of array of shots
+
+	field Array asteroids;			// Array with list of asteroids
+	field int countAsteroid;    	// Asteroids counter
+	static int arrayAsteroidsSize;	// Size of array of asteroids
+
+	field boolean changeDir;		// Used to change the side source of asteroid
+	field int changeY;				// Used to change the Y source of asteroid
+
+	field int countRelease;			// Counter for the amount of release asteroids
+	
+	/** Constructs a new Asteroids game. */
+	constructor Space new() {
+
+		var int c;	// counter
+
+		do Screen.clearScreen();
+
+		// -- Prepare all initial values --
+		let changeDir = false;
+		let changeY = 32;
+	
+		let leftWall = 1;
+		let rightWall = 510;
+		let topWall = 1;
+		let bottomWall = 254;
+
+		let arrayShotsSize = 100;
+		let arrayAsteroidsSize = 100;
+
+		// -- Create the space ship --
+		let ship = Ship.new(256, 128);
+
+		// Initialize empty list of shots
+		let countShot = 0;
+		let shots = Array.new(arrayShotsSize);
+		let c = 0;
+		while(c<arrayShotsSize) {
+			let shots[c] = null;
+			let c = c + 1;
+		}
+		
+		// Initialize empty list of asteroids
+		let countAsteroid = 0;
+		let asteroids = Array.new(arrayAsteroidsSize);
+		let c = 0;
+		while(c<arrayAsteroidsSize) {
+			let asteroids[c] = null;
+			let c = c + 1;
+		}
+
+		let countRelease = 0;
+		
+		let exit = false;
+		let score = 0;		// Score starts at zero (0)
+
+		return this;
+	}
+
+	/** Deallocates the object's memory. */
+	method void dispose() {
+
+		var Shot shot;
+		var Asteroid asteroid;
+		var int c;
+
+		let c = 0;
+		while(c<arrayShotsSize) {
+			let shot = shots[c];
+			if( ~(shot=null) ){
+				do shot.dispose();
+			}
+			let c = c + 1;
+		}
+		do shots.dispose();
+
+		let c = 0;
+		while(c<arrayAsteroidsSize) {
+			let asteroid = asteroids[c];
+			if( ~(asteroid=null) ){
+				do asteroid.dispose();
+			}
+			let c = c + 1;
+		}
+		do asteroids.dispose();
+
+		do ship.dispose();
+
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	/** Creates an instance of Asteroids game. */
+	function void newInstance() {
+		let instance = Space.new();
+		return;
+	}
+	
+	/** Returns the single instance of this Asteroids game. */
+	function Space getInstance() {
+		return instance;
+	}
+
+	/** Release new asteroids into space. */
+	method void release() {
+		var Asteroid asteroid;        
+		if(countRelease&64) {
+			if(countAsteroid> (arrayAsteroidsSize-1) ) {
+					let countAsteroid = 0;
+			}
+			if(changeDir) {
+				let asteroid = Asteroid.new(rightWall-10,changeY,-1,0,10);
+			} else {
+				let asteroid = Asteroid.new(leftWall+10,changeY,1,0,10);
+			}
+			let changeDir = ~changeDir;
+			let changeY = changeY + 26;
+			if(changeY>248) {
+				let changeY = 32;
+			}
+			let asteroids[countAsteroid] = asteroid;
+			let countAsteroid = countAsteroid + 1;
+			let countRelease = 1;
+		} else {
+			let countRelease = countRelease + 1;
+		}
+		return;
+	}
+
+
+	/** Explode one asteroid in 4 new asteroids into space. */
+	method void explode(int x, int y) {
+		var Asteroid asteroid;
+
+		if(countAsteroid > (arrayAsteroidsSize-4) ) {
+			   let countAsteroid = 0;
+		}
+		let asteroids[countAsteroid]   = Asteroid.new(x+5,y+5, 1, 1,5);
+		let asteroids[countAsteroid+1] = Asteroid.new(x+5,y-5, 1,-1,5);
+		let asteroids[countAsteroid+2] = Asteroid.new(x-5,y-5,-1,-1,5);
+		let asteroids[countAsteroid+3] = Asteroid.new(x-5,y+5,-1, 1,5);
+		let countAsteroid = countAsteroid + 4;
+			
+		return;
+
+	}
+
+	/** Draws score onto screen. */
+	method void drawScore() {
+		do Output.moveCursor(0,0);
+		do Output.printString("Score=");
+		do Output.moveCursor(0,7);
+		do Output.printInt(score);
+		return;
+	}
+
+
+	/** Main loop of the game. */
+	method void run() {
+		var char key;
+		var Shot shot;
+		
+		while (~exit) {
+
+			// waits for a key to be pressed.
+			while ((key = 0) & (~exit)) {
+				let key = Keyboard.keyPressed();
+				do moveShot();
+				do ship.move();
+				do moveAstereoid();
+				do release();
+				do drawScore();
+				do Sys.wait(50);
+			}
+
+			if (key = 130) { // left
+				do ship.rotCounterClock();
+			}
+			
+			if (key = 132) { // right
+				do ship.rotClock(); 
+			}
+
+			if (key = 131) { // up
+				do ship.accelerate(1);
+			}
+			
+			if (key = 133) { // down
+				do ship.accelerate(-1);
+			}
+
+			if (key = 32) { // space
+				let shot = Shot.new(ship.getX(), ship.getY());
+				do shot.setDirection(ship.getShotX(),ship.getShotY());
+				let shots[countShot] = shot;
+				let countShot = countShot + 1;
+				if(countShot=arrayShotsSize) {
+					let countShot = 0;
+				}
+			}
+			
+			if (key = 140) { // ESCAPE Buttom
+				let exit = true; 
+			}
+
+			// Waits for the key to be released.
+			while ((~(key = 0)) & (~exit)) {
+				let key = Keyboard.keyPressed();
+				do moveShot();
+				do ship.move();
+				do moveAstereoid();
+				do release();
+				do drawScore();
+				do Sys.wait(50);
+			}
+		}
+
+		
+		do Output.moveCursor(3,27);
+		do Output.printString("Game Over");
+
+		return;
+	}
+
+	/**
+	 * Makes the shot move forward. 
+	 */
+	method void moveShot() {
+
+		var Shot shot;			// temporaty for shots.
+		var Asteroid asteroid;	// temporaty for asteroids.
+		var int c1;	// counter.
+		var int c2; // counter.
+
+		var boolean hitwall; // case hot the wall
+
+		var int sx;	// Will store Shot x. 
+		var int sy;	// Will store Shot y.
+
+		let c1 = 0;
+		while(c1<arrayShotsSize) { // loop all shots in the array
+			let shot = shots[c1];
+			if( ~(shot=null) ){
+				let hitwall = shot.move();
+				if (hitwall) {
+					do shot.hide();
+					do shot.dispose();
+					let shots[c1] = null;
+				}
+				let sx = shot.getX();
+				let sy = shot.getY();
+				let c2 = 0;
+				while( c2 < arrayAsteroidsSize ) {	// check shots will every asteroid
+					let asteroid = asteroids[c2];
+					if( ~(asteroid=null) ){
+						if ( asteroid.hit( sx,sy ) ) {
+							
+							if( ~(shot=null) ) {
+								do shot.hide();
+								do shot.dispose();
+								let shots[c1] = null;
+							}
+							
+							if(asteroid.getSize() > 5) {
+								do explode(sx,sy);
+								let score = score + 5;
+							} else {
+								let score = score + 1;
+							}
+							
+							do asteroid.hide();
+							do asteroid.dispose();
+							let asteroids[c2] = null;
+
+						}
+					}     
+					let c2 = c2 + 1;   
+				}
+
+			}     
+			let c1 = c1 + 1;   
+		}
+
+		return;
+	}
+
+	/**
+	 * Moves Asteroid forward. 
+	 */
+	method void moveAstereoid() {
+
+		var Asteroid asteroid;
+		var int c3;
+		var boolean leftScreen;
+
+		let c3 = 0;
+		while(c3<arrayAsteroidsSize) {	// move every asteroid.
+			let asteroid = asteroids[c3];
+			if( ~(asteroid=null) ){
+				let leftScreen = asteroid.move();
+				if( ship.hit(asteroid.getX(),asteroid.getY(),asteroid.getSize()) ) {
+					let exit = true;
+				}
+				if(leftScreen) {
+					do asteroid.hide();
+					do asteroid.dispose();
+					let asteroids[c3] = null;
+				}
+			}     
+			let c3 = c3 + 1;   
+		}
+
+		return;
+
+	}
+
+}

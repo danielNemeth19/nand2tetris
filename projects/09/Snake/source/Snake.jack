@@ -1,0 +1,166 @@
+class Snake {
+
+   // coords for snake's body
+   field Array bodyX, bodyY;
+   // coords for snake's head
+   field int headX, headY;
+   // size of cell
+   field int size;
+   // snake's max size body 
+   field int max_size;
+   // current snake's body size
+   field int bodyL;
+   // constants for rendering
+   field int rows;
+   field int cells;
+   // address for rendering
+   field int memAddress;
+
+   constructor Snake new(int Ax, int Ay) {
+      var int i;
+      // init head
+      let headX = Ax;
+      let headY = Ay;
+
+      // init constants
+      let size = 16;
+      let max_size = 100;
+      let bodyL = 2;
+      let rows = 32;
+      let cells = 16;
+
+      // init snake's body arrays
+      let bodyX = Array.new(max_size);
+      let bodyY = Array.new(max_size);
+      
+      // fill start body
+      let i = 0;
+      while (i < bodyL) {
+         let bodyX[i] = Ax + 1 + i;
+         let bodyY[i] = Ay;
+         let i = i + 1;
+      }
+
+      return this;
+   }
+
+   method void dispose() {
+      do Memory.deAlloc(this);
+      do bodyX.dispose();
+      do bodyY.dispose();
+      return;
+   }
+
+   // snake's movement in every cycle
+   method void step(int direction) {
+      var int prevX, prevY, currentX, currentY, i;
+
+      // clean last cell of snake
+      do clean();
+
+      // move body, every next cell gets previous positions
+      let prevX = headX;
+      let prevY = headY;
+      let i = 0;
+      while (i < bodyL) {
+         let currentX = bodyX[i];
+         let currentY = bodyY[i];
+
+         let bodyX[i] = prevX;
+         let bodyY[i] = prevY;
+   
+         let prevX = currentX;
+         let prevY = currentY;
+
+         let i = i + 1;
+      }
+
+      // move body depend on direction
+      if (direction = 1) { let headY = headY - 1; }
+      if (direction = 2) { let headY = headY + 1; }
+      if (direction = 3) { let headX = headX - 1; }
+      if (direction = 4) { let headX = headX + 1; }
+
+      // draw snake
+      do draw(-1);
+
+      return;
+   }
+
+   // collisions detection
+   method boolean isWrongStep() {
+      var int i;
+
+      // check snake's die on walls
+      if ((headX < 0) | (headX > 31) | (headY < 0) | (headY > 14)) {
+         return true;
+      }
+
+      // check snake's die on her self
+      let i = 0;
+      while (i < bodyL) {
+         if ((headX = bodyX[i]) & (headY = bodyY[i])) {
+            return true;
+         }
+         let i = i + 1;
+      }
+
+      return false;
+   }
+
+   // processing of eating apples
+   method boolean tryToEat(Apple apple) {
+         if ((headX = apple.getX()) & (headY = apple.getY())) {
+            // snake becomes bigger
+            let bodyX[bodyL] = bodyX[bodyL - 1] + 1;
+            let bodyY[bodyL] = bodyY[bodyL - 1] + 1;
+            let bodyL = bodyL + 1;
+            return true;
+         }
+         return false;
+   }
+
+   // clean last cell of snake
+   method void clean() {
+      do drawCell((bodyY[bodyL-1] * size * rows) + (bodyX[bodyL-1] * size / cells), 0);
+      return;
+   }
+
+   // draw all snake
+   method void draw(boolean color) {
+      var int location, i;
+
+      let location = (headY * size * rows) + (headX * size / cells);
+      do drawCell(location, color);
+
+      let i = 0;
+      while (i < bodyL) {
+         let location = (bodyY[i] * size * rows) + (bodyX[i] * size / cells);
+         do drawCell(location, color);
+         let i = i + 1;
+      }
+
+      return;
+   }
+
+   method void drawCell(int location, int val) {
+      let memAddress = 16384 + location;
+      do Memory.poke(memAddress + 0, val);
+      do Memory.poke(memAddress + 32, val);
+      do Memory.poke(memAddress + 64, val);
+      do Memory.poke(memAddress + 96, val);
+      do Memory.poke(memAddress + 128, val);
+      do Memory.poke(memAddress + 160, val);
+      do Memory.poke(memAddress + 192, val);
+      do Memory.poke(memAddress + 224, val);
+      do Memory.poke(memAddress + 256, val);
+      do Memory.poke(memAddress + 288, val);
+      do Memory.poke(memAddress + 320, val);
+      do Memory.poke(memAddress + 352, val);
+      do Memory.poke(memAddress + 384, val);
+      do Memory.poke(memAddress + 416, val);
+      do Memory.poke(memAddress + 448, val);
+      do Memory.poke(memAddress + 480, val);
+      return;
+   }
+}

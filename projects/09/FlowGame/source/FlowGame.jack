@@ -1,0 +1,149 @@
+// This file is part of Projet9
+
+// (derived from projects/09/Square/SquareGame.jack)
+
+
+/**
+ * Implements the Flow game.
+ * This simple game allows the user to move  
+ * a small white square, keeping it inside a
+ * larger black square.  
+ * Attempts focus the mind on a simple, repetative
+ * task, which requires attention, but does not
+ * overwhelm.
+ *
+ * the 'spacebar' gets things started
+ * the arrow keys move the white box
+ * The 'q' key is used to quit the game.
+ */
+
+/** Implements the game with course, target, and player objects . */
+class FlowGame {
+  field Course course ;
+  field Target target ;
+  field Player player ;
+  field int death_dist ;
+
+  /** Constructs a new Flow Game. */
+  constructor FlowGame new() {
+     var int target_r ;
+     var int player_r ;
+
+     let target_r = 40 ;
+     let player_r =  4 ;
+     let death_dist = target_r - player_r ;
+
+     do Splash.aquireSettings() ;
+
+     let course = Course.new(Splash.getCourseN()) ;
+     let target = Target.new(course.getx(), course.gety(), target_r) ;
+     let player = Player.new(course.getx(), course.gety(), player_r ) ;
+
+     return this ;
+  }
+
+  /** Disposes this game. */
+  method void dispose() {
+     do course.dispose() ;
+     do Memory.deAlloc(this) ;
+
+     return ;
+  }
+
+  /** direct player square to move based on input . */
+  method void movePlayer(int direction) {
+     if (direction = 0) { do player.draw(); }
+     if (direction = 1) { do player.moveUp(); }
+     if (direction = 2) { do player.moveDown(); }
+     if (direction = 3) { do player.moveLeft(); }
+     if (direction = 4) { do player.moveRight(); }
+
+     return ;
+  }
+
+  /** Runs the game from high above */
+  method void run() {
+     var char key ;  
+     var boolean exit ;
+     var int i ;
+     var int direction ;
+     var boolean greenLight ;  // greenLight hold back action spacebar starts
+     var int lastLapCount ;    // number of previous course laps 
+     var int currLapCount ;    // number of previous course laps
+
+     // initial values
+     let exit = false ;
+     let i = 0 ;               // allow player to move faster than target
+     let lastLapCount= 0 ;
+     let currLapCount= 0 ;
+     
+
+     // loop until player quits "q", or fails to keep white square in target
+     while (~exit) {
+
+        let direction = 0 ;
+        let key = Keyboard.keyPressed() ;
+        if (key = 81)  { let exit = true ; }       // q key
+        if (key = 131) { let direction = 1 ; }     // up arrow
+        if (key = 133) { let direction = 2 ; }     // down arrow
+        if (key = 130) { let direction = 3 ; }     // left arrow
+        if (key = 132) { let direction = 4 ; }     // right arrow
+        if (key =  32) { let greenLight = true ; } // spacebar
+
+       do Sys.wait(12) ;  // keep game slow
+
+       // wait until player indicates they are ready 
+       if ( greenLight ) {  
+         // restrict target movement, allows player to be faster than target 
+         if (i = 0) {   
+           do course.nextLocation() ;
+           do target.moveTo(course.getx(), course.gety()) ;
+
+           // when lap complete, make more challenging
+           if ( currLapCount > lastLapCount ) { 
+             do target.decSize() ;
+             let death_dist = death_dist - 2 ;
+             let lastLapCount = currLapCount ;
+	   }
+           let currLapCount = course.getLapCount() ;
+         }
+
+         // player can move every time thru loop 
+         do movePlayer( direction) ;
+
+         // target allow to move every 4th pass thru loop 
+         let i = i + 1 ;
+         if (i > 4) { let i = 0 ; }
+       }
+ 
+       // has player gone outside target
+       if ( Math.abs(player.getx()-course.getx()) >  death_dist ) {
+         let exit = true ;
+       }
+       if ( Math.abs(player.gety()-course.gety()) >  death_dist ) {
+         let exit = true ;
+       }
+
+       // has player masterfully complete 10 loops
+       if ( currLapCount >  10) {
+         let exit = true ;
+       }
+     }
+
+    do FlowGame.gameOver() ;
+
+    return ;
+  }
+ 
+  /** Wishes player a nice moment in the present.*/
+  function void gameOver() {
+    do Screen.clearScreen() ;
+    do Output.moveCursor(10,10) ;
+    do Output.printString("B E ,   H E R E ,   N O W !") ;
+ 
+    return ;
+  }
+}
+
+
+

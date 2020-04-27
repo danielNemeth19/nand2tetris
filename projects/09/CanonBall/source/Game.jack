@@ -1,0 +1,203 @@
+
+
+/**
+ * Implements the "Cannonball" game
+ */
+class Game {
+    field Cannon cannon;
+    field Ball ball;
+    field Array obstacles;
+    field int num_obstacles;
+    field int shots_left;
+    field int score;
+
+    /** Constructs a new Game. */
+    constructor Game new() {
+        let cannon = Cannon.new();
+        let ball = 0;
+        let num_obstacles = 9;
+        let shots_left = 9;
+        let obstacles = Array.new(num_obstacles);
+        do createObstacles();
+        return this;
+    }
+
+    method void printShotsLeft() {
+        do Output.moveCursor(0,12);
+        do Output.printInt(shots_left);
+        return;
+    }
+
+    method void printScore() {
+        do Output.moveCursor(0,57);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.moveCursor(0,57);
+        do Output.printInt(score);
+        return;
+    }
+
+    /** Disposes this game. */
+    method void dispose() {
+        var int n;
+        var Obstacle o;
+        let n = num_obstacles-1;
+        while (~(n < 0)) {
+            let o = obstacles[n];
+            if (~(o = 0)) {
+                do o.erase();
+                do o.dispose();
+            }
+            let n = n - 1;
+        }
+        if (~(ball=0)) {
+            do ball.dispose();
+        }
+        do cannon.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void createObstacles() {
+        var int n;
+        var int row, col;
+        let n = num_obstacles-1;
+        while (~(n < 0)) {
+            // the first row is reserved for game status messages
+            let row = Rand.mod(Rand.rand(),22) + 1;
+            let col = Rand.mod(Rand.rand(),63);
+            let obstacles[n] = Obstacle.new(row,col,n+1);
+            let n = n - 1;
+        }
+        return;
+    }
+
+    /** move up/down cannon according to direction
+        @param direction cannon shooting direction: +1: up, -1: down
+     */
+    method void moveCannon(int direction) {
+        do cannon.move(direction);
+        return;
+    }
+
+    /** advance the ball a step in its trajectory
+     */
+    method void step() {
+        if (ball = 0) {
+            return;
+        }
+
+        if (ball.crashed()) {
+//            do Sys.wait(2500);
+            do ball.deleteTrace();
+            do ball.dispose();
+            let ball = 0;
+            return;
+        }
+        do ball.move(true);
+
+        do check_collisions();
+
+        return;
+    }
+
+    /** check ball collision with obstacles */
+    method void check_collisions() {
+        var int n;
+        var Obstacle o;
+        if (ball = 0) {
+            return;
+        }
+        let n = num_obstacles-1;
+        while (~(n < 0)) {
+            let o = obstacles[n];
+
+            if (~(o = 0)) {
+                if (ball.is_collision(o.x1(),o.y1(),o.x2(),o.y2())) {
+//                    do Sys.wait(2500);
+                    do ball.deleteTrace();
+                    do ball.dispose();
+                    let ball = 0;
+
+                    let score = score + o.value();
+                    do printScore();
+
+                    do o.erase();
+                    do o.dispose();
+                    let obstacles[n] = 0;
+
+                    return;
+                }
+            }
+
+            let n = n - 1;
+        }
+        return;
+    }
+
+    /** create a new ball and fire it with the current cannon inclination.
+        @return true if there are no shots left, false otherwise.
+      */
+    method boolean fireBall() {
+        var int x,y;
+
+        if (~(ball = 0)) {
+            return false;
+        }
+
+        if (shots_left = 0) {
+            return true;
+        }
+
+        let x = cannon.x();
+        let y = cannon.y();
+        if (y > 253) { // do not allow ball to go out of the screen
+            let y = 253;
+        }
+        let ball = Ball.new(x,y,cannon.angle(), cannon.range());
+
+        let shots_left = shots_left - 1;
+        do printShotsLeft();
+
+        return false;
+    }
+
+    method void run() {
+        var char key;  // the key currently pressed by the user
+        var boolean exit;
+
+        let exit = false;
+
+        do Output.moveCursor(0,0);
+        do Output.printString("Shots left: ");
+        do printShotsLeft();
+
+        do Output.moveCursor(0,50);
+        do Output.printString("SCORE: ");
+        do printScore();
+
+        while (~exit) {
+            // waits for a key to be pressed
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do step();
+            }
+
+            if (key = 81)  { let exit = true; }     // q key
+            if (key = 32)  { let exit = fireBall(); } // space, fire!
+            if (key = 131) { do moveCannon(1); }    // up arrow
+            if (key = 133) { do moveCannon(-1); }   // down arrow
+            if (key = 130) { do cannon.changeRange(-1); }  // left arrow
+            if (key = 132) { do cannon.changeRange(1); }   // right arrow
+
+            // waits for the key to be released
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do step();
+            }
+
+        } // while
+
+        return;
+    }
+}

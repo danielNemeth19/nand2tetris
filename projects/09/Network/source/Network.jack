@@ -1,0 +1,299 @@
+/**
+ * Implements a Network game.
+ * 
+ * Network is a game consisting of a set of tiles the user can rotate.
+ * Each tile is printed with either a node (hollow square) or a conduit (black lines).
+ * Conduits can be "I", "T", or "L" shaped.
+ * The objective is to connect all the nodes into a single network so that there are
+ * no dangling connection, no closed loops.
+ * The user selects what tile to rotate with arrow keys.
+ * The "Z" key rotates the tile clockwise, and the "X" key locks the tile in place
+ * (so it can't rotate). Locking the tiles is not necessary for victory, but it can
+ * be helpful to keep track of what tiles the user is confident about. 
+ * The "Q" key quits the game, while the "S" key quits while letting the user see
+ * the solution, in case they get stuck or frustrated.
+ */
+
+class Network {
+   // 'x' and 'y' are the cursor position in the tile array. Upper left is x = 0, y = 0.
+   // The tiles are represented as an array, and the variable 'sel' is the current selection.
+   // 'sel' will be calculated from 'x' and 'y'.
+   field int x, y, sel; 
+   field Array tiles; // Array that will hold pointers to tile objects.
+   field Tile thistile; // 'thistile' is the currently selected Tile object.
+   field boolean won, giveup; // Flags for win & quit conditions. 
+
+   constructor Network new() {
+      let won = false;
+      let giveup = false;
+      let x = 0;
+      let y = 0;
+      // Calculates array selection position from 'x' and 'y'. Initially sel = 0.
+      let sel = getsel(x, y);
+      // Builds the Tile object array. See Tile.jack for the parameter definitions. 
+      let tiles = Array.new(36);
+      let tiles[0] = Tile.new(0,0,3,0,1,false,true); // True flag on the end sets cursor position to upper left
+      let tiles[1] = Tile.new(1,0,2,3,2,false,false);
+      let tiles[2] = Tile.new(2,0,3,0,2,false,false);
+      let tiles[3] = Tile.new(3,0,3,2,1,false,false);
+      let tiles[4] = Tile.new(4,0,0,1,0,false,false);
+      let tiles[5] = Tile.new(5,0,2,1,2,false,false);
+      let tiles[6] = Tile.new(0,1,3,3,1,false,false);
+      let tiles[7] = Tile.new(1,1,1,2,0,false,false);
+      let tiles[8] = Tile.new(2,1,1,2,0,false,false);
+      let tiles[9] = Tile.new(3,1,1,3,2,false,false);
+      let tiles[10] = Tile.new(4,1,0,1,0,false,false);
+      let tiles[11] = Tile.new(5,1,2,1,3,false,false);
+      let tiles[12] = Tile.new(0,2,3,0,1,false,false);
+      let tiles[13] = Tile.new(1,2,0,1,0,false,false);
+      let tiles[14] = Tile.new(2,2,2,1,2,false,false);
+      let tiles[15] = Tile.new(3,2,0,0,1,false,false);
+      let tiles[16] = Tile.new(4,2,3,0,1,false,false);
+      let tiles[17] = Tile.new(5,2,2,3,2,false,false);
+      let tiles[18] = Tile.new(0,3,2,3,1,false,false);
+      let tiles[19] = Tile.new(1,3,0,1,0,false,false);
+      let tiles[20] = Tile.new(2,3,1,3,0,false,false);
+      let tiles[21] = Tile.new(3,3,1,2,0,false,false);
+      let tiles[22] = Tile.new(4,3,1,1,2,false,false);
+      let tiles[23] = Tile.new(5,3,1,0,3,false,false);
+      let tiles[24] = Tile.new(0,4,3,1,0,false,false);
+      let tiles[25] = Tile.new(1,4,3,3,1,false,false);
+      let tiles[26] = Tile.new(2,4,1,3,2,false,false);
+      let tiles[27] = Tile.new(3,4,1,0,2,false,false);
+      let tiles[28] = Tile.new(4,4,1,0,3,false,false);
+      let tiles[29] = Tile.new(5,4,3,3,0,false,false);
+      let tiles[30] = Tile.new(0,5,3,2,1,false,false);
+      let tiles[31] = Tile.new(1,5,0,0,0,false,false);
+      let tiles[32] = Tile.new(2,5,2,0,3,false,false);
+      let tiles[33] = Tile.new(3,5,3,3,0,false,false);
+      let tiles[34] = Tile.new(4,5,2,1,0,false,false);
+      let tiles[35] = Tile.new(5,5,3,2,3,false,false);
+      // The currently selected tile is determined by updating 'tiles[sel]'.
+      let thistile = tiles[sel];
+      do setui(); // Does some printouts of the instructions & some decorations.
+      return this;
+   }
+
+   // Disposes object and deallocates memory.
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+   
+   // Calculates the selection in the tile array from the cursor x and y positions.
+   // The factor of 6 comes from the fact that this game has 6 rows. 
+   method int getsel(int x, int y) {
+      var int thesel;
+      let thesel = x + (6 * y);
+      return thesel;
+   }
+   
+   // Toggles the 'lock' flag of the currently-selected tile.
+   method void lock() {
+      do thistile.locktile();
+      return;
+   }
+   
+   // Rotates the currently-selected tile 90 degrees clockwise.
+   method void rot() {
+      do thistile.rottile();
+      do checkwin(); // Checks whether the user has won.
+      return;
+   }
+   
+   // Checks whether the user has won.
+   method void checkwin() {
+      // Goes through the tile array one by one and checks to see whether the tile is in the
+      // correct rotation position. If so, increments the variable 'wincond' by one. If all tiles
+      // are in the proper position, wincond = 36, and the user wins.
+      var int wincond, i, j;
+      let wincond = 0;
+      let i = 0;
+      let j = 0;
+      while (i < 36) {
+         let thistile = tiles[i];
+         if (thistile.askrot()) { 
+            let wincond = wincond + 1;
+         }
+         let i = i + 1;
+      }
+      let thistile = tiles[sel]; // Re-selects the tile at the cursor position.
+      
+      // Displays a message when the user wins
+      if (wincond = 36) {
+         let won = true; // Sets 'won' flag
+         // Loops through and locks all tiles. Just makes the win screen look nicer. 
+         while (j < 36) { 
+            let thistile = tiles[j];
+            do thistile.setlocks();
+            let j = j + 1;
+         }
+         // Select tile at cursor position, then deselects to remove the cursor entirely.
+         // This just makes the win screen look nicer.
+         let thistile = tiles[sel];
+         do thistile.deselect();
+         // Prints out a victory message. 
+         do Output.moveCursor(5,27);
+         do Output.printString("YOU WIN!!!");
+      }
+      return;
+   }
+
+   // Moves cursor to the right.
+   method void incx() {
+      if (x < 5) { // Only updates if not at the right side of the grid.
+        do thistile.deselect(); // Tells old tile it is no longer selected, for display purposes.
+        let x = x + 1;
+        let sel = getsel(x, y); // Calculates array position of new tile. 
+        let thistile = tiles[sel]; // Updates 'thistile' to point to the currently-selected tile. 
+        do thistile.select(); // Tells new tile it is selected.
+      }
+      return;
+   }
+   
+   // Moves cursor to the left. Works similar to incx() above.
+   method void decx() {
+      if (x > 0) { // Only updates if not at the left side of the grid. 
+        do thistile.deselect();
+        let x = x - 1;
+        let sel = getsel(x, y);
+        let thistile = tiles[sel];
+        do thistile.select();
+      }
+      return;
+   }
+   
+   // Moves cursor down (remember upper left is 0,0, so increasing y moves cursor down). Works similar to incx() above.
+   method void incy() {
+      if (y < 5) { // Only updates if not already at the bottom of the grid. 
+        do thistile.deselect();
+        let y = y + 1;
+        let sel = getsel(x, y);
+        let thistile = tiles[sel];
+        do thistile.select();
+      }
+      return;
+   }
+   
+   // Moves cursor up. Works similar to incx() above. 
+   method void decy() {
+      if (y > 0) { // Only updates if not already at the top of the grid. 
+        do thistile.deselect();
+        let y = y - 1;
+        let sel = getsel(x, y);
+        let thistile = tiles[sel];
+        do thistile.select();
+      }
+      return;
+   }
+   
+   // If the user gives up, they can quit and see the solution, so they can go back and verify 
+   // for themselves the program works as designed.
+   // Loops through all the tiles, unlocks them, and rotates them to the correct position.
+   method void solveit() {
+      var int k;
+      let k = 0;
+      let giveup = true; // Sets 'giveup' flag.
+      while (k < 36) { 
+         let thistile = tiles[k];
+         do thistile.setunlock(); // Unlocks tile
+         do thistile.truerot(); // Sets rotation position to solution position. 
+         let k = k + 1;
+      }
+      // Remove cursor (makes quit screen look nicer).
+      let thistile = tiles[sel];
+      do thistile.deselect();
+      // Encourages user to try again. :-) 
+      do Output.moveCursor(5,27);
+      do Output.printString("Try again.");
+      return;
+   }   
+
+   // Continuous loop that waits for key presses and performs whatever action is indicated by the key
+   method void run() {
+      var char key;  // the key currently pressed by the user
+      var boolean exit;
+      let exit = false;
+      
+      while (~exit) {
+         while (key = 0) {
+            let key = Keyboard.keyPressed();
+         }
+         if (key = 81)  { let exit = true; } // q key (Quit)
+         if (key = 88)  { do lock(); } // x key (Lock/Unlock Tile)
+         if (key = 90)  { do rot(); } // z key (Rotate Tile)
+         if (key = 131) { do decy(); } // up arrow 
+         if (key = 133) { do incy(); } // down arrow
+         if (key = 130) { do decx(); } // left arrow
+         if (key = 132) { do incx(); } // right arrow
+         if (key = 83)  { do solveit(); } // s key (Quit & See Solution)
+
+         // waits for the key to be released
+         while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+         }
+         // Ends the program if the user wins or gives up.
+         if (won) { let exit = true; }
+         if (giveup) { let exit = true; }
+     } 
+     return;
+   }
+   
+   // Writes the objective and controls to the screen, as well as the game title.
+   method void setui() {
+        do Output.moveCursor(1,27);
+        do Output.printString("**********");
+        do Output.moveCursor(2,27);
+        do Output.printString("*NET/WORK*");
+        do Output.moveCursor(3,27);
+        do Output.printString("**********");
+        do Output.moveCursor(6,2);
+        do Output.printString("Objective:");
+        do Output.moveCursor(8,2);
+        do Output.printString("*Connect all of the");
+        do Output.moveCursor(9,3);
+        do Output.printString("nodes (squares) into");
+        do Output.moveCursor(10,3); 
+        do Output.printString("a single network with");
+        do Output.moveCursor(11,3);
+        do Output.printString("conduits (lines)");
+        do Output.moveCursor(13,2);
+        do Output.printString("*No closed loops");
+        do Output.moveCursor(15,2);
+        do Output.printString("*No loose connections");
+        do Output.moveCursor(17,2);
+        do Output.printString("*Lock tiles in place");
+        do Output.moveCursor(18,3);
+        do Output.printString("to keep track of");
+        do Output.moveCursor(19,3);
+        do Output.printString("correct orientations");
+        do Output.moveCursor(6,42);
+        do Output.printString("Controls:");
+        do Output.moveCursor(8,42);
+        do Output.printString("*Move cursor with");
+        do Output.moveCursor(9,43);
+        do Output.printString("arrow keys");
+        do Output.moveCursor(11,42);
+        do Output.printString("*'Z' rotates tile");
+        do Output.moveCursor(13,42);
+        do Output.printString("*'X' locks/unlocks");
+        do Output.moveCursor(14,43);
+        do Output.printString("tile");
+        do Output.moveCursor(16,42);
+        do Output.printString("*'Q' to quit");
+        do Output.moveCursor(18,42);
+        do Output.printString("*'S' to quit and");
+        do Output.moveCursor(19,43);
+        do Output.printString("see solution");
+        do Output.moveCursor(19,27);
+        do Output.printString("**********");
+        do Output.moveCursor(20,27);
+        do Output.printString("*NET/WORK*");
+        do Output.moveCursor(21,27);
+        do Output.printString("**********");
+        return;
+   }
+}
+
+
+

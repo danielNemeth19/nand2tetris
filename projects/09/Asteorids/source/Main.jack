@@ -1,0 +1,24 @@
+// Developed by: Luciano Soares
+// Date: 27 May 2017
+// File: Main.jack
+
+/**
+ * The main class that calls the Asteroids Game.
+ *
+ * Instructions:
+ * Left and Right Arrows allows you turn the ship.
+ * Up and Down key allows you to accelerate.
+ * Space Bar shots.
+ */
+class Main {
+
+    /** Main function that calls Asteroids game. */
+    function void main() {
+        var Space game;
+        do Space.newInstance();
+        let game = Space.getInstance();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

@@ -1,0 +1,78 @@
+class SnakeGame {
+   // main objects for game
+   field Snake snake;
+   field Apple apple;
+   // additional vars
+   field int score;
+   field int direction;
+
+   constructor SnakeGame new() {
+      let snake = Snake.new(25, 12);
+      let apple = Apple.new(5, 5);
+      let direction = 3;
+      return this;
+   }
+
+   method void dispose() {
+      do snake.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method void run() {
+      var char key;
+      
+      // main game loop
+      while (true) {
+         while (key = 0) {
+            // timeout for game process
+            do Sys.wait(100);
+            // check key
+            let key = Keyboard.keyPressed();
+
+            // render apple
+            do apple.grow();
+
+            // check collision detection
+            if (snake.isWrongStep()) {
+               // this is the end
+               do Screen.clearScreen();
+               do Output.printString("GAME OVER");
+               do Output.println();
+               do Output.println();
+               do Output.printString("SCORE: ");
+               do Output.printInt(score);
+
+               // for prevent VMEmulator halt message
+               while (true) {}
+            }
+
+            if (snake.tryToEat(apple)) {
+               // snake ate apple and we generate the new one
+               do apple.generate();
+               // also add some scores
+               let score = score + 10;
+            }
+
+            // snake's movement
+            do snake.step(direction);
+         }
+
+         // change direction also prevent wrong directions
+         if ((key = 131) & ~(direction = 2)) { let direction = 1; } // up
+         if ((key = 133) & ~(direction = 1)) { let direction = 2; } // down
+         if ((key = 130) & ~(direction = 4)) { let direction = 3; } // left
+         if ((key = 132) & ~(direction = 3)) { let direction = 4; } // right
+
+         // process key
+         if (~(key = 0)) {
+            let key = 0;
+         }
+     }
+
+     return;
+   }
+}
+
+
+

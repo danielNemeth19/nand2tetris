@@ -1,0 +1,6 @@
+class MyGame {
+    function void speak(string m) {
+        do Output.printString(m);
+        return;
+    }
+}

@@ -1,0 +1,37 @@
+class Utils {
+	function void printStringWithNewLine(string input){ 
+		do Output.printString(input);
+		do Output.println();
+		return;
+	}
+
+	function void printIntWithNewLine(int input){ 
+		do Output.printInt(input);
+		do Output.println();
+		return;
+	}
+
+	function void printSelectionOptions(int count, string input){
+		do Output.printString("Option ");
+		do Output.printInt(count);
+		do Output.printString(": ");
+		do Output.printString(input);
+		do Output.println();
+		return;
+	}
+
+	function void printSelectionIntOptions(int count, int option_choice){
+		do Output.printString("Option ");
+		do Output.printInt(count);
+		do Output.printString(": ");
+		do Output.printInt(option_choice);
+		do Output.println();
+		return;
+	}
+	function void printScore(int score){
+		do Output.printString("Your score is: ");
+		do Output.printInt(score);
+		do Output.println();
+		return;
+	}
+}

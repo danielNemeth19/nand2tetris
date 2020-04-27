@@ -1,0 +1,157 @@
+/* Implements the snake graphic.
+ *
+*/
+class Snake {
+
+  // Declare variables
+  field Array snakeHead; // Location snake head on the grid
+  
+  field Array snakeTail; // Location of snake tail on the grid
+  
+
+  // Variables to keep track of the history of steps for the snake
+  field Array histXsteps; 
+  field Array histYsteps; 
+
+  // Variable to keep track of the size of the snake
+  field int sizeSnake;
+
+  /** Constructs the start of a snake with given location and size */
+  constructor Snake new(int x, int y) {
+     let snakeHead = Array.new(2); 
+     let snakeTail = Array.new(2);
+     // Initialize the location of the snakeHead and tail on the grid
+     let snakeHead[0] = x; let snakeHead[1] = y;
+     let snakeTail[0] = x; let snakeHead[1] = y;
+
+     // Initialize the history of the moves
+     let histXsteps = Array.new(512);
+     let histYsteps = Array.new(512);
+
+     // Initialize sizeSnake
+     let sizeSnake = 0;
+
+     // draw the snakeHead on the grid
+     do drawSnakeHead();
+
+     return this; 
+  }
+
+  /** Method for drawing the head of the snake */
+  method void drawSnakeHead() {
+     // snakeHead is always a 8x8 square on a grid divided in parts of 8x8 pixels
+     do Screen.setColor(true); // Set color to black
+     do Screen.drawRectangle(snakeHead[0], snakeHead[1], snakeHead[0] + 8, snakeHead[1] + 8);
+     return;
+  }
+
+  /** Method for erasing the snake tail */
+  method void eraseSnakeTail() {
+     // snakeTail is always a 8x8 square on a grid divided in parts of 8x8 pixels
+     do Screen.setColor(false); // Set color to white
+     do Screen.drawRectangle(snakeTail[0], snakeTail[1], snakeTail[0] + 8, snakeTail[1] + 8);
+     return;
+  }
+
+  /** Method for changing the location of the snake head on the screen */
+  method void incLoc(int incX, int incY) {
+ 
+     // Check if snake does not go outside of the grid if so reset head
+     if ((incX > 0) & ((snakeHead[0] + 8) = 504) ) {
+      let snakeHead[0] = 0;
+     } 
+     if ((incY > 0) & ((snakeHead[1] + 8) = 248) ) {
+      let snakeHead[1] = 0;
+
+     } 
+
+     if ((incX < 0) & ((snakeHead[0] - 8) < 0) ) {
+      let snakeHead[0] = 496;
+     } 
+
+     if ((incY < 0) & ((snakeHead[1] - 8) < 0) ) {
+      let snakeHead[1] = 240;
+
+     } 
+     
+     // Change location on the grid of the snakeHead
+     let snakeHead[0] = (incX * 8) + snakeHead[0]; // if no movement 0 + loc
+     let snakeHead[1] = (incY * 8) + snakeHead[1];
+     
+     // Check if locations snaketail go outside of grid, if so reset
+     if ((histXsteps[0] > 0) & ((snakeTail[0] + 8) = 504)) {
+       let snakeTail[0] = 0;
+     }
+
+     if ( (histYsteps[0] > 0) & (snakeTail[1] + 8) = 248) {
+       let snakeTail[1] = 0;
+     } 
+
+     if ( (histXsteps[0] < 0 ) & (snakeTail[0] -8) < 0) {
+       let snakeTail[0] = 496;
+     }
+
+     if ( (histYsteps[0] < 0) & (snakeTail[1]-8)  < 0) {
+       let snakeTail[1] = 240;
+     }
+
+     // Change location on the grid of the snakeTail
+     let snakeTail[0] = (histXsteps[0] * 8) + snakeTail[0];
+     let snakeTail[1] = (histYsteps[0] * 8) + snakeTail[1];
+
+     
+     // erase snake tail
+     do eraseSnakeTail();	
+
+     // Draw the snakeHead at the new location
+     do drawSnakeHead();
+
+     // Update the history
+     // When length did not increase snake tail will be drawn on same location
+     do updateHistory(incX, incY);
+
+
+     return;
+   
+  }
+
+  
+  /** Increase the size of the snake */
+  method void incSize() {
+     let sizeSnake = sizeSnake +1;
+     return;
+   }
+
+  /** Method for updating the history of the snake */
+  method void updateHistory(int incX, int incY) {
+     var int cnt;
+     let cnt = 0; // initialize counter
+
+     // Start while loop for updating
+     while (cnt < sizeSnake) {
+        // Update history
+        let histXsteps[cnt] = histXsteps[cnt + 1];
+        let histYsteps[cnt] = histYsteps[cnt + 1];
+        let cnt = cnt +1;
+     } 
+     // Add the newest steps to the history
+     let histXsteps[sizeSnake] = incX;
+     let histYsteps[sizeSnake] = incY;
+     return;
+  }
+
+
+  /** Dispose of the snake */
+  method void dispose() {
+     do Memory.deAlloc(this);
+     return;
+  }
+
+   
+   /** Accessor method to get location of the head of the snake */
+   method Array getLocHead() {
+       return snakeHead;
+   } 
+   
+
+}

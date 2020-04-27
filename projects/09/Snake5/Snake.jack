@@ -1,0 +1,186 @@
+class Snake{
+   field Array square;		// snake
+   field int maxlength,length;		// snake length
+   field int snakeDirection;	            // snake derection
+   field Food food;   
+   field int headx, heady;		
+   field int score, seed;   	 
+   field int foodx , foody;   
+
+   constructor Snake new(int Alength,int Aseed){
+      var int n;
+      var int a, b;		//a for x, b for y 
+      let n = 0;
+      let score = 0;
+      let seed = Aseed;       //Aseed;
+
+      let length = Alength;
+      let maxlength = 20;
+      let square = Array.new(maxlength);
+      let snakeDirection = 4;       
+ 
+      do snakeCreate();
+      do positionFood();
+      do createFood();
+ 
+      return this;
+   }
+  
+   // get food position and draw food 
+   method void createFood(){
+      do Screen.setColor(true);
+      do Screen.drawRectangle(foodx*8, foody*8, foodx*8 + 7, foody*8 + 7);
+      let foodx = foodx * 8;
+      let foody = foody * 8;
+      return;
+   }
+
+   // to get new food postion randomly
+   method void positionFood(){
+      do randomX();
+      do randomY();
+      return;
+   }
+
+   
+
+   // to get food x position
+   //  x(0~63)   y(0~29)   remove last line (x=63 y=29)
+   method void randomX(){
+      if(seed<0){
+         let seed = seed - 32767 -1; 
+      }
+      let foodx =seed-((seed/62)*62);
+      let seed = seed  +10247;
+      return ;
+   }
+   
+   // to get food y position
+   //  x(0~63)   y(0~29)   remove last line (x=63 y=29)
+   method void randomY(){
+      if(seed<0){
+         let seed = seed - 32767 -1; 
+      }
+      let foody  =seed-((seed/29)*29);
+      let seed = seed  +10247;
+      return ;
+   }
+
+   // if snake eat food, snake's length increase
+   method void snakeLengthInc(){ 
+     var Square s;
+     var int d;
+     var int tailx, taily;
+ 
+     let s = square[length-1];
+     let d = s.getSquareDirection();
+     let tailx = s.getSquareX();
+     let taily = s.getSquareY();
+
+     if(d=1) {let square[length] = Square.new(tailx,taily+8,d);}
+     if(d=2) {let square[length] = Square.new(tailx,taily-8,d);}
+     if(d=3) {let square[length] = Square.new(tailx+8,taily,d);}
+     if(d=4) {let square[length] = Square.new(tailx-8,taily,d);}
+
+     let length = length + 1;
+   return;
+   }
+
+   // when snake eat food, scoure is added 10
+   method void scoreUp(){
+       let score = score + 10;
+       do Output.moveCursor(22,13);
+       do Output.printInt(score);
+       return;
+   }
+   
+   // to comfirm that snake eat food, or not
+   method void eatComfirm(){
+      var Square s;
+      var int headx,heady;
+
+      let s = square[0];
+      let headx = s.getSquareX();
+      let heady = s.getSquareY();
+      
+      if(foodx= headx){
+	if(foody=heady){
+  	   do scoreUp();
+               do snakeLengthInc();
+               do positionFood();
+               do createFood();
+	}
+      }
+      return;
+   }
+
+   // when program is started , snake is created 
+   // snake's head on (x=5, y=0)
+   method void snakeCreate(){
+      var int x, y, startdirection;  
+      var int n;
+      var Square s;
+     
+      let x = 32;			//start snake position
+      let y = 0;
+      let startdirection = 4;		//start snake direction
+
+      let n = 0;
+      while(n < length){
+            let square[n] = Square.new(x-(n*8),y,startdirection);
+	do Screen.drawRectangle(x-(n*8),y,x-(n*8)+7,y+7);
+	let n = n +1 ;
+      }
+      return;
+   }
+   
+   // to turn snake direction
+   method void turnDirection(int AnewDirection){
+      let snakeDirection = AnewDirection;
+      return;
+   }
+ 
+   // to get snake direction
+   method int getDirection(){
+      return snakeDirection;
+   }
+
+   // to turn square arr direction
+   method void turnSquareArrDirection(){
+      var int n;
+      var int d;
+      var Square s1, s2;
+ 
+      let n = length - 1;
+      
+      while(n > 0){
+         let s1 = square[n];
+         let s2 = square[n-1];
+         let d = s2.getSquareDirection();
+         do s1.turnSquareDirection(d);
+         let n = n - 1;
+      }
+      let s1 = square[0];
+      do s1.turnSquareDirection(snakeDirection); 
+      return;
+   }
+   
+   
+   method void snakeMove(){
+      var int n;
+      var int headx, heady;
+      var Square s3;
+      let n = 0;
+
+      do turnSquareArrDirection();
+      while(n<length){
+          let s3 = square[n];
+          do s3.move();          
+          let n = n+1;
+      }  
+      do eatComfirm();
+
+      do Sys.wait(100);
+      return;
+   }   
+}

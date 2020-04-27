@@ -1,0 +1,108 @@
+
+class Dinosaur {
+    field int x, y; // screen location
+    field int counterJump;
+    field boolean jumping;
+    field boolean falling;
+
+    /** Constructs a new dinosaur with a given location and life. */
+    constructor Dinosaur new(int Ax, int Ay){
+        let x = Ax;
+        let y = Ay;
+        let counterJump = 0;
+        let falling = false;
+        return this;
+    }
+
+    /** Setters and getters */
+    method void setX(int newX) { let x = newX; return; }
+    method void setY(int newY) { let y = newY; return; }
+    method void setJumping(int newJumping) { let jumping = newJumping; return; }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getJumping() { return jumping; }
+
+    /** Dispose this dinosaur */
+    method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+    }    
+
+    /** Draws the dinosaur on the screen */
+    method void draw() {
+        var int memAddress;
+        let memAddress = 16384 + (32*y) + (x/16);
+        do Memory.poke(memAddress+0, 768);
+        do Memory.poke(memAddress+32, 16128);
+        do Memory.poke(memAddress+64, 31488);
+        do Memory.poke(memAddress+96, 32512);
+        do Memory.poke(memAddress+128, 32512);
+        do Memory.poke(memAddress+160, 16256);
+        do Memory.poke(memAddress+192, 4033);
+        do Memory.poke(memAddress+224, 4067);
+        do Memory.poke(memAddress+256, 16383);
+        do Memory.poke(memAddress+288, 12287);
+        do Memory.poke(memAddress+320, 4094);
+        do Memory.poke(memAddress+352, 2044);
+        do Memory.poke(memAddress+384, 1912);
+        do Memory.poke(memAddress+416, 1584);
+        do Memory.poke(memAddress+448, 3184);
+        do Memory.poke(memAddress+480, 0);
+        return;
+    }
+
+    /** Erases the dinosaur from the given screen's location. */
+    method void erase() {
+        var int memAddress;
+        let memAddress = 16384 + (32*y) + (x/16);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+      return;
+    }
+
+    /** Methods for making the dinosaur jumps */
+    /** 
+        Play with y value and jump limit for making the jump quicker or with more weightlessness
+        More speed: increase y value + decrease counterJump
+        More weightlessness: decrease y value + increase counterJump
+     */
+    method void move(){
+        // if the dinosaur is in jumping state
+        if (jumping){
+            // if not falling, increment a jump counter and substract position y with a value
+            if (~falling){
+                let counterJump = counterJump + 1;
+                let y = y - 6;
+            } else { // if falling, decrement a jump counter and add position y with a value
+                let counterJump = counterJump - 1;
+                let y = y + 6;
+            }
+            // if the dinosaur has reached the jump limit, set the the dinosaur to a falling state
+            if (counterJump = 12){
+                let falling = true;
+            } 
+            // if the counter has reached the ground limit, set all state to false
+            if (counterJump = 0){
+                let falling = false;
+                let jumping = false;
+            } 
+        }
+
+        return;
+    }
+}

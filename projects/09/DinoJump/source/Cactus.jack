@@ -1,0 +1,127 @@
+class Cactus {
+    field int x, y; // screen location
+    field int type; // cactus' type
+    static int screenLimitStart, screenLimitEnd;
+
+    /** Constructs a new Landscape */
+    constructor Cactus new(int Ax, int Ay, int Atype) {
+        // TODO generate randomly
+        let x = Ax;
+        let y = Ay;
+        let screenLimitStart = 0;
+        let screenLimitEnd = 500;
+        let type = Atype;
+        return this;
+
+    }
+    
+    /** Setters and getters */
+    method void setX(int newX) { let x = newX; return; }
+    method void setY(int newY) { let y = newY; return; }
+    method void setType(int newType) { let type = newType; return; }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getHeight() { 
+        var int res;
+        if (type = 1) { 
+            let res = 9; 
+        }
+        if (type = 2) { 
+            let res = 3; 
+        }
+
+        return res;
+    }
+
+    method int getType() { return type; }
+
+    /** Disposes this object. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+   
+    /** Method for calling the right draw concerning its type */
+    method void draw() {
+        if (type = 1){
+            do draw1();
+        }
+        
+        if (type = 2){
+            do draw2();
+        }
+        return;
+    }
+
+    /** Draws the type 1*/
+    method void draw1() {
+        var int memAddress;
+        let memAddress = 16384 + (32*y) + (x/16);
+        do Memory.poke(memAddress+192, 768);
+        do Memory.poke(memAddress+224, 768);
+        do Memory.poke(memAddress+256, 864);
+        do Memory.poke(memAddress+288, 864);
+        do Memory.poke(memAddress+320, 864);
+        do Memory.poke(memAddress+352, 992);
+        do Memory.poke(memAddress+384, 896);
+        do Memory.poke(memAddress+416, 896);
+        do Memory.poke(memAddress+448, 896);
+        do Memory.poke(memAddress+480, 896);
+        return;
+    }
+
+    /** Draws the type 2*/
+    method void draw2() {
+        var int memAddress;
+        let memAddress = 16384 + (32*y) + (x/16);
+        do Memory.poke(memAddress+384, 896);
+        do Memory.poke(memAddress+416, 1984);
+        do Memory.poke(memAddress+448, 1984);
+        do Memory.poke(memAddress+480, 1984);
+        return;
+    }
+
+    /** Erases the cactus from the given screen's location. */
+    method void erase() {
+        var int memAddress;
+        let memAddress = 16384 + (32*y) + (x/16);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+      return;
+    }
+
+    /** Method for moving the cactus */
+    method void move(int Ax){
+        var int nextPosition;
+
+        // if x > 0
+        if (x > screenLimitStart){
+            // erase the cactus pixels
+            do erase();
+            let nextPosition = x - Ax;
+            // check if the next position will be out of the screen
+            if (nextPosition > screenLimitStart){
+                // update the x location if it's not out of the screen
+                let x = nextPosition;
+                // draw the dinosaur at the new position
+                do draw();
+            } 
+            else { // else move the cactus at the end of the screen
+                // set to the end of the line
+                let x = screenLimitEnd; 
+                // Draw the cactus
+                do draw();
+            }
+        }
+        return;
+    }
+}

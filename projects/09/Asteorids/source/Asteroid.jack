@@ -1,0 +1,139 @@
+// Developed by: Luciano Soares
+// Date: 27 May 2017
+// File: Asteroid.jack
+
+/**
+ * Asteroid class holds each individual asteroid floating in space.
+ */
+class Asteroid {
+	
+    field int x;
+    field int y;
+
+    field int dirX;
+    field int dirY;
+
+    field int radius;
+
+    static int leftWall;
+    static int rightWall;
+    static int topWall;
+    static int bottomWall;
+
+    /** Constructor for the asteroid . */
+    constructor Asteroid new(int arg_x, int arg_y, int arg_DirX, int arg_DirY, int arg_Radius) {
+	    let x = arg_x;
+	    let y = arg_y;
+
+	    let dirX = arg_DirX;
+	    let dirY = arg_DirY;
+
+	    let radius = arg_Radius;
+
+	    let leftWall = 1;
+    	let rightWall = 510;
+    	let topWall = 1;
+    	let bottomWall = 254;
+
+        return this;
+    }
+
+    /** Deallocates the Asteroid's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Shows Asteroid. */
+    method void show() {
+        do Screen.setColor(true);
+        do draw();
+        return;
+    }
+
+    /** Hides Asteroid. */
+    method void hide() {
+        do Screen.setColor(false);
+	    do draw();
+        return;
+    }
+
+    /** Draws Asteroid. */
+    method void draw() {
+	    do Screen.drawCircle(x, y, radius);
+	    return;
+    }
+
+    /** Returns the Asteroid's x position. */
+    method int getX() {
+        return x;
+    }
+
+    /** Returns the Asteroid's y position. */
+    method int getY() {
+        return y;
+    }
+
+    /** Returns the Asteroid's size. */
+	method int getSize() {
+		return radius;
+	}
+
+	/** Check if it was hitten. */
+    method boolean hit(int arg_x, int arg_y) {
+    	//var int dif1;
+    	//var int dif2;
+    	var boolean resp;
+    	
+    	let resp = false;
+
+    	if ( (arg_x>(x-radius)) & (arg_x<(x+radius)) & (arg_y>(y-radius)) & (arg_y<(y+radius)) ) {
+			let resp = true;
+    	}
+
+    	// Not working
+    	//let dif1 = arg_x-x;
+    	//let dif2 = arg_y-y;
+    	//if ( Math.sqrt( (dif1)*(dif1) + (dif2)*(dif2) ) < radius ) {
+    	//	let resp = true;
+    	//}
+
+    	return resp;
+
+    }
+
+    /** Moves Asteroid ahead. */
+    method boolean move() {
+
+    	var boolean leftScreen;
+    	
+    	let leftScreen = false;
+
+	    do hide();
+
+        let x = x + dirX;
+        let y = y + dirY;
+
+        // Check if had finish the screen
+	    if ( ~( (x - radius) > leftWall ) ) {
+	        let leftScreen = true;
+	    }
+        if ( ~( (x + radius) < rightWall ) ) {
+	        let leftScreen = true;
+	    }
+        if ( ~( (y - radius) > topWall ) ) {
+            let leftScreen = true;
+        }
+        if ( ~( (y + radius) < bottomWall ) ) {
+            let leftScreen = true;
+        }
+
+        if(~leftScreen) {
+        	do show();
+        }
+	    
+	    return leftScreen;
+    }
+
+
+}

@@ -1,0 +1,9 @@
+this is snakegame
+
+food is created on random position
+if your snake eat food, sanke's length is incresed 
+and if your snake crush edge, game is over!
+
+try it
+
+ 

@@ -1,0 +1,83 @@
+// Lifted from class Square in the Square example
+
+/** Implements a graphical obstacle. */
+class Obstacle {
+
+    field int x, y; // screen location of the obstacle's top-left corner
+    field int width, height;
+    field int val;  // points earned when the obstacle is knocked down
+
+    /** Constructs a new obstacle with a given location and value. */
+    constructor Obstacle new(int row, int col, int Aval) {
+        let width = 8;
+        let height = 11;
+        let val = Aval;
+        let x = col*8;
+        let y = row*11;
+        do draw();
+        return this;
+    }
+
+    /** Disposes this obstacle. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** draw if color = true, erase otherwise */
+    method void draw_or_erase(bool color)
+    {
+        do Output.moveCursor(y/11, x/8);
+        if (color) {
+            do Output.printChar(val+48);    // digit
+        } else {
+            do Output.printChar(32);        // space
+        }
+        do Screen.setColor(color);
+        if ((x > 1) & (y > 1) & ((x+width) < 512) & ((y+height) < 256)) {
+            do Screen.drawLine(x-2, y-2, x+width, y-2);
+            do Screen.drawLine(x-2, y-2, x-2, y+height);
+            do Screen.drawLine(x+width, y-2, x+width, y+height);
+            do Screen.drawLine(x-2, y+height, x+width, y+height);
+        }
+
+      return;
+    }
+
+    /** Draws the obstacle on the screen. */
+    method void draw() {
+        do draw_or_erase(true);
+        return;
+    }
+
+    /** Erases the obstacle from the screen. */
+    method void erase() {
+        do draw_or_erase(false);
+        return;
+    }
+
+    /** x coordiante of the obstacle's upper left corner */
+    method int x1() {
+        return x-2;
+    }
+
+    /** y coordiante of the obstacle's upper left corner */
+    method int y1() {
+        return y-2;
+    }
+
+    /** x coordiante of the obstacle's bottom right corner */
+    method int x2() {
+        return x+width;
+    }
+
+    /** y coordiante of the obstacle's bottom right corner */
+    method int y2() {
+        return y+height;
+    }
+
+    /** obstacle points */
+    method int value() {
+        return val;
+    }
+}

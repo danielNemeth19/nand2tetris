@@ -1,0 +1,37 @@
+
+/** Utility functions for random number generation */
+// https://en.wikipedia.org/wiki/Linear_congruential_generator
+// https://stackoverflow.com/questions/3062746/special-simple-random-number-generator
+// http://www.cse.wustl.edu/~jain/cse567-08/ftp/k_26rng.pdf
+
+// TODO https://en.wikipedia.org/wiki/Lehmer_random_number_generator#Parameters_in_common_use
+class Rand {
+    static int x,y,w,v;
+
+    function void init() {
+        let x = 829;
+        let y = 769;
+        let w = 867;
+
+        return;
+    }
+    
+    function int rand() {
+        let x = Rand.mod(146*x,31727);
+        let y = Rand.mod(142*y,31657);
+        let w = Rand.mod(157*w,32363);
+        // XXX the result of mod is always positive, so the returned
+        // value is biased? 
+        return Rand.mod(w-x+y,32362);
+    }
+
+    /** calculate a mod n, a, n signed 16-bit numbers */
+    function int mod(int a, int n) {
+        var int m;
+        let m = a - ((a/n)*n);
+        if (m < 0) {
+            let m = m + n;
+        }
+        return m;
+    }
+}

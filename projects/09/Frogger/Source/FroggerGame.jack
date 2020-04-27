@@ -1,0 +1,137 @@
+// File name: projects/09/Frogger/FroggerGame.jack
+
+/**
+ * Implements the Frogger game.
+ * This game allows the user to move a frog around the screen.
+ * The objective is to get the frog to the other side of the road safely.
+ * When the game starts, a frog of 20 by 20 pixels is shown at the
+ * bottom of the screen. The user controls the frog as follows.
+ * The 4 arrow keys are used to move the frog up, down, left, and right.
+ * The 'q' key is used to quit the game.
+ */
+
+class FroggerGame {
+   field Frogger frog;  // the frog of this game
+   field Road road;     // the background road
+   field int direction; // the frog's current direction: 
+                        // 0=none, 1=up, 2=down, 3=left, 4=right
+   field Car car1, car2, car3, car4;  // the cars on the road
+   field int numLives;  // number of lives remaining
+   field int score;     // number of successful attempts at crossing the road
+
+   /** Constructs a new Frogger Game. */
+   constructor FroggerGame new() {
+      // Creates a frog and positions it at the bottom of the screen.
+      let frog = Frogger.new(16, 204);
+      let road = Road.new();
+      let direction = 0;  // initial state is no movement
+      let car1 = Car.new(200, 50, 50, false, 2);
+      let car2 = Car.new(400, 50, 50, false, 2);
+      let car3 = Car.new(100, 150, 50, true, 2);
+      let car4 = Car.new(300, 150, 50, true, 2);
+      let numLives = 3;
+      let score = 0;
+      return this;
+   }
+
+   /** Disposes this game. */
+   method void dispose() {
+      do frog.dispose();
+      do road.dispose();
+      do car1.dispose();
+      do car2.dispose();
+      do car3.dispose();
+      do car4.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Moves the frog in the current direction. */
+   method bool moveFrogger() {
+      var bool success; // false: none, 1: success
+      let success = false;
+
+      if (direction = 1) { let success = frog.moveUp(); }
+      if (direction = 2) { do frog.moveDown(); }
+      if (direction = 3) { do frog.moveLeft(); }
+      if (direction = 4) { do frog.moveRight(); }
+      do Sys.wait(5);  // delays the next movement
+      return success;
+   }
+
+   /** Runs the game: handles the user's inputs and moves the frog accordingly */
+   method void run() {
+      var char key;  // the key currently pressed by the user
+      var boolean exit;
+      var bool success; // false: none, 1: success
+      let exit = false;
+      let success = false;
+      
+      // print score and lives remaining on screen
+      do Output.moveCursor(0, 0);
+      do Output.printString("Score=");
+      do Output.printInt(score);
+      do Output.moveCursor(0, 50);
+      do Output.printString("Lives=");
+      do Output.printInt(numLives);
+
+      while (~exit) {
+         let key = Keyboard.keyPressed();
+         if (key = 81)  { let exit = true; }     // q key
+         if (key = 131) { let direction = 1; }   // up arrow
+         if (key = 133) { let direction = 2; }   // down arrow
+         if (key = 130) { let direction = 3; }   // left arrow
+         if (key = 132) { let direction = 4; }   // right arrow
+
+         // waits for the key to be released
+         if (~(key = 0)) {
+            let success = moveFrogger();
+         }
+         if (success) {
+            // successfully crossed the road: update score
+            let score = score + 1;
+            let success = 0;
+
+            // print score
+            do Output.moveCursor(0, 0);
+            do Output.printString("Score=");
+            do Output.printInt(score);
+
+            // initialize new frog
+            do frog.dispose();
+            let frog = Frogger.new(16, 206);
+            do Sys.wait(5);  // delays the next movement
+         }
+         do car1.Update();
+         do car2.Update();
+         do car3.Update();
+         do car4.Update();
+         if (frog.collide()) {
+            // failed to cross without collision: update lives
+            let numLives = numLives - 1;
+
+            // print lives remaining
+            do Output.moveCursor(0, 50);
+            do Output.printString("Lives=");
+            do Output.printInt(numLives);
+
+            // End game if out of lives
+            if (numLives = 0) {
+                let exit = true; 
+            } 
+
+            // initialize new frog
+            do frog.dispose();
+            let frog = Frogger.new(16, 206);
+            do Sys.wait(5);  // delays the next movement
+         }
+     } // while
+
+     do Output.moveCursor(10, 24);
+     do Output.printString("GAME OVER!");
+     return;
+   }
+}
+
+
+

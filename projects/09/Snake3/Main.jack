@@ -1,0 +1,14 @@
+// This program is a snake that can be commanded to move at will along the screen
+// It can turn in all four directions and can overlap
+// It halts at the end of the screen
+
+/** Initializes a new Snake game and starts running it. */
+class Main {
+    function void main() { 
+        var SnakeGame game;
+        let game = SnakeGame.new();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

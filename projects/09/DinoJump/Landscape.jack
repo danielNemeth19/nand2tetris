@@ -1,0 +1,78 @@
+class Landscape {
+    field int x, y; // screen location
+    field Array objects;
+    field Cactus cactus1; // cactus object 1
+    field Cactus cactus2; // cactus object 2
+    field Cactus cactus3; // cactus object 3
+    field Cactus cactus4; // cactus object 4
+
+    /** Constructs a new Landscape */
+    constructor Landscape new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+
+        // instanciate several cactus object
+        // with different types
+        // it must first be after the dinosaur (x=50)
+        let cactus1 = Cactus.new(150, 140, 1);
+        let cactus2 = Cactus.new(250, 140, 2);
+        let cactus3 = Cactus.new(350, 140, 1);
+        let cactus4 = Cactus.new(450, 140, 2);
+
+        let objects = Array.new(4);
+        return this;
+    }
+
+    /** Disposes this object. */
+    method void dispose() {
+        do cactus1.dispose();
+        do cactus2.dispose();
+        do cactus3.dispose();
+        do cactus4.dispose();
+        do objects.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        // generate a line which take all the 512 of the screen
+        do Screen.drawLine(0,y,511,y);
+
+        // draw all the cactus
+        do cactus1.draw();
+        do cactus2.draw();
+        do cactus3.draw();
+        do cactus4.draw();
+
+        // insert them into an array
+        let objects[0] = cactus1;
+        let objects[1] = cactus2;
+        let objects[2] = cactus3;
+        let objects[3] = cactus4;
+
+        return;
+    }
+
+    /** Setters and getters */
+    method void setX(int newX) { let x = newX; return; }
+    method void setY(int newY) { let y = newY; return; }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getObjectsArray() { return objects; }
+
+    /** Method for making move all the cactus or other objects */
+    method void moveObjects(int Ax){
+        var int i;
+        var Cactus cactus;
+        let i = 0;
+        // process all the objects of the object's array
+        while (i < 4) {
+            // call the move method of the object
+            let cactus = objects[i];
+            do cactus.move(Ax);
+            let i = i + 1;
+        }
+        return;
+    }
+}

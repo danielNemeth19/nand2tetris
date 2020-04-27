@@ -1,0 +1,106 @@
+/**
+Landscape class.
+Doesn't do much, just manages the balls array.
+All the game logic is in the ball class.
+*/
+class Balls {
+	field Array balls;
+	field int maxBalls;
+
+/**
+Constructor.
+Number of balls is given by Game.
+*/
+	constructor Balls new(int b) {
+		let maxBalls = b;
+		let balls = Array.new(maxBalls);
+		do loadBalls();
+		return this;
+	}
+	
+    method void dispose() {
+		do disposeBalls();
+		do balls.dispose();
+		do Memory.deAlloc(this);
+        return;
+    }
+
+	method void disposeBalls() {
+		var Ball ball;
+		var int i;
+		let i = 0;
+		while (i < maxBalls) {
+			let ball = balls[i];
+			do ball.dispose();
+			let i = i + 1;
+		}
+		return;
+	}
+
+/**
+Create balls.
+*/	
+	
+	method void loadBalls() {
+		var int i;
+		let i = 0;
+		while (i < maxBalls) {
+			let balls[i] = Ball.new();
+			let i = i + 1;
+		}
+		return;
+	}
+	
+/**
+Make each ball affect the fly.
+*/	
+
+	method void affect(Fly fly) {
+		var Ball ball;
+		var int i;
+		let i = 0;
+		while (i < maxBalls) {
+			let ball = balls[i];
+			do ball.affect(fly);
+			let i = i + 1;
+		}
+		return;
+	}
+	
+/**
+Check if any ball is in stopped state.
+*/	
+
+	method boolean getStopped() {
+		var Ball ball;
+		var int i;
+		var boolean result;
+		let result = false;
+		let i = 0;
+		while (i < maxBalls) {
+			let ball = balls[i];
+			let result = ball.getStopped();
+			let i = i + 1;
+			if (result) {
+				return result;
+			}
+		}
+		return result;
+	}
+
+/**
+Draw all balls.
+*/	
+
+	method void draw() {
+		var Ball ball;
+		var int i;
+		let i = 0;
+		while (i < maxBalls) {
+			let ball = balls[i];
+			do ball.draw();
+			let i = i + 1;
+		}
+		return;
+	}
+}

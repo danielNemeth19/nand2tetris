@@ -1,0 +1,93 @@
+/** Implements snake and his food. */
+class Snake {
+	field Array snakex;
+	field Array snakey;
+	field int len;
+
+	/** Constructs a snake of given dimentions*/
+	constructor Snake new(Array x, Array y, int slen) {
+		let snakex = x;
+		let snakey = y;
+		let len = slen;
+		do draw();
+		return this;
+	}
+
+    /** Disposes this square. */
+    method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Draws the snake on the screen. */
+   method void draw() {
+   	  var int i;
+   	  let i = 0;
+   	  do Screen.clearScreen();
+      do Screen.setColor(true);
+      while(~(snakex[i]= -1)) {
+	     do Screen.drawRectangle(snakex[i], snakey[i], snakex[i] + 15, snakey[i] + 15);
+      	 let i = i+1;
+      }
+      return;
+   }
+
+   /** Moves the snake by 16 pixels. */
+   method void move(int direction) {
+
+ 	 var int i;
+   	 let i = len-1;
+
+   	if (direction = 1) { //up
+   		if (snakey[0] - 16 < 0) {
+		    return;  
+   		}
+   	}
+
+   	if (direction = 2) { //down
+   		if ((snakey[0] + 16) = 256) {
+		    return;  
+   		}
+   	}
+
+   	if (direction = 3) {  // left
+   		if (snakex[0] - 16 < 0) {
+		    return;  
+   		}
+   	}
+   	if (direction = 4) { //right
+   		if ((snakex[0] + 16) = 512) {
+		    return;  
+   		}
+   	}
+
+
+   	if (~(direction = 0)) { //still
+
+	   	 while(i>0) {
+	     	 let snakex[i] = snakex[i-1];
+	     	 let snakey[i] = snakey[i-1];
+	         let i = i-1;
+	        }
+	         
+	   	if (direction = 1) { //up
+	         let snakex[0] = snakex[0];
+	         let snakey[0] = snakey[0] - 16;
+	   	} 
+	   	if (direction = 2) { //down
+	         let snakex[0] = snakex[0];
+	         let snakey[0] = snakey[0] + 16;
+	   	}
+	   	if (direction = 3) { //left
+	         let snakex[0] = snakex[0] - 16;
+	         let snakey[0] = snakey[0];
+	   	} 
+	   	if (direction = 4) { //right
+	         let snakex[0] = snakex[0] + 16;
+	         let snakey[0] = snakey[0];
+	   	} 
+	  }
+   	do draw();
+    return;      
+   }
+}

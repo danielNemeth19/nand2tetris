@@ -1,0 +1,87 @@
+// This file is part of Project 9
+
+// (code started from projects/09/Square/Square.jack)
+
+/** Implements a graphical square. */
+class Player {
+
+   field int x ;
+   field int y ;
+   field int r ;
+
+   /** Constructs a new square with a given location and manhatten distance radius . */
+   constructor Player new(int Ax, int Ay, int Ar) {
+      let x = Ax ;
+      let y = Ay ;
+      let r = Ar ;
+      do cdraw(false) ;
+      return this ;
+   }
+
+   /** Disposes this square. */
+   method void dispose() {
+      do Memory.deAlloc(this) ;
+      return ;
+   }
+
+   /** Return the x coordinate of player. */
+   method int getx() { return x ; }
+
+   /** Return the y coordinate of player. */
+   method int gety() { return y ; }
+
+
+   /** Draws the square on the screen in white . */
+   method void draw() {
+     do cdraw(false) ;
+     return ;
+   }
+
+   /** Draws the square on the screen in specified color. */
+   method void cdraw(boolean Acolor) {
+      do Screen.setColor(Acolor) ;
+      do Screen.drawRectangle(x-r, y-r, x + r, y + r) ;
+      return ;
+   }
+
+
+   /** Moves the square up by 2 pixels. */
+   method void moveUp() {
+      if ((y-r) > 1) {
+         do cdraw(true) ;
+         let y = y - 1 ;
+         do cdraw(false) ;
+      }
+      return ;
+   }
+
+   /** Moves the square down by 2 pixels. */
+   method void moveDown() {
+      if ((y + r) < 254) {
+         do cdraw(true) ;
+         let y = y + 1 ;
+         do cdraw(false) ;
+      }
+      return ;
+   }
+
+   /** Moves the square left by 2 pixels. */
+   method void moveLeft() {
+      if ((x-r) > 1) {
+         do cdraw(true) ;
+         let x = x - 1 ;
+         do cdraw(false) ;
+      }
+      return ;
+   }
+
+   /** Moves the square right by 2 pixels. */
+   method void moveRight() {
+      if ((x + r) < 510) {
+         do cdraw(true) ;
+         let x = x + 1 ;
+         do cdraw(false) ;
+      }
+      return ;
+   }
+}

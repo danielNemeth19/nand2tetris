@@ -1,0 +1,126 @@
+
+// Trigonometric functions
+
+class Trig {
+    static Array cosTable;
+
+    function void init() {
+        let cosTable = Array.new(91);
+
+        let cosTable[0]         = 100;
+        let cosTable[1]         = 100;
+        let cosTable[2]         = 100;
+        let cosTable[3]         = 100;
+        let cosTable[4]         = 100;
+        let cosTable[5]         = 100;
+        let cosTable[6]         = 99 ;
+        let cosTable[7]         = 99 ;
+        let cosTable[8]         = 99 ;
+        let cosTable[9]         = 99 ;
+        let cosTable[10]        = 98 ;
+        let cosTable[11]        = 98 ;
+        let cosTable[12]        = 98 ;
+        let cosTable[13]        = 97 ;
+        let cosTable[14]        = 97 ;
+        let cosTable[15]        = 97 ;
+        let cosTable[16]        = 96 ;
+        let cosTable[17]        = 96 ;
+        let cosTable[18]        = 95 ;
+        let cosTable[19]        = 95 ;
+        let cosTable[20]        = 94 ;
+        let cosTable[21]        = 93 ;
+        let cosTable[22]        = 93 ;
+        let cosTable[23]        = 92 ;
+        let cosTable[24]        = 91 ;
+        let cosTable[25]        = 91 ;
+        let cosTable[26]        = 90 ;
+        let cosTable[27]        = 89 ;
+        let cosTable[28]        = 88 ;
+        let cosTable[29]        = 87 ;
+        let cosTable[30]        = 87 ;
+        let cosTable[31]        = 86 ;
+        let cosTable[32]        = 85 ;
+        let cosTable[33]        = 84 ;
+        let cosTable[34]        = 83 ;
+        let cosTable[35]        = 82 ;
+        let cosTable[36]        = 81 ;
+        let cosTable[37]        = 80 ;
+        let cosTable[38]        = 79 ;
+        let cosTable[39]        = 78 ;
+        let cosTable[40]        = 77 ;
+        let cosTable[41]        = 75 ;
+        let cosTable[42]        = 74 ;
+        let cosTable[43]        = 73 ;
+        let cosTable[44]        = 72 ;
+        let cosTable[45]        = 71 ;
+        let cosTable[46]        = 69 ;
+        let cosTable[47]        = 68 ;
+        let cosTable[48]        = 67 ;
+        let cosTable[49]        = 66 ;
+        let cosTable[50]        = 64 ;
+        let cosTable[51]        = 63 ;
+        let cosTable[52]        = 62 ;
+        let cosTable[53]        = 60 ;
+        let cosTable[54]        = 59 ;
+        let cosTable[55]        = 57 ;
+        let cosTable[56]        = 56 ;
+        let cosTable[57]        = 54 ;
+        let cosTable[58]        = 53 ;
+        let cosTable[59]        = 52 ;
+        let cosTable[60]        = 50 ;
+        let cosTable[61]        = 48 ;
+        let cosTable[62]        = 47 ;
+        let cosTable[63]        = 45 ;
+        let cosTable[64]        = 44 ;
+        let cosTable[65]        = 42 ;
+        let cosTable[66]        = 41 ;
+        let cosTable[67]        = 39 ;
+        let cosTable[68]        = 37 ;
+        let cosTable[69]        = 36 ;
+        let cosTable[70]        = 34 ;
+        let cosTable[71]        = 33 ;
+        let cosTable[72]        = 31 ;
+        let cosTable[73]        = 29 ;
+        let cosTable[74]        = 28 ;
+        let cosTable[75]        = 26 ;
+        let cosTable[76]        = 24 ;
+        let cosTable[77]        = 22 ;
+        let cosTable[78]        = 21 ;
+        let cosTable[79]        = 19 ;
+        let cosTable[80]        = 17 ;
+        let cosTable[81]        = 16 ;
+        let cosTable[82]        = 14 ;
+        let cosTable[83]        = 12 ;
+        let cosTable[84]        = 10 ;
+        let cosTable[85]        = 9  ;
+        let cosTable[86]        = 7  ;
+        let cosTable[87]        = 5  ;
+        let cosTable[88]        = 3  ;
+        let cosTable[89]        = 2  ;
+        let cosTable[90]        = 0  ;
+
+        return;
+    }
+
+    function void deinit() {
+        do cosTable.dispose();
+        return;
+    }
+
+    /** Computes the cosinus
+        @param x angle in degrees, from 0 to 90 (first circumference sector only)
+        @return 100*cos(x)
+    */
+    function int cos(int x) {
+        return cosTable[x];
+    }
+
+    /** Computes the sinus
+        @param x angle in degrees, from 0 to 90 (first circumference sector only)
+        @return 100*sin(x)
+    */
+    function int sin(int x) {
+        // sin(x) has a phase lag of 90 degrees wrt cos(x)
+        return cosTable[90-x];
+    }
+}

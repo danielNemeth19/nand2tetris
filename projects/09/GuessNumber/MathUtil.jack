@@ -1,0 +1,5 @@
+class MathUtil {
+    function int mod(long a, int b) {
+        return (a - (b * (a / b))); 
+    }
+}

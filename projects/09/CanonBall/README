@@ -1,0 +1,76 @@
+C A N N O N B A L L
+===================
+
+Shoot your cannon to knock down the nine obstacles!
+You've got nine shots to score up to 45 points.
+
+Here are the game keys:
+
+UP    arrow  Increase shooting elevation angle
+DOWN  arrow  Decrease shooting elevation angle
+LEFT  arrow  Decrease initial ball speed
+RIGHT arrow  Increase initial ball speed
+SPACE        Fire cannon!
+Q            Quit game
+
+See Cannonball-screenshot.png .
+
+Notes
+=====
+
+Parabolic Shot
+--------------
+
+The trajectory of a ball shot by the cannon is the typical parabola with the
+following movement equations:
+
+    x = vxi t
+    y = vyi t - 1/2 g t^2
+
+With
+
+    vxi = vi cos a
+    vyi = vi sin a
+
+Where vi is the initial shooting speed, and a is the elevation angle.
+
+See for example https://en.wikipedia.org/wiki/Projectile_motion .
+
+The equation constants are scaled in the game to keep the ball inside the
+screen for typical time, speed and angle values.
+
+The cos and sin functions are implemented in the program using a lookup table.
+See trig.ods for details.
+
+Random Numbers
+--------------
+
+To position the game obstacles at random locations, I have implemented a
+rudimentary Linear Congruential Random Number Generator. See for example
+https://en.wikipedia.org/wiki/Linear_congruential_generator .
+
+To seed it, the generator keeps rolling in the splash screen till the user
+presses a key.
+
+Obstacle detection
+------------------
+
+To keep the game animations somewhat brisk, obstacle detection is done by
+checking if the ball trace crosses any obstacle bounding rectangle between
+times t and t+1 .
+
+This means that sometimes the ball seems to "overshoot" an obstacle before the
+obstacle disappears.
+
+
+Bugs
+====
+
+Sometimes the emulator shows display artifacts after the shot trace is erased
+in the game. I think this may be due to a race condition in the painting and
+input threads of the emulator, but I'm not sure.
+
+Vertical sections of the trajectory aren't drawn.
+
+It may well be that an obstacle is placed just on top of the cannon. In this
+case, you can make a nearly vertical shot to knock it down ;-)
