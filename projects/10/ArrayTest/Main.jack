@@ -5,22 +5,34 @@
 
 // (identical to projects/09/Average/Main.jack)
 
+/** Towards. take a coordinate in one dimension and
+    give updated coordinate one unit away, closer to goal
+*/
+//one more line comment
+
+
+
 /** Computes the average of a sequence of integers. */
 class Main {
     function void main() {
         var Array a;
         var int length;
         var int i, sum;
-	
+	// inline comment
 	let length = Keyboard.readInt("HOW MANY NUMBERS? ");
 	let a = Array.new(length);
 	let i = 0;
-	
+
+	/** more comment */
 	while (i < length) {
 	    let a[i] = Keyboard.readInt("ENTER THE NEXT NUMBER: ");
 	    let i = i + 1;
 	}
-	
+
+  /** Towards. take a coordinate in one dimension and
+   **    give updated coordinate one unit away, closer to goal
+   */
+
 	let i = 0;
 	let sum = 0;
 	
