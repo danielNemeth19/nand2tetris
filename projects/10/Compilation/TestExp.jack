@@ -1,0 +1,21 @@
+class TestExp {
+    static boolean test;
+
+    constructor Square new(int Ax) {
+        let a[1] = a[2];
+        let game = SquareGame.new();
+        do draw();
+        do game.dispose();
+        let j = j / (-2);
+        let options[0] = first;
+        let a[1] = a[2];
+        do Screen.setColor(false);
+        return x;
+   }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+   }
+
+}
