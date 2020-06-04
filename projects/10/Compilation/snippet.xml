@@ -1,0 +1,24 @@
+<letStatement>
+    <keyword>let</keyword>
+    <identifier>j</identifier>
+    <symbol>=</symbol>
+    <expression>
+        <term>
+            <identifier>j</identifier>
+        </term>
+        <symbol>/</symbol>
+        <term>
+            <symbol>(</symbol>
+                <expression>
+                    <term>
+                        <symbol>-</symbol>
+                            <term>
+                                <integerConstant>2</integerConstant>
+                            </term>
+                    </term>
+                </expression>
+            <symbol>)</symbol>
+        </term>
+    </expression>
+    <symbol>;</symbol>
+</letStatement>

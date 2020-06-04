@@ -1,0 +1,24 @@
+class Test {
+    static boolean test;    // random
+    field int x, y, w;        // comments
+    static int q;
+
+    constructor Square new(int Ax, int Ay, int Asize) {
+        var SquareGame game, game2, game3;
+        var SquareLame lame, lame2, lame3;
+
+        let x = Ax;
+        let options[0] = first;
+        let y = Ay;
+        let size = Asize;
+        //do draw();
+        do Screen.setColor(false);
+        return x;
+   }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+   }
+
+}
