@@ -405,7 +405,7 @@ class Parser:
         __logger__.info(f"Matching grammar for: {self.tokenizer.current_token}")
 
         def _compile_term():
-            if self.is_simple_term():
+            if self._is_simple_term():
                 self._handle_simple_term(term_grammar)
             elif self._if_optional_group_applies(expression_grammar, optional_group_key="optionalSubGroup_1"):
                 self._write_non_terminal_tag("term")
@@ -464,6 +464,30 @@ class Parser:
 
         self._write_non_terminal_tag(elem="expression", open_tag=False)
 
+    def compile_expression_list(self):
+        expression_list_grammar = self._expression_list_grammar()
+        self._write_non_terminal_tag(elem="expressionList")
+        optional_grammar = self._get_optional_grammar(expression_list_grammar)
+        if optional_grammar["validator"]():
+            optional_grammar["write"]["terminal"]()
+            while self._if_optional_group_applies(expression_list_grammar, optional_group_key="optionalGroup_2"):
+                for elem in expression_list_grammar["optionalGroup_2"]:
+                    __logger__.info(f"Matching grammar for: {self.tokenizer.current_token}")
+                    elem_grammar = expression_list_grammar[elem]
+                    validator_obj = elem_grammar["validator"]
+                    if isinstance(validator_obj, dict):
+                        if self._match_grammar(**validator_obj):
+                            elem_grammar["write"]["terminal"]()
+                    else:
+                        if validator_obj():
+                            elem_grammar["write"]["terminal"]()
+        self._write_non_terminal_tag(elem="expressionList", open_tag=False)
+
+    def write_non_terminal_close_tag(self, block_grammar):
+        closing_elem = block_grammar["closePattern"]
+        close_tag = block_grammar[closing_elem]["write"]["non-terminal"]
+        self.file.write(close_tag)
+
     def _handle_simple_term(self, grammar):
         self.file.write(grammar["write"]['non-terminal'])
         grammar["write"]["terminal"]()
@@ -491,25 +515,6 @@ class Parser:
             if self._match_grammar(**validator_kwargs):
                 elem_grammar["write"]["terminal"]()
 
-    def compile_expression_list(self):
-        expression_list_grammar = self._expression_list_grammar()
-        self._write_non_terminal_tag(elem="expressionList")
-        optional_grammar = self._get_optional_grammar(expression_list_grammar)
-        if optional_grammar["validator"]():
-            optional_grammar["write"]["terminal"]()
-            while self._if_optional_group_applies(expression_list_grammar, optional_group_key="optionalGroup_2"):
-                for elem in expression_list_grammar["optionalGroup_2"]:
-                    __logger__.info(f"Matching grammar for: {self.tokenizer.current_token}")
-                    elem_grammar = expression_list_grammar[elem]
-                    validator_obj = elem_grammar["validator"]
-                    if isinstance(validator_obj, dict):
-                        if self._match_grammar(**validator_obj):
-                            elem_grammar["write"]["terminal"]()
-                    else:
-                        if validator_obj():
-                            elem_grammar["write"]["terminal"]()
-        self._write_non_terminal_tag(elem="expressionList", open_tag=False)
-
     def _write_terminal_element(self, advance_token=True):
         token_type = self.tokenizer.get_token_type()
         get_value = getattr(self.tokenizer, token_type)
@@ -521,11 +526,6 @@ class Parser:
         token_type = cached_token_dict.get("cached_token_type")
         token_value = cached_token_dict.get("cached_token")
         self.file.write(f"<{token_type}>{token_value}</{token_type}>\n")
-
-    def write_non_terminal_close_tag(self, block_grammar):
-        closing_elem = block_grammar["closePattern"]
-        close_tag = block_grammar[closing_elem]["write"]["non-terminal"]
-        self.file.write(close_tag)
 
     def _write_non_terminal_tag(self, elem, open_tag=True):
         tag_to_write = f"<{elem}>\n" if open_tag else f"</{elem}>\n"
@@ -584,7 +584,7 @@ class Parser:
             return True
         return False
 
-    def is_simple_term(self):
+    def _is_simple_term(self):
         token = self.tokenizer.current_token
         token_type = self.tokenizer.get_token_type()
         if token in self.KEYWORD_CONSTANTS:
@@ -668,7 +668,6 @@ class Parser:
             "ClassName": {
                 "validator": {
                     "expected_token": self.source_p.stem,
-                    "expected_token_type": self.tokenizer.IDENTIFIER
                 },
                 "write": {
                     "terminal": partial(self._write_terminal_element, False)
@@ -677,7 +676,6 @@ class Parser:
             "{": {
                 "validator": {
                     "expected_token": "{",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": partial(self._write_terminal_element, False)
@@ -745,7 +743,6 @@ class Parser:
             ",": {
                 "validator": {
                     "expected_token": ",",
-                    "expected_token_type": self.tokenizer.SYMBOL,
                     "optional": True
                 },
                 "write": {
@@ -796,7 +793,6 @@ class Parser:
             "(": {
                 "validator": {
                     "expected_token": "(",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": self._write_terminal_element
@@ -814,7 +810,6 @@ class Parser:
             ")": {
                 "validator": {
                     "expected_token": ")",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": self._write_terminal_element,
@@ -824,7 +819,6 @@ class Parser:
             "subroutineBody": {
                 "validator": {
                     "expected_token": "{",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "non-terminal": "<subroutineBody>\n",
@@ -859,7 +853,6 @@ class Parser:
             ",": {
                 "validator": {
                     "expected_token": ",",
-                    "expected_token_type": self.tokenizer.SYMBOL,
                     "optional": True
                 },
                 "write": {
@@ -877,7 +870,6 @@ class Parser:
             "{": {
                 "validator": {
                     "expected_token": "{",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": self._write_terminal_element
@@ -886,7 +878,6 @@ class Parser:
             "varDec": {
                 "validator": {
                     "expected_token": "var",
-                    "expected_token_type": self.tokenizer.KEYWORD,
                     "optional": True
                 },
                 "write": {
@@ -944,7 +935,6 @@ class Parser:
             ",": {
                 "validator": {
                     "expected_token": ",",
-                    "expected_token_type": self.tokenizer.SYMBOL,
                     "optional": True
                 },
                 "write": {
@@ -954,7 +944,6 @@ class Parser:
             ";": {
                 "validator": {
                     "expected_token": ";",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": self._write_terminal_element,
@@ -1020,7 +1009,6 @@ class Parser:
             ";": {
                 "validator": {
                     "expected_token": ";",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": self._write_terminal_element,
@@ -1051,7 +1039,6 @@ class Parser:
             ";": {
                 "validator": {
                     "expected_token": ";",
-                    "expected_token_type": self.tokenizer.SYMBOL
                 },
                 "write": {
                     "terminal": self._write_terminal_element,
