@@ -86,6 +86,7 @@
               <integerConstant> 0 </integerConstant>
             </term>
           </expression>
+          <symbol>;</symbol>
         </letStatement>
         <whileStatement>
           <keyword> while </keyword>
