@@ -1,0 +1,11 @@
+class Main {
+
+    function void main() {
+        var int x, rate, sum;
+        let x = 4;
+        let rate = 2;
+        let sum = x * (1 + rate);
+        do Output.printInt(sum);
+        return;
+   }
+}

@@ -1,0 +1,13 @@
+function Main.main 1
+push constant 2
+push constant 3
+call Multiply.new 2
+pop local 0
+push local 0
+call Multiply.calc 1
+pop temp 0
+push local 0
+call Multiply.dispose 1
+pop temp 0
+push constant 0
+return
