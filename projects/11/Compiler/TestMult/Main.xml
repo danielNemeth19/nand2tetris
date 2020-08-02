@@ -1,0 +1,151 @@
+<class>
+<keyword>class</keyword>
+<identifier>Main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<subroutineDec>
+<keyword>function</keyword>
+<keyword>void</keyword>
+<identifier>main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<varDec>
+<keyword>var</keyword>
+<keyword>int</keyword>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>rate</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>sum</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>4</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>rate</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>sum</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>*</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>rate</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>printInt</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>sum</identifier>
+	<identifier_spec>
+		<kind>local</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>
