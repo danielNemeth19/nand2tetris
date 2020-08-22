@@ -1,15 +1,11 @@
 <class>
 <keyword>class</keyword>
 <identifier>Main</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>{</symbol>
 <subroutineDec>
 <keyword>function</keyword>
 <keyword>void</keyword>
 <identifier>main</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>(</symbol>
 <parameterList>
 </parameterList>
@@ -20,12 +16,8 @@
 <doStatement>
 <keyword>do</keyword>
 <identifier>Output</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>.</symbol>
 <identifier>printInt</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 <expression>

@@ -23,7 +23,7 @@
 	</identifier_spec>
 <identifier>multi</identifier>
 	<identifier_spec>
-		<kind>local</kind>
+		<kind>var</kind>
 		<index>0</index>
 		<status>defined</status>
 	</identifier_spec>
@@ -34,7 +34,7 @@
 <keyword>let</keyword>
 <identifier>multi</identifier>
 	<identifier_spec>
-		<kind>local</kind>
+		<kind>var</kind>
 		<index>0</index>
 		<status>used</status>
 	</identifier_spec>
@@ -71,7 +71,7 @@
 <keyword>do</keyword>
 <identifier>multi</identifier>
 	<identifier_spec>
-		<kind>local</kind>
+		<kind>var</kind>
 		<index>0</index>
 		<status>used</status>
 	</identifier_spec>
@@ -89,7 +89,7 @@
 <keyword>do</keyword>
 <identifier>multi</identifier>
 	<identifier_spec>
-		<kind>local</kind>
+		<kind>var</kind>
 		<index>0</index>
 		<status>used</status>
 	</identifier_spec>

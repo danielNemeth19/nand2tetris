@@ -405,7 +405,7 @@ class CodeWriter:
         self.save_retr_addr()
         self.pop_to_segment(arg1="argument", arg2=0, comment="// -->Reposition return value for the caller")
         self.reposition_sp()
-        for segment, i in zip(("THAT", "THIS", "ARG", "LCL"), range(1,5)):
+        for segment, i in zip(("THAT", "THIS", "ARG", "LCL"), range(1, 5)):
             self.restore_segment_pointer(segment, i)
         self.goto_return_address_in_callers_code()
 

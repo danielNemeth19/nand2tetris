@@ -1,0 +1,38 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/11/Seven/Main.jack
+
+/**
+ * Computes the value of 1 + (2 * 3) and prints the result
+ * at the top-left of the screen.  
+ */
+class Main {
+
+   function void main() {
+      do Output.printInt(1 + (2 * 3));
+      return;
+   }
+
+   /** Hides the ball. */
+   method void hide() {
+	    do draw();
+        return;
+    }
+
+   /** Draws the ball. */
+   method void draw() {
+        var int dx, dy, temp;
+        do Screen.drawRectangle(x, y, x + 5, y + 5);
+	    return;
+    }
+
+   function void main() {
+      var SquareGame game;
+      let game = SquareGame.new();
+      do game.run();
+      do game.dispose();
+      return;
+    }
+
+}
