@@ -1,15 +1,11 @@
 <class>
 <keyword>class</keyword>
 <identifier>Main</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>{</symbol>
 <subroutineDec>
 <keyword>function</keyword>
 <keyword>void</keyword>
 <identifier>main</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>(</symbol>
 <parameterList>
 </parameterList>
@@ -20,36 +16,16 @@
 <keyword>var</keyword>
 <keyword>int</keyword>
 <identifier>x</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>0</index>
-		<status>defined</status>
-	</identifier_spec>
 <symbol>,</symbol>
 <identifier>rate</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>1</index>
-		<status>defined</status>
-	</identifier_spec>
 <symbol>,</symbol>
 <identifier>sum</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>2</index>
-		<status>defined</status>
-	</identifier_spec>
 <symbol>;</symbol>
 </varDec>
 <statements>
 <letStatement>
 <keyword>let</keyword>
 <identifier>x</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>0</index>
-		<status>used</status>
-	</identifier_spec>
 <symbol>=</symbol>
 <expression>
 <term>
@@ -61,11 +37,6 @@
 <letStatement>
 <keyword>let</keyword>
 <identifier>rate</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>1</index>
-		<status>used</status>
-	</identifier_spec>
 <symbol>=</symbol>
 <expression>
 <term>
@@ -77,20 +48,10 @@
 <letStatement>
 <keyword>let</keyword>
 <identifier>sum</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>2</index>
-		<status>used</status>
-	</identifier_spec>
 <symbol>=</symbol>
 <expression>
 <term>
 <identifier>x</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>0</index>
-		<status>used</status>
-	</identifier_spec>
 </term>
 <symbol>*</symbol>
 <term>
@@ -102,11 +63,6 @@
 <symbol>+</symbol>
 <term>
 <identifier>rate</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>1</index>
-		<status>used</status>
-	</identifier_spec>
 </term>
 </expression>
 <symbol>)</symbol>
@@ -117,22 +73,13 @@
 <doStatement>
 <keyword>do</keyword>
 <identifier>Output</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>.</symbol>
 <identifier>printInt</identifier>
-	<identifier_spec>
-	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 <expression>
 <term>
 <identifier>sum</identifier>
-	<identifier_spec>
-		<kind>local</kind>
-		<index>2</index>
-		<status>used</status>
-	</identifier_spec>
 </term>
 </expression>
 </expressionList>

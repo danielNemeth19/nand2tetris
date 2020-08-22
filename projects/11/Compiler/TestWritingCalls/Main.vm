@@ -1,0 +1,10 @@
+function Main.main 0
+call Output.printInt 1
+function Main.hide 0
+call Main.draw 1
+function Main.draw 3
+call Screen.drawRectangle 4
+function Main.main 1
+call SquareGame.new 0
+call SquareGame.run 1
+call SquareGame.dispose 1

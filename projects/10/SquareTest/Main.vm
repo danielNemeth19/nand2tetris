@@ -1,0 +1,5 @@
+function Main.main 1
+call SquareGame.new 0
+call SquareGame.run 1
+call SquareGame.dispose 1
+function Main.test 4
