@@ -1,10 +1,24 @@
 function Main.main 0
+push constant 1
+push constant 2
+push constant 3
+call Math.multiply 2
+add
 call Output.printInt 1
 function Main.hide 0
 call Main.draw 1
 function Main.draw 3
+push constant None
+push constant None
+push constant None
+push constant 5
+add
+push constant None
+push constant 5
+add
 call Screen.drawRectangle 4
 function Main.main 1
 call SquareGame.new 0
+push constant None
 call SquareGame.run 1
 call SquareGame.dispose 1

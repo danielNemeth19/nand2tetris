@@ -28,6 +28,10 @@ class VmWriter:
         push_command = f"push {segment} {index}\n"
         self.file.write(push_command)
 
+    def write_pop(self, segment, index):
+        pop_command = f"pop {segment} {index}\n"
+        self.file.write(pop_command)
+
     def write_arithmetic(self, command):
         command_map = {
             "+": "add",
@@ -36,6 +40,10 @@ class VmWriter:
         }
         command = f"{command_map.get(command)}\n"
         self.file.write(command)
+
+    def write_return(self):
+        return_command = "return"
+        self.file.write(return_command)
 
     @staticmethod
     def _setup_logger():
