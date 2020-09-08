@@ -317,6 +317,7 @@ class Parser:
             validator_kwargs = elem_grammar["validator"]
             if self._match_grammar(**validator_kwargs):
                 elem_grammar["write"]["terminal"]()
+        self.vm_writer.write_pop("temp", 0)
         self._write_non_terminal_tag(elem="doStatement", open_tag=False)
 
     def compile_return_statement(self):
@@ -336,8 +337,12 @@ class Parser:
         validator_kwargs = close_grammar["validator"]
         if self._match_grammar(**validator_kwargs):
             close_grammar["write"]["terminal"]()
-        self._write_non_terminal_tag(elem="returnStatement", open_tag=False)
+        subroutine_type = self.function_cache.get("type")
+        if subroutine_type == "void":
+            self.vm_writer.write_push("constant", 0)
+        self.vm_writer.write_return()
         self._cleanup_cache()
+        self._write_non_terminal_tag(elem="returnStatement", open_tag=False)
 
     def compile_expression(self):
         expression_grammar = self._expression_grammar()
@@ -478,21 +483,22 @@ class Parser:
         self.vm_writer.write_call(name, n_args)
 
     def _get_call_elements(self, applicable, cached_token_dict):
-        needs_this = False
+        needs_this = True
         cached_token = cached_token_dict.get("cached_token")
         if not applicable:
-            needs_this = True
             klass_obj = self.class_name
             subroutine = cached_token
+            name = f"{klass_obj}.{subroutine}"
         else:
             registered_var = self.subroutine_symbol_table.type_of(cached_token)
-            if registered_var:
-                needs_this = True
-                klass_obj = registered_var
-            else:
-                klass_obj = cached_token
             subroutine = self.tokenizer.current_token
-        name = f"{klass_obj}.{subroutine}"
+            if registered_var:
+                klass_instance = registered_var
+                name = f"{klass_instance}.{subroutine}"
+            else:
+                needs_this = False
+                klass_obj = cached_token
+                name = f"{klass_obj}.{subroutine}"
         return needs_this, name
 
     def _write_terminal_element(self, advance_token=True, cache=None, defined=False, **kwargs):
