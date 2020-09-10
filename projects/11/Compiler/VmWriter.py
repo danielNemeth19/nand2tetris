@@ -35,14 +35,31 @@ class VmWriter:
     def write_arithmetic(self, command):
         command_map = {
             "+": "add",
+            "*": "call Math.multiply 2",
+            "=": "eq",
             "-": "sub",
-            "*": "call Math.multiply 2"
+            ">": "gt",
+            "unary-": "neg",
+            "~": "not",
+            "&": "and"
         }
         command = f"{command_map.get(command)}\n"
         self.file.write(command)
 
+    def write_label(self, label):
+        label_command = f"label {label}\n"
+        self.file.write(label_command)
+
+    def write_goto(self, label):
+        goto_command = f"goto {label}\n"
+        self.file.write(goto_command)
+
+    def write_if(self, label):
+        if_goto_command = f"if-goto {label}\n"
+        self.file.write(if_goto_command)
+
     def write_return(self):
-        return_command = "return"
+        return_command = "return\n"
         self.file.write(return_command)
 
     @staticmethod
