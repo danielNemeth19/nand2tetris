@@ -1,0 +1,87 @@
+<class>
+<keyword>class</keyword>
+<identifier>Main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<subroutineDec>
+<keyword>function</keyword>
+<keyword>int</keyword>
+<identifier>nextMask</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+<keyword>int</keyword>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>*</symbol>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>

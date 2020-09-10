@@ -1,0 +1,415 @@
+<class>
+<keyword>class</keyword>
+<identifier>Main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<subroutineDec>
+<keyword>function</keyword>
+<keyword>void</keyword>
+<identifier>convert</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+<keyword>int</keyword>
+<identifier>value</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<varDec>
+<keyword>var</keyword>
+<keyword>int</keyword>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>position</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<varDec>
+<keyword>var</keyword>
+<keyword>boolean</keyword>
+<identifier>loop</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>loop</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<keyword>true</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<whileStatement>
+<keyword>while</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>loop</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>position</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>position</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>nextMask</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>position</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&gt;</symbol>
+<term>
+<integerConstant>16</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>value</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&amp;</symbol>
+<term>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Memory</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>poke</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>8000</integerConstant>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>position</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Memory</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>poke</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>8000</integerConstant>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>position</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>loop</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<keyword>false</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</whileStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>function</keyword>
+<keyword>int</keyword>
+<identifier>nextMask</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+<keyword>int</keyword>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<identifier>mask</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>*</symbol>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>

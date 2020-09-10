@@ -1,0 +1,10 @@
+push constant 10
+push constant 12
+eq
+not
+if-goto L1
+push constant 1
+goto L2
+label L1
+push constant 50
+label L2
