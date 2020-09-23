@@ -116,9 +116,10 @@ class Parser:
         return
 
     def compile_subroutine_dec(self):
-        self._cleanup_cache()
-        function_cache = dict(type=None, name=None)
         self.logger.debug(f"Compiling subroutine: {self.tokenizer.current_token}")
+        self._cleanup_cache()
+        self._initialize_counters()
+        function_cache = dict(subroutine_kind=None, type=None, name=None)
         subroutine_dec_grammar = self._subroutine_dec_grammar()
         self.subroutine_symbol_table.start_subroutine()
         self._handle_this_for_methods()
@@ -129,7 +130,9 @@ class Parser:
             if self._match_grammar(**validator_kwargs):
                 if "non-terminal" in elem_grammar["write"] and self.write_xml:
                     self.file.write(elem_grammar["write"]["non-terminal"])
-                if elem == "void|type":
+                if elem == "constructor|function|method":
+                    function_cache["subroutine_kind"] = self.tokenizer.current_token
+                elif elem == "void|type":
                     function_cache["type"] = self.tokenizer.current_token
                 elif elem == "subroutineName":
                     function_cache["name"] = self.tokenizer.current_token
@@ -228,22 +231,36 @@ class Parser:
             return self.compile_var_dec()
         return
 
-    def compile_statements(self, function_cache=None, label_ix=None):
-        self.handle_write_function(function_cache)
+    def compile_statements(self, function_cache=None):
+        if not hasattr(self, "function_cache"):
+            self.handle_subroutine_setup(function_cache)
         self._write_non_terminal_tag(elem="statements")
         while self.tokenizer.current_token in self.STATEMENT_KEYWORDS:
             func = getattr(self, f"compile_{self.tokenizer.current_token}_statement")
-            func_to_call = partial(func, label_ix) if label_ix is not None else func
-            func_to_call()
+            func()
         self._write_non_terminal_tag(elem="statements", open_tag=False)
 
-    def handle_write_function(self, function_cache):
-        if not hasattr(self, "function_cache"):
-            setattr(self, "function_cache", function_cache)
-            number_of_vars = self.subroutine_symbol_table.var_count("var")
-            func_name = self.function_cache.get("name")
-            self.vm_writer.write_function(name=func_name, n_locals=number_of_vars)
+    def handle_subroutine_setup(self, function_cache):
+        setattr(self, "function_cache", function_cache)
+        number_of_vars = self.subroutine_symbol_table.var_count("var")
+        func_name = self.function_cache.get("name")
+        self.vm_writer.write_function(name=func_name, n_locals=number_of_vars)
+        number_of_fields = self.class_symbol_table.var_count("field")
+        # TODO: Let' clarify if we need 'THIS' when there are no fields?
+        if self._is_constructor() and number_of_fields:
+            self._create_memory_block_for_new_object(number_of_fields)
+        elif self._is_method():
+            self._anchor_this_segment_to_objects_base_address()
         return
+
+    def _create_memory_block_for_new_object(self, number_of_fields):
+        self.vm_writer.write_push("constant", number_of_fields)
+        self.vm_writer.write_call("Memory.alloc", 1)
+        self.vm_writer.write_pop("pointer", 0)
+
+    def _anchor_this_segment_to_objects_base_address(self):
+        self.vm_writer.write_push("argument", 0)
+        self.vm_writer.write_pop("pointer", 0)
 
     def compile_let_statement(self):
         let_grammar = self._let_statement_grammar()
@@ -276,27 +293,23 @@ class Parser:
         self._write_non_terminal_tag(elem="letStatement", open_tag=False)
 
     def write_pop_command_for_let_statement(self, varname):
-        kind = self.subroutine_symbol_table.kind_of(varname)
-        segment = "local" if kind == "var" else kind
-        index = self.subroutine_symbol_table.index_of(varname)
-        self.logger.debug(f"Let statement, varName: {varname}, segment: {segment}, index: {index}")
-        self.vm_writer.write_pop(segment, index)
+        kind, index_of = self.get_kind_and_index_of_identifier(varname)
+        segment = self._get_segment_for_vm_writer(kind)
+        self.logger.debug(f"Let statement, varName: {varname}, segment: {segment}, index: {index_of}")
+        self.vm_writer.write_pop(segment, index_of)
 
-    def compile_if_statement(self, label_ix=None):
+    def compile_if_statement(self):
         if_grammar = self._if_statement_grammar()
         self._write_non_terminal_tag(elem="ifStatement")
+        label_ix = self._get_if_label_counter()
         true_label, false_label, end_label = "IF_TRUE", "IF_FALSE", "IF_END"
-        label_ix = 0 if label_ix is None else label_ix + 1
         for elem in if_grammar["fixPattern"]:
             self.logger.debug(f"Matching grammar for: {self.tokenizer.current_token}")
             elem_grammar = if_grammar[elem]
             validator_obj = elem_grammar["validator"]
             if isinstance(validator_obj, dict):
                 if self._match_grammar(**validator_obj):
-                    if elem == "statements" and self.tokenizer.current_token == "if":
-                        elem_grammar["write"]["terminal"](label_ix=label_ix)
-                    else:
-                        elem_grammar["write"]["terminal"]()
+                    elem_grammar["write"]["terminal"]()
             else:
                 if validator_obj():
                     elem_grammar["write"]["terminal"]()
@@ -304,8 +317,8 @@ class Parser:
                     self.vm_writer.write_goto(f"{false_label}{label_ix}")
                     self.vm_writer.write_label(f"{true_label}{label_ix}")
 
-        self.vm_writer.write_goto(f"{end_label}{label_ix}")
         if self._if_optional_group_applies(block_grammar=if_grammar):
+            self.vm_writer.write_goto(f"{end_label}{label_ix}")
             self.vm_writer.write_label(f"{false_label}{label_ix}")
             for elem in if_grammar["optionalGroup"]:
                 self.logger.debug(f"Matching grammar for: {self.tokenizer.current_token}")
@@ -313,22 +326,25 @@ class Parser:
                 validator_obj = elem_grammar["validator"]
                 if isinstance(validator_obj, dict):
                     if self._match_grammar(**validator_obj):
-                        if elem == "statements" and self.tokenizer.current_token == "if":
-                            elem_grammar["write"]["terminal"](label_ix=label_ix)
-                        else:
-                            elem_grammar["write"]["terminal"]()
+                        elem_grammar["write"]["terminal"]()
                 else:
                     if validator_obj():
                         elem_grammar["write"]["terminal"]()
-
-        self.vm_writer.write_label(f"{end_label}{label_ix}")
+            self.vm_writer.write_label(f"{end_label}{label_ix}")
+        else:
+            self.vm_writer.write_label(f"{false_label}{label_ix}")
         self._write_non_terminal_tag(elem="ifStatement", open_tag=False)
 
-    def compile_while_statement(self, label_ix=None):
+    def _get_if_label_counter(self):
+        label_ix = getattr(self, "if_counter") + 1
+        setattr(self, "if_counter", label_ix)
+        return label_ix
+
+    def compile_while_statement(self):
         while_grammar = self._while_statement_grammar()
         self._write_non_terminal_tag(elem="whileStatement")
+        label_ix = self._get_while_label_counter()
         true_label, end_label = "WHILE_EXP", "WHILE_END"
-        label_ix = 0 if label_ix is None else label_ix + 1
         for elem in while_grammar["fixPattern"]:
             self.logger.debug(f"Matching grammar for: {self.tokenizer.current_token}")
             elem_grammar = while_grammar[elem]
@@ -337,11 +353,7 @@ class Parser:
                 if self._match_grammar(**validator_obj):
                     if elem == "while":
                         self.vm_writer.write_label(f"{true_label}{label_ix}")
-                        elem_grammar["write"]["terminal"]()
-                    elif elem == "statements" and self.tokenizer.current_token == "while":
-                        elem_grammar["write"]["terminal"](label_ix=label_ix)
-                    else:
-                        elem_grammar["write"]["terminal"]()
+                    elem_grammar["write"]["terminal"]()
             else:
                 if validator_obj():
                     elem_grammar["write"]["terminal"]()
@@ -351,6 +363,11 @@ class Parser:
         self.vm_writer.write_goto(f"{true_label}{label_ix}")
         self.vm_writer.write_label(f"{end_label}{label_ix}")
         self._write_non_terminal_tag(elem="whileStatement", open_tag=False)
+
+    def _get_while_label_counter(self):
+        label_ix = getattr(self, "while_counter") + 1
+        setattr(self, "while_counter", label_ix)
+        return label_ix
 
     def compile_do_statement(self):
         do_grammar = self._do_statement_grammar()
@@ -374,6 +391,7 @@ class Parser:
 
         optional_grammar = self._get_optional_grammar(return_grammar)
         if optional_grammar["validator"]():
+            # TODO - constructor case: would be good to validate that constructor needs to return 'this'
             optional_grammar["write"]["terminal"]()
 
         close_grammar = self._get_close_pattern_grammar(return_grammar)
@@ -381,11 +399,24 @@ class Parser:
         validator_kwargs = close_grammar["validator"]
         if self._match_grammar(**validator_kwargs):
             close_grammar["write"]["terminal"]()
+
         subroutine_type = self.function_cache.get("type")
         if subroutine_type == "void":
             self.vm_writer.write_push("constant", 0)
         self.vm_writer.write_return()
         self._write_non_terminal_tag(elem="returnStatement", open_tag=False)
+
+    def _is_constructor(self):
+        subroutine_kind = self.function_cache.get("subroutine_kind", None)
+        if subroutine_kind == "constructor":
+            return True
+        return False
+
+    def _is_method(self):
+        subroutine_kind = self.function_cache.get("subroutine_kind", None)
+        if subroutine_kind == "method":
+            return True
+        return False
 
     def compile_expression(self):
         expression_grammar = self._expression_grammar()
@@ -478,7 +509,7 @@ class Parser:
             self.vm_writer.write_push("constant", token)
         elif token_type == self.tokenizer.IDENTIFIER:
             kind, index_of = self.get_kind_and_index_of_identifier(token_value=token)
-            segment = "local" if kind == "var" else kind
+            segment = self._get_segment_for_vm_writer(kind)
             self.vm_writer.write_push(segment, index_of)
         elif token_type == self.tokenizer.KEYWORD:
             if token in ("null", "false"):
@@ -486,8 +517,11 @@ class Parser:
             elif token == "true":
                 self.vm_writer.write_push("constant", 0)
                 self.vm_writer.write_arithmetic("~")
+            else:
+                self.logger.debug(f"Term must be 'this': {token}")
+                self.vm_writer.write_push("pointer", 0)
         else:
-            self.logger.debug("term could be 'this' -> not handled yet")
+            self.logger.debug(f"Term is not handled yet: {token}")
 
     def compile_expression_list(self):
         expr_counter = 0
@@ -528,6 +562,7 @@ class Parser:
             applicable = True if self.tokenizer.current_token == "." else False
         else:
             applicable, cached_token_dict = self.look_ahead_for_optional_grammar(subroutine_grammar)
+        cached_token = cached_token_dict.get("cached_token")
         self._write_terminal_element(advance_token=False, cache=cached_token_dict)
         if applicable:
             elem = subroutine_grammar["optionalGroup"][1]
@@ -536,7 +571,9 @@ class Parser:
             if self._match_grammar(**validator_kwargs):
                 elem_grammar["write"]["terminal"]()
 
-        needs_this, name = self._get_call_elements(applicable, cached_token_dict)
+        needs_this, name = self._get_call_elements(applicable, cached_token)
+        if needs_this:
+            self.push_object_for_method_call(cached_token)
 
         fix_pattern_index = 0 if applicable else 1
         for elem in subroutine_grammar["fixPattern"][fix_pattern_index:]:
@@ -551,24 +588,39 @@ class Parser:
                     elem_grammar["write"]["terminal"]()
         self.vm_writer.write_call(name, n_args)
 
-    def _get_call_elements(self, applicable, cached_token_dict):
+    def _get_call_elements(self, applicable, cached_token):
         needs_this = True
-        cached_token = cached_token_dict.get("cached_token")
         if not applicable:
             klass_obj = self.class_name
             subroutine = cached_token
             name = f"{klass_obj}.{subroutine}"
         else:
-            registered_var = self.subroutine_symbol_table.type_of(cached_token)
+            registered_var_type = self.get_type_of_identifier(token_value=cached_token)
             subroutine = self.tokenizer.current_token
-            if registered_var:
-                klass_instance = registered_var
+            if registered_var_type:
+                klass_instance = registered_var_type
                 name = f"{klass_instance}.{subroutine}"
             else:
                 needs_this = False
                 klass_obj = cached_token
                 name = f"{klass_obj}.{subroutine}"
         return needs_this, name
+
+    def push_object_for_method_call(self, cached_token):
+        kind, index_of = self.get_kind_and_index_of_identifier(cached_token)
+        if kind:
+            segment = self._get_segment_for_vm_writer(kind)
+        else:
+            self.logger.debug(f"Must be a call on class's own method: {cached_token}")
+            self._check_validity_of_method_call()
+            segment, index_of = "pointer", 0
+        self.vm_writer.write_push(segment, index_of)
+
+    def _check_validity_of_method_call(self):
+        if self.function_cache.get("subroutine_kind") == "function":
+            self.logger.error("Subroutine call in the form of 'do fun()' is only "
+                              "valid from a constructor or a method")
+            sys.exit(3)
 
     def _write_terminal_element(self, advance_token=True, cache=None, defined=False, **kwargs):
         token_type, token_value = self._get_token_and_token_type(cache)
@@ -599,6 +651,15 @@ class Parser:
         if not symbol_table:
             return None, None
         return kind, index_of
+
+    def get_type_of_identifier(self, token_value):
+        type_of = self.subroutine_symbol_table.type_of(token_value)
+        if not type_of:
+            type_of = self.class_symbol_table.type_of(token_value)
+        if not type_of:
+            return None
+        else:
+            return type_of
 
     def _write_identifier_spec(self, token_value, defined, kind, index_of):
         self.file.write("\t<identifier_spec>\n")
@@ -638,9 +699,24 @@ class Parser:
         key = grammar["closePattern"]
         return grammar[key]
 
+    @staticmethod
+    def _get_segment_for_vm_writer(kind):
+        segment_map = dict(
+            field="this",
+            static="static",
+            var="local",
+            argument="argument"
+        )
+        return segment_map.get(kind)
+
     def _cleanup_cache(self):
-        if hasattr(self, "function_cache"):
-            del self.function_cache
+        for attr in ("function_cache", "if_counter", "while_counter"):
+            if hasattr(self, attr):
+                delattr(self, attr)
+
+    def _initialize_counters(self):
+        for attr in ("if_counter", "while_counter"):
+            setattr(self, attr, -1)
 
     def _match_grammar(self, expected_token=None, expected_token_type=None, optional=None, force_pass=False):
         if force_pass:
