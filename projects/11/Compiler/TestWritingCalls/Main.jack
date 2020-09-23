@@ -20,7 +20,7 @@ class Main {
         return;
     }
 
-   /** Draws the ball. */
+   /** This won't compile correctly as x, y are not defined as fields */
    method void draw() {
         var int dx, dy, temp;
         do Screen.drawRectangle(x, y, x + 5, y + 5);

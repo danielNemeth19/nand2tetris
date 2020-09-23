@@ -1,11 +1,15 @@
 <class>
 <keyword>class</keyword>
 <identifier>Main</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>{</symbol>
 <subroutineDec>
 <keyword>function</keyword>
 <keyword>void</keyword>
 <identifier>main</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <parameterList>
 </parameterList>
@@ -16,8 +20,12 @@
 <doStatement>
 <keyword>do</keyword>
 <identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>.</symbol>
 <identifier>printInt</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 <expression>
@@ -55,6 +63,8 @@
 <keyword>method</keyword>
 <keyword>void</keyword>
 <identifier>hide</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <parameterList>
 </parameterList>
@@ -65,6 +75,8 @@
 <doStatement>
 <keyword>do</keyword>
 <identifier>draw</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 </expressionList>
@@ -83,6 +95,8 @@
 <keyword>method</keyword>
 <keyword>void</keyword>
 <identifier>draw</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <parameterList>
 </parameterList>
@@ -93,35 +107,60 @@
 <keyword>var</keyword>
 <keyword>int</keyword>
 <identifier>dx</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
 <symbol>,</symbol>
 <identifier>dy</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
 <symbol>,</symbol>
 <identifier>temp</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
 <symbol>;</symbol>
 </varDec>
 <statements>
 <doStatement>
 <keyword>do</keyword>
 <identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>.</symbol>
 <identifier>drawRectangle</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 <expression>
 <term>
 <identifier>x</identifier>
+	<identifier_spec>
+	</identifier_spec>
 </term>
 </expression>
 <symbol>,</symbol>
 <expression>
 <term>
 <identifier>y</identifier>
+	<identifier_spec>
+	</identifier_spec>
 </term>
 </expression>
 <symbol>,</symbol>
 <expression>
 <term>
 <identifier>x</identifier>
+	<identifier_spec>
+	</identifier_spec>
 </term>
 <symbol>+</symbol>
 <term>
@@ -132,6 +171,8 @@
 <expression>
 <term>
 <identifier>y</identifier>
+	<identifier_spec>
+	</identifier_spec>
 </term>
 <symbol>+</symbol>
 <term>
@@ -154,6 +195,8 @@
 <keyword>function</keyword>
 <keyword>void</keyword>
 <identifier>main</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <parameterList>
 </parameterList>
@@ -163,19 +206,35 @@
 <varDec>
 <keyword>var</keyword>
 <identifier>SquareGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <identifier>game</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
 <symbol>;</symbol>
 </varDec>
 <statements>
 <letStatement>
 <keyword>let</keyword>
 <identifier>game</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
 <symbol>=</symbol>
 <expression>
 <term>
 <identifier>SquareGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>.</symbol>
 <identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 </expressionList>
@@ -187,8 +246,15 @@
 <doStatement>
 <keyword>do</keyword>
 <identifier>game</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
 <symbol>.</symbol>
 <identifier>run</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 </expressionList>
@@ -198,8 +264,15 @@
 <doStatement>
 <keyword>do</keyword>
 <identifier>game</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
 <symbol>.</symbol>
 <identifier>dispose</identifier>
+	<identifier_spec>
+	</identifier_spec>
 <symbol>(</symbol>
 <expressionList>
 </expressionList>

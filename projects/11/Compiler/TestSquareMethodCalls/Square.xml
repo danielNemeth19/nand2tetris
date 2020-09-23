@@ -1,0 +1,437 @@
+<class>
+<keyword>class</keyword>
+<identifier>Square</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>y</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>size</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<subroutineDec>
+<keyword>constructor</keyword>
+<identifier>Square</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+<keyword>int</keyword>
+<identifier>Ax</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<keyword>int</keyword>
+<identifier>Ay</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<keyword>int</keyword>
+<identifier>Asize</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Ax</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>y</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Ay</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>size</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Asize</identifier>
+	<identifier_spec>
+		<kind>argument</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>draw</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<keyword>this</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>dispose</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Memory</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>deAlloc</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<keyword>this</keyword>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>draw</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>setColor</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<keyword>true</keyword>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>drawRectangle</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>y</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>size</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>y</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>size</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>erase</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>setColor</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<keyword>false</keyword>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>drawRectangle</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>y</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>x</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>size</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>y</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<identifier>size</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>

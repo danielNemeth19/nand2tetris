@@ -1,0 +1,324 @@
+<class>
+<keyword>class</keyword>
+<identifier>SquareGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<classVarDec>
+<keyword>field</keyword>
+<identifier>Square</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>square</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>direction</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<subroutineDec>
+<keyword>constructor</keyword>
+<identifier>SquareGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>square</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Square</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>30</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>direction</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<keyword>this</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>moveSquare</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>direction</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>square</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveUp</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>direction</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>square</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveDown</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>direction</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>3</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>square</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveLeft</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>direction</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>4</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>square</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveRight</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Sys</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>wait</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>5</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>
