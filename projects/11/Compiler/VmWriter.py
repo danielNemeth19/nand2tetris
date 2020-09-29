@@ -35,9 +35,10 @@ class VmWriter:
     def write_arithmetic(self, command):
         command_map = {
             "+": "add",
-            "*": "call Math.multiply 2",
             "=": "eq",
             "-": "sub",
+            "*": "call Math.multiply 2",
+            "/": "call Math.divide 2",
             ">": "gt",
             "<": "lt",
             "unary-": "neg",

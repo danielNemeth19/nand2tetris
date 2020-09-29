@@ -266,6 +266,7 @@ class Parser:
         let_grammar = self._let_statement_grammar()
         self._write_non_terminal_tag(elem="letStatement")
         varname = None
+        is_lh_array = False
         for elem in let_grammar["fixPattern"]:
             self.logger.debug(f"Matching grammar for: {self.tokenizer.current_token}")
             elem_grammar = let_grammar[elem]
@@ -276,12 +277,14 @@ class Parser:
                 elem_grammar["write"]["terminal"]()
 
         if self._if_optional_group_applies(let_grammar):
+            is_lh_array = True
             for elem in let_grammar["optionalGroup"]:
                 self.logger.debug(f"Matching grammar for: {self.tokenizer.current_token}")
                 elem_grammar = let_grammar[elem]
                 validator_kwargs = elem_grammar["validator"]
                 if self._match_grammar(**validator_kwargs):
                     elem_grammar["write"]["terminal"]()
+            self.calc_mem_address_of_array_elem(varname=varname)
 
         for elem in let_grammar["fixPattern_2"]:
             self.logger.debug(f"Matching grammar for: {self.tokenizer.current_token}")
@@ -289,13 +292,36 @@ class Parser:
             validator_kwargs = elem_grammar["validator"]
             if self._match_grammar(**validator_kwargs):
                 elem_grammar["write"]["terminal"]()
-        self.write_pop_command_for_let_statement(varname=varname)
+        if is_lh_array:
+            self.assign_result_to_lh()
+        else:
+            self.write_pop_command_for_let_statement(varname=varname)
         self._write_non_terminal_tag(elem="letStatement", open_tag=False)
+
+    def calc_mem_address_of_array_elem(self, varname, push_that=False):
+        kind, index_of = self.get_kind_and_index_of_identifier(varname)
+        segment = self._get_segment_for_vm_writer(kind)
+        self.logger.debug(f"Push base address of array named: {varname}, segment: {segment}, index: {index_of}")
+        self.vm_writer.write_push(segment, index_of)
+        self.vm_writer.write_arithmetic("+")
+        if push_that:
+            self.vm_writer.write_pop("pointer", 1)
+            self.vm_writer.write_push("that", 0)
+
+    def assign_result_to_lh(self):
+        self.logger.debug("saving result of rh expression")
+        self.vm_writer.write_pop("temp", 0)
+        self.logger.debug("setting THAT segment to base address of lh[expression]")
+        self.vm_writer.write_pop("pointer", 1)
+        self.logger.debug("pushing result of rh expression to stack")
+        self.vm_writer.write_push("temp", 0)
+        self.logger.debug("save result to the mem address of THAT")
+        self.vm_writer.write_pop("that", 0)
 
     def write_pop_command_for_let_statement(self, varname):
         kind, index_of = self.get_kind_and_index_of_identifier(varname)
         segment = self._get_segment_for_vm_writer(kind)
-        self.logger.debug(f"Let statement, varName: {varname}, segment: {segment}, index: {index_of}")
+        self.logger.debug(f"Let statement pop, varName: {varname}, segment: {segment}, index: {index_of}")
         self.vm_writer.write_pop(segment, index_of)
 
     def compile_if_statement(self):
@@ -465,6 +491,8 @@ class Parser:
                         validator_kwargs = elem_grammar["validator"]
                         if self._match_grammar(**validator_kwargs):
                             elem_grammar["write"]["terminal"]()
+                    current_term = cached_token_dict.get("cached_token")
+                    self.calc_mem_address_of_array_elem(varname=current_term, push_that=True)
 
                 elif self._if_optional_group_applies(
                         expression_grammar, optional_group_key="optionalSubGroup_4", index=1
@@ -511,6 +539,8 @@ class Parser:
             kind, index_of = self.get_kind_and_index_of_identifier(token_value=token)
             segment = self._get_segment_for_vm_writer(kind)
             self.vm_writer.write_push(segment, index_of)
+        elif token_type == self.tokenizer.STR_CONST:
+            self.generate_code_for_string(token)
         elif token_type == self.tokenizer.KEYWORD:
             if token in ("null", "false"):
                 self.vm_writer.write_push("constant", 0)
@@ -522,6 +552,18 @@ class Parser:
                 self.vm_writer.write_push("pointer", 0)
         else:
             self.logger.debug(f"Term is not handled yet: {token}")
+
+    def generate_code_for_string(self, token):
+        self.logger.debug(f"String constant to handle: {token}")
+        self.vm_writer.write_push("constant", len(token))
+        self.vm_writer.write_call("String.new", 1)
+        for char in token:
+            if char.isascii():
+                self.vm_writer.write_push("constant", ord(char))
+                self.vm_writer.write_call("String.appendChar", 2)
+            else:
+                self.logger.error(f"Char is not in ASCII range: {char}")
+                sys.exit(3)
 
     def compile_expression_list(self):
         expr_counter = 0

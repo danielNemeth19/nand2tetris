@@ -1,0 +1,128 @@
+<class>
+<keyword>class</keyword>
+<identifier>Main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<subroutineDec>
+<keyword>function</keyword>
+<keyword>void</keyword>
+<identifier>main</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<varDec>
+<keyword>var</keyword>
+<identifier>Array</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>a</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<varDec>
+<keyword>var</keyword>
+<keyword>int</keyword>
+<identifier>i</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>a</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Array</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>3</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>i</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>a</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>[</symbol>
+<expression>
+<term>
+<identifier>i</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>]</symbol>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>10</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>

@@ -1,0 +1,11 @@
+class Main {
+   function void main() {
+     var Array a;
+     var int i, sum;
+
+     let a = Array.new(3);
+     let i = 2;
+     let sum = sum + a[i];
+     return;
+   }
+}
