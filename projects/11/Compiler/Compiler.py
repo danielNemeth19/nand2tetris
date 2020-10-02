@@ -19,7 +19,8 @@ class Parser:
         self.source_p = source_path
         self.class_name = self.source_p.stem
         self.ident_spec, self.verbose, self.write_xml = self._configure_parser(options)
-        self.file = self._construct_xml_outfile()
+        if self.write_xml:
+            self.file = self._construct_xml_outfile()
         self.vm_writer = VmWriter(self.source_p, self.class_name)
         self.tokenizer = tokenizer
         self.class_symbol_table = SymbolTable(is_class=True)
@@ -43,7 +44,7 @@ class Parser:
 
     def compile_class(self):
         class_grammar = self._class_grammar()
-        self.logger.debug(f"Writing: {self.file.name}")
+        self.logger.debug(f"Writing: {self.vm_writer.file.name}")
         for elem in class_grammar["fixpattern"]:
             elem_grammar = class_grammar[elem]
             self.tokenizer.next_token()
@@ -76,7 +77,8 @@ class Parser:
             close_grammar["write"]["terminal"]()
 
         self._write_non_terminal_tag("class", open_tag=False)
-        self.file.close()
+        if self.write_xml:
+            self.file.close()
         return self.vm_writer.close()
 
     def compile_class_var_dec(self):
@@ -1639,4 +1641,6 @@ if __name__ == '__main__':
     parser.add_argument("--verbose", help="If specified, all modules logs in debug mode", action="store_true")
 
     args = parser.parse_args()
+    if args.ident and not args.xml:
+        parser.error('--xml is required when --ident is set.')
     main(arguments=args)
