@@ -1,0 +1,1805 @@
+<class>
+<keyword>class</keyword>
+<identifier>PongGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>{</symbol>
+<classVarDec>
+<keyword>static</keyword>
+<identifier>PongGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>instance</identifier>
+	<identifier_spec>
+		<kind>static</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<identifier>Bat</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<identifier>Ball</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>boolean</keyword>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>score</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>4</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>lastWall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>5</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<classVarDec>
+<keyword>field</keyword>
+<keyword>int</keyword>
+<identifier>batWidth</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>6</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</classVarDec>
+<subroutineDec>
+<keyword>constructor</keyword>
+<identifier>PongGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>clearScreen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>batWidth</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>6</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>50</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Bat</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>230</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>229</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<identifier>batWidth</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>6</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>7</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Ball</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>253</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>222</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>511</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>229</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>setDestination</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>400</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Screen</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>drawRectangle</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>238</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>511</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>240</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveCursor</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>22</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>printString</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<stringConstant>Score: 0</stringConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<keyword>false</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>score</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>lastWall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>5</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<keyword>this</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>dispose</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>dispose</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>dispose</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Memory</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>deAlloc</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<keyword>this</keyword>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>function</keyword>
+<keyword>void</keyword>
+<identifier>newInstance</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>instance</identifier>
+	<identifier_spec>
+		<kind>static</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>PongGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>new</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>function</keyword>
+<identifier>PongGame</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<identifier>getInstance</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<statements>
+<returnStatement>
+<keyword>return</keyword>
+<expression>
+<term>
+<identifier>instance</identifier>
+	<identifier_spec>
+		<kind>static</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>run</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<varDec>
+<keyword>var</keyword>
+<keyword>char</keyword>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<statements>
+<whileStatement>
+<keyword>while</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<whileStatement>
+<keyword>while</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+<symbol>&amp;</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Keyboard</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>keyPressed</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>move</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>moveBall</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Sys</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>wait</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>50</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</whileStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>130</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>setDirection</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>132</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>setDirection</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>140</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<keyword>true</keyword>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<whileStatement>
+<keyword>while</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+<symbol>&amp;</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>key</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>Keyboard</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>keyPressed</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>move</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>moveBall</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Sys</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>wait</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>50</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</whileStatement>
+</statements>
+<symbol>}</symbol>
+</whileStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveCursor</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>10</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>27</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>printString</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<stringConstant>Game Over</stringConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword>method</keyword>
+<keyword>void</keyword>
+<identifier>moveBall</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<parameterList>
+</parameterList>
+<symbol>)</symbol>
+<subroutineBody>
+<symbol>{</symbol>
+<varDec>
+<keyword>var</keyword>
+<keyword>int</keyword>
+<identifier>bouncingDirection</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>batLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>batRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>ballLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>3</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>,</symbol>
+<identifier>ballRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>4</index>
+		<status>defined</status>
+	</identifier_spec>
+<symbol>;</symbol>
+</varDec>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>move</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&gt;</symbol>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+<symbol>&amp;</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<identifier>lastWall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>5</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>lastWall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>5</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>bouncingDirection</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>0</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>batLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>getLeft</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>batRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>getRight</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>ballLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>getLeft</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>ballRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>getRight</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+</expressionList>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>wall</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>=</symbol>
+<term>
+<integerConstant>4</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>batLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&gt;</symbol>
+<term>
+<identifier>ballRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+<symbol>|</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>batRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&lt;</symbol>
+<term>
+<identifier>ballLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<symbol>~</symbol>
+<term>
+<identifier>exit</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>ballRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&lt;</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>batLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<integerConstant>10</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>bouncingDirection</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<symbol>-</symbol>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+</statements>
+<symbol>}</symbol>
+<keyword>else</keyword>
+<symbol>{</symbol>
+<statements>
+<ifStatement>
+<keyword>if</keyword>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>ballLeft</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>3</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>&gt;</symbol>
+<term>
+<symbol>(</symbol>
+<expression>
+<term>
+<identifier>batRight</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>2</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>-</symbol>
+<term>
+<integerConstant>10</integerConstant>
+</term>
+</expression>
+<symbol>)</symbol>
+</term>
+</expression>
+<symbol>)</symbol>
+<symbol>{</symbol>
+<statements>
+<letStatement>
+<keyword>let</keyword>
+<identifier>bouncingDirection</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>batWidth</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>6</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>batWidth</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>6</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>-</symbol>
+<term>
+<integerConstant>2</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>bat</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>setWidth</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>batWidth</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>6</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<letStatement>
+<keyword>let</keyword>
+<identifier>score</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>=</symbol>
+<expression>
+<term>
+<identifier>score</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+<symbol>+</symbol>
+<term>
+<integerConstant>1</integerConstant>
+</term>
+</expression>
+<symbol>;</symbol>
+</letStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>moveCursor</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<integerConstant>22</integerConstant>
+</term>
+</expression>
+<symbol>,</symbol>
+<expression>
+<term>
+<integerConstant>7</integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>Output</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>printInt</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>score</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>4</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<doStatement>
+<keyword>do</keyword>
+<identifier>ball</identifier>
+	<identifier_spec>
+		<kind>field</kind>
+		<index>1</index>
+		<status>used</status>
+	</identifier_spec>
+<symbol>.</symbol>
+<identifier>bounce</identifier>
+	<identifier_spec>
+	</identifier_spec>
+<symbol>(</symbol>
+<expressionList>
+<expression>
+<term>
+<identifier>bouncingDirection</identifier>
+	<identifier_spec>
+		<kind>var</kind>
+		<index>0</index>
+		<status>used</status>
+	</identifier_spec>
+</term>
+</expression>
+</expressionList>
+<symbol>)</symbol>
+<symbol>;</symbol>
+</doStatement>
+</statements>
+<symbol>}</symbol>
+</ifStatement>
+<returnStatement>
+<keyword>return</keyword>
+<symbol>;</symbol>
+</returnStatement>
+</statements>
+<symbol>}</symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol>}</symbol>
+</class>
