@@ -781,7 +781,7 @@ class Parser:
         elif optional:
             return False
         self.logger.error(f"Expected: type: '{expected_token_type}', token: '{expected_token}'."
-                         f"Got: type: '{token_type}', token: '{token}'")
+                          f"Got: type: '{token_type}', token: '{token}'")
         self.file.close()
         sys.exit(3)
 

@@ -42,6 +42,7 @@ class VmWriter:
             ">": "gt",
             "<": "lt",
             "unary-": "neg",
+            "|": "or",
             "~": "not",
             "&": "and"
         }
