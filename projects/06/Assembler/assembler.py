@@ -3,9 +3,9 @@ import os
 import logging
 from pathlib import Path
 
-ROOT_PATH = Path(os.environ.get("USERPROFILE"), "Workspace", "nand2tetris", "projects", "06")
+ROOT_PATH = Path(os.environ.get("PWD"))
 __logger__ = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class SymbolTable:
@@ -39,7 +39,7 @@ class SymbolTable:
 
 class Reader:
     def __init__(self, path, output):
-        self.source = Path(ROOT_PATH, path)
+        self.source = Path(path)
         self.output = output
         self.symbol_table = SymbolTable()
         self.read_source()
@@ -84,7 +84,7 @@ class Translator:
         self.process_code()
 
     def process_code(self):
-        with open(Path(ROOT_PATH, self.output), "w") as outfile:
+        with open(Path(self.output), "w") as outfile:
             for assembly_code in self.code:
                 if assembly_code.startswith("@"):
                     instr = self.process_a_instruction(code_piece=assembly_code)
@@ -132,7 +132,8 @@ class Translator:
     def _convert_c_instruction(self, comp=None, dest=None, jmp=None):
         instruction = f"{self.C_OP_CODE}{self.C_FILLER}"
         for field, field_v in zip(self.C_FIELDS, (comp, dest, jmp)):
-            instruction += self.c_instruction_map[field][field_v]
+            __logger__.debug(f"Field is: {field}, field_v: {field_v}")
+            instruction += self.c_instruction_map[field]["".join(field_v.split())]
         return instruction
 
     def _handle_bad_address(self, address):
@@ -148,7 +149,7 @@ class Translator:
             jmp=dict()
         )
 
-        with open(Path(ROOT_PATH, "Assembler", "c_map.txt"), "r") as infile:
+        with open(Path(ROOT_PATH, "c_map.txt"), "r") as infile:
             for line in infile:
                 for field in self.C_FIELDS:
                     if line.find(f"<{field}>") > 0:

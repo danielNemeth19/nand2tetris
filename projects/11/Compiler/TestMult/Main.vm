@@ -1,1 +1,16 @@
 function Main.main 3
+push constant 4
+pop local 0
+push constant 2
+pop local 1
+push local 0
+push constant 1
+push local 1
+add
+call Math.multiply 2
+pop local 2
+push local 2
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
