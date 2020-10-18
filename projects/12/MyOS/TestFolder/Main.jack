@@ -1,0 +1,97 @@
+class Main {
+    static Array mask_arr;
+    static int cursor_loc_x, cursor_loc_y;
+    static int addr;
+
+    function void main() {
+        var int value;
+
+        let addr = 5000;
+        let value = Memory.peek(addr);
+        do Output.printInt(value);
+
+        return;
+    }
+
+    function void test(int i) {
+        var String s;
+
+        //let s = String.new(8);
+        let s = 10;
+        do Output.printString(s);
+        return;
+    }
+
+    function void create_mask() {
+        var int counter, mask;
+        let mask_arr = Array.new(16);
+        while (counter < 16){
+            if (mask=0) {
+                let mask = 1;
+            }
+            else {
+                let mask = mask + mask;
+            }
+            let mask_arr[counter] = mask;
+            let counter = counter + 1;
+        }
+        return;
+    }
+
+    function void Cursor(int i, int j) {
+        let cursor_loc_y = i;
+        let cursor_loc_x = j;
+
+        // do Screen.setColor(false);
+        // while (i < 11){
+        //     while (j < 8){
+        //         do Screen.drawPixel(j,i);
+        //         let j = j + 1;
+        //     }
+        //     let j = 0;
+        //     let i = i + 1;
+        // }
+        return;
+    }
+
+    function void printChar() {
+        var int cursor_y, cursor_x, mask, value;
+        var array c_array;
+
+        let cursor_y = 0;
+        let cursor_x = 0;
+        // do Output.create(81,30,51,51,51,51,51,63,59,30,48,0)
+        let c_array = Array.new(11);
+        let c_array[0] = 30;
+        let c_array[1] = 51;
+        let c_array[2] = 51;
+        let c_array[3] = 51;
+        let c_array[4] = 51;
+        let c_array[5] = 51;
+        let c_array[6] = 63;
+        let c_array[7] = 59;
+        let c_array[8] = 30;
+        let c_array[9] = 48;
+        let c_array[10] = 0;
+
+        while(cursor_y < 11){
+            while (cursor_x < 8){
+                let mask = mask_arr[cursor_x];
+                let value = c_array[cursor_y];
+
+                if (~((value & mask) = 0)) {
+                    do Screen.drawPixel(cursor_loc_x + cursor_x, cursor_loc_y + cursor_y);
+
+                }
+                let cursor_x = cursor_x + 1;
+            }
+            let cursor_x = 0;
+            let cursor_y = cursor_y + 1;
+        }
+
+        do Main.Cursor(0, cursor_loc_x + 8);
+        return;
+    }
+
+
+}

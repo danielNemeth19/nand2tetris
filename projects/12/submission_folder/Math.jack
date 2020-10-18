@@ -1,0 +1,113 @@
+class Math {
+
+    function void init() {
+        return;
+    }
+
+    function int abs(int x) {
+        if (x < 0){
+            return -x;
+        }
+        else {
+            return x;
+        }
+    }
+
+    function int divide(int x, int y){
+        var int q;
+        let q = Math._div(Math.abs(x), Math.abs(y));
+        if ((x < 0) = (y < 0)) {
+            return q;
+        }
+        else {
+            return -q;
+        }
+    }
+
+    function int _div(int x, int y){
+        var int q;
+        if ((y > x) | (y < 0)) {
+            return 0;
+        }
+        let q = Math._div(x, y+y);
+        if ((x- ((Math.multiply(q,y))+(Math.multiply(q,y)))) < y){
+            return q+q;
+        }
+        else {
+            return q+q+1;
+        }
+    }
+
+    function int multiply(int x, int y){
+        var int sum, shiftedX, position, w, mask;
+        let shiftedX = x;
+        let w = 16;
+
+        while (position < w){
+            let mask = Math._nextMask(mask);
+            let position = position + 1;
+            if (~((y & mask) = 0)) {
+                let sum = sum + shiftedX;
+            }
+            let shiftedX = shiftedX + shiftedX;
+        } 
+        return sum;
+    }
+
+    function int sqrt(int x) {
+        var int y, n, j, calc;
+        let y = 0;
+        let n = 16;
+        let j = Math.divide(n, 2) -1;
+
+        while (j > -1){
+            let calc = Math.multiply((y + Math.exp(2, j)), (y + Math.exp(2, j)));
+            if (((calc < x) | (calc = x)) = (calc > 0)){
+                let y = y + (Math.exp(2, j));
+            }
+            let j = j - 1;
+        }
+        return y;
+    }
+
+    function int exp(int x, int y){
+        var int res;
+        var int i;
+        let res = x;
+        if (y = 0) {
+            return 1;
+        }
+        while (i < (y - 1)){
+            let res = Math.multiply(res, x);
+            let i = i + 1;
+           }
+        return res;
+    }
+
+    function int max(int a, int b) {
+        if (a > b) {
+            return a;
+        }
+        else {
+            return b;
+        }
+    }
+
+    function int min(int a, int b) {
+        if (a < b) {
+            return a;
+        }
+        else {
+            return b;
+        }
+    }
+
+    function int _nextMask(int mask) {
+        if (mask = 0) {
+            return 1;
+        }
+        else {
+            return mask + mask;
+        }
+    }
+}
