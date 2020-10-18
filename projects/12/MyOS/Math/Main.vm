@@ -1,0 +1,11 @@
+function Main.main 1
+push constant 9
+call Math.sqrt 1
+pop local 0
+push local 0
+call Output.printInt 1
+pop temp 0
+call Output.println 0
+pop temp 0
+push constant 0
+return

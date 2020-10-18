@@ -1,0 +1,12 @@
+push constant 123
+push constant 1
+and
+push constant 123
+push constant 2
+and
+push constant 123
+push constant 4
+and
+push constant 123
+push constant 8
+and
