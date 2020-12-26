@@ -1,0 +1,64 @@
+/** Initializes the Game class */
+class QuizGame {
+	field Quiz quiz;
+
+	constructor QuizGame new(){
+		let quiz = Quiz.new();
+		do Utils.printStringWithNewLine("Let's play a quiz");
+		return this;
+	}
+
+	method void dispose(){
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	/** Runs the quiz and announces the final result of the game */
+	method void run(){
+		var int score;
+		var Array answers;
+		let answers = quiz.AskQuestions();
+		let score = countResult(answers);
+		do announceResult(score);
+		return;
+	}
+
+	/** Receives an array represting the user's answers. 
+	The array contains booleans: true means correct answer, false means incorrect.
+	A correct answer has a value of 10 points */
+	method int countResult(Array answers){
+		var int i, score, number_of_questions;
+		
+		let number_of_questions = quiz.getNumberOfQuestions();
+		let i = 0;
+		while (i < number_of_questions){
+			if (answers[i] = true){
+				let score = score + 10;
+			}
+			let i = i + 1;	
+		}
+		do Output.printInt(score);
+		return score;
+	}
+
+	/** Simply clears the screen and prints the result*/
+	method void announceResult(int score){
+		do Screen.clearScreen();
+		do Output.moveCursor(0, 0);
+		do Utils.printScore(score);
+		if (score = 0){	
+ 			do Output.printString("Maybe try again! ");
+		}
+		if (score = 10){	
+ 			do Output.printString("Not that bad! ");
+		}
+		if (score = 20){
+ 			do Output.printString("Well Done, almost perfect result! ");	
+		}
+		if (score = 30){
+ 			do Output.printString("Fantastic, flawless result! ");	
+		}		
+		do Utils.printStringWithNewLine("Thanks for playing!");
+		return;
+	}
+}

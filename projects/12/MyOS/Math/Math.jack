@@ -1,12 +1,19 @@
 class Math {
+    static array mask_arr;
 
-    /** Initializes the library. */
     function void init() {
+        var int counter, mask;
+
+        let mask_arr = Array.new(16);
+        let mask = 1;
+        while (counter < 16){
+            let mask_arr[counter] = mask;
+            let mask = mask + mask;
+            let counter = counter + 1;
+        }
         return;
     }
 
-
-    /** Returns the absolute value of x. */
     function int abs(int x) {
         if (x < 0){
             return -x;
@@ -15,72 +22,6 @@ class Math {
             return x;
         }
     }
-
-    function int multiply_old(int x, int y) {
-        var int sum;
-        var int i;
-        while (i < y){
-            let sum = sum + x;
-            let i = i + 1;
-           }
-        return sum;
-    }
-
-    function int old_divide(int x, int y){
-        var int div;
-        var int rem;
-        
-        let rem = x;
-        while (~(rem < y) | (rem=y)) {
-            let rem = rem - y;
-            /**do Output.printString("rem:");
-            do Output.printInt(rem);
-            do Output.println();*/
-            let div = div + 1;
-        }
-        return div;
-    }
-
-    function int divide_mine(int x, int y){
-        var int q, res;
-        var boolean is_negative;
-
-        if ( (x < 0 & y > 0) | ( x > 0 & y < 0) ) {
-            let is_negative = true;
-        }
-        else {
-            let is_negative = false;
-        }
-
-        if (x < 0){
-            let x = -x;
-        }
-
-        if (y < 0){
-            let y = -y;
-        }
-
-        if ((y > x) | (y < 0)){
-            return 0;
-        }
-        let q = Math.divide(x, y+y);
-        if ((x- ((Math.multiply(q,y))+(Math.multiply(q,y)))) < y){
-            let res = q+q;
-            if (is_negative){
-                let res = -res;
-            }
-            return res;
-        }
-        else {
-            if (is_negative){
-                let res = -res;
-            }
-            let res = q+q+1;
-            return res;
-        }
-
-    }
-
 
     function int divide(int x, int y){
         var int q;
@@ -108,29 +49,26 @@ class Math {
     }
 
     function int multiply(int x, int y){
-        var int sum, shiftedX, position, w, mask;
+        var int sum, shiftedX, position, w;
         let shiftedX = x;
         let w = 16;
 
         while (position < w){
-            let mask = Math._nextMask(mask);
-            let position = position + 1;
-            if (~((y & mask) = 0)) {
+            if (~((y & mask_arr[position]) = 0)) {
                 let sum = sum + shiftedX;
-                /**do Output.printString("sum:");
-                do Output.printInt(sum);
-                do Output.println();*/
             }
             let shiftedX = shiftedX + shiftedX;
-            /** do Output.printString("shiftedX:");
-            do Output.printInt(shiftedX);
-            do Output.println(); */
-        } 
+            let position = position + 1;
+        }
         return sum;
     }
 
     function int sqrt(int x) {
         var int y, n, j, calc;
+
+        if (x < 0) {
+            do Sys.error(4);
+        }
 
         let y = 0;
         let n = 16;
@@ -138,19 +76,10 @@ class Math {
 
         while (j > -1){
             let calc = Math.multiply((y + Math.exp(2, j)), (y + Math.exp(2, j)));
-            do Output.printString("calc is:");
-            do Output.printInt(calc);
-            do Output.println();
-            if (((calc < x) | (calc = x)) = (calc > 0)){
+            if (((calc < x) | (calc = x)) & (calc > 0)){
                 let y = y + (Math.exp(2, j));
-                do Output.printString("y is:");
-                do Output.printInt(y);
-                do Output.println();
             }
             let j = j - 1;
-            do Output.printString("j is:");
-            do Output.printInt(j);
-            do Output.println();
         }
         return y;
     }
@@ -169,8 +98,6 @@ class Math {
         return res;
     }
 
-
-    /** Returns the greater number. */
     function int max(int a, int b) {
         if (a > b) {
             return a;
@@ -180,22 +107,12 @@ class Math {
         }
     }
 
-    /** Returns the smaller number. */
     function int min(int a, int b) {
         if (a < b) {
             return a;
         }
         else {
             return b;
-        }
-    }
-
-    function int _nextMask(int mask) {
-        if (mask = 0) {
-            return 1;
-        }
-        else {
-            return mask + mask;
         }
     }
 }

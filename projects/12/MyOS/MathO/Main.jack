@@ -1,0 +1,12 @@
+/** Test program for the OS Math class. */
+class Main {
+
+    /** Performs various mathematical operations, using calls to the Math class methods. */
+    function void main() {
+        var int x;
+        let x = Math.sqrt(-32767);           // -181
+        do Output.printInt(x);
+        do Output.println();
+        return;
+    }
+}

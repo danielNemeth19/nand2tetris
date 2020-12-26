@@ -1,16 +1,6 @@
 class Math {
-    static array mask_arr;
 
     function void init() {
-        var int counter, mask;
-
-        let mask_arr = Array.new(16);
-        let mask = 1;
-        while (counter < 16){
-            let mask_arr[counter] = mask;
-            let mask = mask + mask;
-            let counter = counter + 1;
-        }
         return;
     }
 
@@ -49,34 +39,30 @@ class Math {
     }
 
     function int multiply(int x, int y){
-        var int sum, shiftedX, position, w;
+        var int sum, shiftedX, position, w, mask;
         let shiftedX = x;
         let w = 16;
 
         while (position < w){
-            if (~((y & mask_arr[position]) = 0)) {
+            let mask = Math._nextMask(mask);
+            let position = position + 1;
+            if (~((y & mask) = 0)) {
                 let sum = sum + shiftedX;
             }
             let shiftedX = shiftedX + shiftedX;
-            let position = position + 1;
-        }
+        } 
         return sum;
     }
 
     function int sqrt(int x) {
         var int y, n, j, calc;
-
-        if (x < 0) {
-            do Sys.error(4);
-        }
-
         let y = 0;
         let n = 16;
         let j = Math.divide(n, 2) -1;
 
         while (j > -1){
             let calc = Math.multiply((y + Math.exp(2, j)), (y + Math.exp(2, j)));
-            if (((calc < x) | (calc = x)) & (calc > 0)){
+            if (((calc < x) | (calc = x)) = (calc > 0)){
                 let y = y + (Math.exp(2, j));
             }
             let j = j - 1;
@@ -113,6 +99,15 @@ class Math {
         }
         else {
             return b;
+        }
+    }
+
+    function int _nextMask(int mask) {
+        if (mask = 0) {
+            return 1;
+        }
+        else {
+            return mask + mask;
         }
     }
 }

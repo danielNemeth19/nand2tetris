@@ -1,0 +1,151 @@
+/** Implements a naive Quiz class */
+class Quiz{
+	field int number_of_questions, number_of_options, current_question;
+	field Array questions;
+	field Array answers;
+	field Array options;
+
+	constructor Quiz new(){
+		let number_of_questions = 3;
+		let number_of_options = 4;
+		let current_question = 0;
+		do construct_questions();
+		do construct_answers();
+		do construct_options();
+		return this;
+	}
+
+	method void dispose(){
+		do questions.dispose();
+		do answers.dispose();
+		do options.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+
+ 	/** Accessors. */
+    method int getNumberOfQuestions() { 
+    	return number_of_questions; 
+    }
+
+    method Array getQuestions(){
+    	return questions;
+    }
+
+    method Array getAnswers(){
+    	return answers;
+    }
+
+    method Array getOptions(){
+    	return options;
+    }
+
+     /** Construnct the array that holds the questions */
+	method void construct_questions(){
+		let questions = Array.new(number_of_questions);
+		let questions[0] = "How many World Cups has Brazil won?";
+		let questions[1] = "How many member states the European Union has?";
+		let questions[2] = "In which year was Lionel Messi born?";
+		return;
+	}
+	
+	/** Construnct the array containing the index values of the correct answers */
+	method void construct_answers(){
+		let answers = Array.new(number_of_questions);
+		let answers[0] = 3;
+		let answers[1] = 2;
+		let answers[2] = 0;
+		return;
+	}
+	/** Construnct a multi-dimensional array to represent the options for all questions.
+	 3 questions, all has 4 possible answers to choose from.*/
+	method void construct_options(){
+		var Array first, second, third;
+		var int counter, b_answer_1, b_answer_2, b_answer_3;
+
+		let options = Array.new(number_of_questions);
+		let first = Array.new(number_of_options);
+		let second = Array.new(number_of_options);
+		let third = Array.new(number_of_options);
+		
+		/** The possible answer values are filled up dynamically by choosing a base value
+		which is increased by 1 in every iteration. This is just a shortcut for having to do:
+		let answer[0] = 2; let answer[1] = 3; let answer[2] = 4; let answer[3] = 5
+		*/
+		let b_answer_1 = 2;
+		let counter = 0;
+		while (counter < number_of_options){
+			let first[counter] = b_answer_1;
+			let counter = counter + 1;
+			let b_answer_1 = b_answer_1 + 1;
+		}
+
+		let b_answer_2 = 25;
+		let counter = 0;
+		while (counter < number_of_options){
+			let second[counter] = b_answer_2;
+			let counter = counter + 1;
+			let b_answer_2 = b_answer_2 + 1;
+		}
+
+		let b_answer_3 = 1987;
+		let counter = 0;
+		while (counter < number_of_options){
+			let third[counter] = b_answer_3;
+			let counter = counter + 1;
+			let b_answer_3 = b_answer_3 + 1;
+		}
+		/** Finally the options array is filled with the arrays for every question */
+		let options[0] = first;
+		let options[1] = second;
+		let options[2] = third;
+		return;
+	}
+	/** Iterates over all questions, list the options for each and stores the evaluated result in an array */
+	method Array AskQuestions(){
+	    var int answer, counter;
+	    var Array result_array;
+	    let result_array = Array.new(number_of_questions);
+
+	    while (counter < number_of_questions){
+	    	/** current_question field value is used to keep track of index of arrays */
+	    	do Utils.printStringWithNewLine(questions[current_question]);
+	    	do ListOptions();
+	    	let answer = Keyboard.readInt("Select option number to answer!"); // reading in user selection
+	    	let result_array[counter] = CheckIfCorrect(answer);
+	    	let counter = counter + 1;
+	    	let current_question = current_question + 1; // makes sure for all arrays 
+	    }
+	    return result_array;
+	}
+
+	/** Checks whether the answer is correct. Answer is the selected option number. 
+	Answers array holds the correct value */
+	method string CheckIfCorrect(int answer){
+	    var boolean is_correct;
+	    var int correct_answer;
+
+	    let correct_answer = answers[current_question];
+	    if (answer = correct_answer){
+	    	let is_correct = true;
+	    }
+	    if (~(answer = correct_answer)) {
+	    	let is_correct = false;
+	    }
+	    return is_correct;
+	}
+
+	/** List all possible answers for the question being at the index of 'current_question' */
+	method void ListOptions(){
+		var Array option_array;
+		var int counter;
+		let counter = 0;
+		let option_array = options[current_question];
+
+		while (counter < number_of_options){
+			do Utils.printSelectionIntOptions(counter, option_array[counter]);
+			let counter = counter + 1;
+		}
+		return;
+	}
+}

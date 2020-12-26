@@ -1,0 +1,7 @@
+do Output.printString("current mask in decimal: ");
+do Output.printInt(mask_arr[position]);
+do Output.println();
+
+do Output.printString("will be AND-ed with y which is: ");
+do Output.printInt(y);
+do Output.println();       
